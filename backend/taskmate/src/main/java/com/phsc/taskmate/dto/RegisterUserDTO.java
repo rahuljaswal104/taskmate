@@ -1,11 +1,26 @@
 package com.phsc.taskmate.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 public class RegisterUserDTO {
 
+	@NotBlank(message = "Name is required")
+    @Pattern(
+        regexp = "^[A-Za-z ]+$",
+        message = "Name can contain only letters and spaces (no digits or special characters)"
+    )
+	@Size(min=3, message = "Name atleast 3 character")
 	private String name;
 
+	@NotBlank(message = "Username (email) is required")
+    @Email(message = "Username must be a valid email")
 	private String username;
 
+	 @NotBlank(message = "Password is required")
+	    @Size(min = 5, message = "Password must be at least 8 characters long")
 	private String password;
 
 	private String role;
@@ -13,6 +28,11 @@ public class RegisterUserDTO {
 	private String status;
 
 	private String gender;
+	
+	public RegisterUserDTO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 
 	public RegisterUserDTO(String username, String role, String status) {

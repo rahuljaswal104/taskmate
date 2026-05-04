@@ -1,15 +1,19 @@
 package com.phsc.taskmate.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.phsc.taskmate.customresponse.CustomResponse;
 import com.phsc.taskmate.dto.RegisterUserDTO;
 import com.phsc.taskmate.entity.TaskMateRegisterUser;
 import com.phsc.taskmate.service.TaskMateService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
@@ -20,14 +24,16 @@ public class TaskMateController {
 	private TaskMateService mateService;
 
 	@PostMapping("/register")
-	public String register(@RequestBody RegisterUserDTO userDto) {
+	public ResponseEntity<CustomResponse> register(@Valid @RequestBody RegisterUserDTO userDto) {
 
-		return mateService.saveRegisterUser(userDto);
+		CustomResponse response = mateService.saveRegisterUser(userDto);
+		
+		return ResponseEntity.ok(response);
 	}
 	
 	@PostMapping("/login")
-	public String login(@RequestBody RegisterUserDTO userDto) {
-		
-		return mateService.loginUser(userDto);
+	public ResponseEntity<CustomResponse> login(@RequestBody RegisterUserDTO userDto) {
+		CustomResponse response = mateService.loginUser(userDto);
+		return ResponseEntity.ok(response);
 	}
 }

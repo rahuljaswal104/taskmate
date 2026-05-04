@@ -1,5 +1,4 @@
 <template>
-   <router-view></router-view>
   <div>
     <!-- 🔷 Navbar -->
     <nav class="navbar">
@@ -7,61 +6,85 @@
       <button class="register-btn" @click="showPopup = true">Register</button>
     </nav>
 
-    <!-- 🔷 Login Box -->
+    <!-- 🔷 Login -->
     <div class="container">
       <div class="form-box">
         <h2>Welcome</h2>
         <p>Please login to continue</p>
 
-        <input type="text" v-model="loginusername" placeholder="Enter username" />
-        <br /><br />
+        <div class="form-group">
+          <input type="text" v-model="loginusername" placeholder="Enter username" />
+        </div>
 
-        <input type="password" v-model="password" placeholder="Enter password" />
-        <br /><br />
+        <div class="form-group">
+          <input type="password" v-model="password" placeholder="Enter password" />
+        </div>
 
-        <button @click="login">Login</button>
+        <button class="primary-btn" @click="login">Login</button>
       </div>
     </div>
 
-    <!-- Popup start -->
+    <!-- 🔷 Register Modal -->
     <div v-if="showPopup" class="modal-overlay">
       <div class="modal">
-        <h2>Register User</h2>
         <span class="close-icon" @click="showPopup = false">&times;</span>
+        <h2>Register User</h2>
 
-        <input type="text"  v-model="register.name" placeholder="Name" /><br /><br />
-        <input type="email" v-model="register.username" placeholder="Email" /><br /><br />
-        <input type="password" v-model="register.password" placeholder="Password" /><br /><br />
-        <input type="password" v-model="register.repassword" placeholder="Re-enter Password" /><br /><br />
+        <div class="form-group">
+          <input type="text" v-model="register.name" placeholder="Name" />
+          <small v-if="errors.name" class="error">{{ errors.name }}</small>
+        </div>
 
-        <select v-model="register.role">
-          <option disabled value="">Select Role</option>
-          <option>SUPERADMIN</option>
-          <option>ADMIN</option>
-          <option>EMPLOYEE</option>
-        </select>
-        <br /><br />
+        <div class="form-group">
+          <input type="email" v-model="register.username" placeholder="Email" />
+          <small v-if="errors.username" class="error">{{ errors.username }}</small>
+        </div>
 
-        <select v-model="register.gender">
-          <option disabled value="">Select Gender</option>
-          <option>Male</option>
-          <option>Female</option>
-          <option>Other</option>
-        </select>
-        <br /><br />
+        <div class="form-group">
+          <input type="password" v-model="register.password" placeholder="Password" />
+        </div>
 
-        <button @click="registerUser">Submit</button>
+        <div class="form-group">
+          <input type="password" v-model="register.repassword" placeholder="Confirm Password" />
+          <small v-if="errors.password" class="error">{{ errors.password }}</small>
+          <small v-if="errors.repassword" class="error">{{ errors.repassword }}</small>
+        </div>
+
+        <div class="form-group">
+          <select v-model="register.role">
+            <option disabled value="">Select Role</option>
+            <option>SUPERADMIN</option>
+            <option>ADMIN</option>
+            <option>EMPLOYEE</option>
+          </select>
+          <small v-if="errors.role" class="error">{{ errors.role }}</small>
+        </div>
+
+        <div class="form-group">
+          <select v-model="register.gender">
+            <option disabled value="">Select Gender</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
+          <small v-if="errors.gender" class="error">{{ errors.gender }}</small>
+        </div>
+
+        <button class="primary-btn" @click="registerUser">Submit</button>
       </div>
     </div>
-    <!-- Popup End -->
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "LoginForm",
+
   data() {
     return {
+      errors: {},
       loginusername: "",
       password: "",
       showPopup: false,
@@ -77,79 +100,54 @@ export default {
   },
 
   methods: {
-
     login() {
-  if (!this.loginusername || !this.password) {
-    alert("Please fill in both fields");
-    return;
-  }
-
-  fetch("http://localhost:8080/api/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      username: this.loginusername,
-      password: this.password
-    })
-  })
-  .then(res =>
-    res.text().then(data => {
-      if (!res.ok) {
-        throw new Error(data || "Login failed");
-      }
-      return data; // ✅ IMPORTANT
-    })
-  )
-  .then(data => {
-
-    if (data.toLowerCase().includes("login success")) {
-      // ✅ redirect
-      this.$router.push('/dashboard');
-    } else {
-      // ❌ show error
-      alert(data);
-    }
-
-  })
-  .catch(err => {
-    console.error(err);
-    alert(err.message);
-  });
-},
-
-    registerUser() {
-      const r = this.register;
-
-      if (!r.name || !r.username || !r.password || !r.repassword || !r.role || !r.gender) {
-        alert("Please fill all fields");
+      if (!this.loginusername || !this.password) {
+        alert("Please fill in both fields");
         return;
       }
 
-      if (r.password !== r.repassword) {
-        alert("Passwords do not match");
-        return;
-      }
-
-      fetch("http://localhost:8080/api/register", {
+      fetch("http://localhost:8080/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(this.register)
-      })
-      .then(res =>
-        res.text().then(data => {
-          if (!res.ok) {
-            throw new Error(data || "Something went wrong");
-          }
-          return data;
+        body: JSON.stringify({
+          username: this.loginusername,
+          password: this.password
         })
-      )
+      })
+      .then(res => res.text())
       .then(data => {
-        alert(data);
-        this.showPopup = false;
+        if (data.toLowerCase().includes("login success")) {
+          this.$router.push('/dashboard');
+        } else {
+          alert(data);
+        }
+      })
+      .catch(() => alert("Login failed"));
+    },
+
+    registerUser() {
+      this.errors = {};
+      const r = this.register;
+
+      if (!r.name) this.errors.name = "Name is required";
+      if (!r.username) this.errors.username = "Email is required";
+      if (!r.password) this.errors.password = "Password is required";
+      if (!r.repassword) this.errors.repassword = "Confirm password required";
+      if (!r.role) this.errors.role = "Role is required";
+      if (!r.gender) this.errors.gender = "Gender is required";
+
+      if (Object.keys(this.errors).length > 0) return;
+
+      if (r.password !== r.repassword) {
+        this.errors.repassword = "Passwords do not match";
+        return;
+      }
+
+      axios.post("http://localhost:8080/api/register", r)
+      .then(res => {
+        alert(res.data.message);
 
         this.register = {
           name: "",
@@ -159,21 +157,30 @@ export default {
           role: "",
           gender: ""
         };
+
+        this.showPopup = false;
       })
       .catch(err => {
-        console.error(err);
-        alert(err.message);
+        if (err.response?.data?.data) {
+          this.errors = err.response.data.data;
+        } else {
+          alert("Something went wrong");
+        }
       });
     }
-
   }
 };
 </script>
 
 <style>
-/* (same CSS — unchanged) */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Navbar */
 .navbar {
-  background-color: #42b983;
+  background-color: #1f6f54;
   color: white;
   padding: 15px 30px;
   display: flex;
@@ -181,60 +188,70 @@ export default {
   align-items: center;
 }
 
+/* Buttons */
+.primary-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #42b983;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background-color: #369870;
+}
+
 .register-btn {
-  width: auto;
   background: white;
-  color: #42b983;
+  color: #1f6f54;
   border: none;
   padding: 8px 15px;
   border-radius: 5px;
   cursor: pointer;
 }
 
+/* Layout */
 .container {
   height: calc(100vh - 70px);
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f5f5f5;
+  background-color: #f4f6f8;
 }
 
+/* Form box */
 .form-box {
   padding: 30px;
-  width: 300px;
-  border-radius: 10px;
+  width: 320px;
+  border-radius: 12px;
   background: white;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
 }
 
-.form-box button {
-  width: 100%;
+/* KEY FIX HERE */
+.form-group {
+  margin-bottom: 15px;
 }
 
+input,
 select {
-  width: 89%;
+  width: 100%;
   padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box; /* 🔥 IMPORTANT */
 }
 
-input {
-  width: 80%;
-  padding: 10px;
+/* Errors */
+.error {
+  color: red;
+  font-size: 12px;
 }
 
-button {
-  padding: 10px;
-  background-color: #42b983;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #369870;
-}
-
+/* Modal */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -251,21 +268,15 @@ button:hover {
   position: relative;
   background: white;
   padding: 25px;
-  border-radius: 10px;
-  width: 320px;
-  text-align: center;
+  border-radius: 12px;
+  width: 350px;
 }
 
 .close-icon {
   position: absolute;
   top: 10px;
-  right: 10px;
+  right: 15px;
   font-size: 22px;
   cursor: pointer;
-  color: #555;
-}
-
-.close-icon:hover {
-  color: red;
 }
 </style>

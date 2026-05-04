@@ -1,10 +1,11 @@
 package com.phsc.taskmate.service;
 
+import com.phsc.taskmate.customresponse.CustomResponse;
 import com.phsc.taskmate.dto.RegisterUserDTO;
 
 public interface TaskMateService {
 
-	public String saveRegisterUser(RegisterUserDTO user);
+	public CustomResponse saveRegisterUser(RegisterUserDTO user);
 	
-	public String loginUser(RegisterUserDTO user);
+	public CustomResponse loginUser(RegisterUserDTO user);
 }
