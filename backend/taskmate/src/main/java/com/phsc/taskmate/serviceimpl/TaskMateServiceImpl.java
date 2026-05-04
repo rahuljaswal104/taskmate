@@ -32,7 +32,7 @@ public class TaskMateServiceImpl implements TaskMateService {
 			List<RegisterUserDTO> us = mateRepository.findByUsername(userDto.getUsername());
 
 			if (!us.isEmpty()) {
-				return new CustomResponse("user data missing", 400, userDto);
+				return new CustomResponse("userdata missing", 400, userDto);
 			}
 
 			if (userDto.getRole().contains("SUPERADMIN")) {
@@ -55,7 +55,7 @@ public class TaskMateServiceImpl implements TaskMateService {
 			newUSer.setPassword(encPassword);
 
 			mateRepository.save(newUSer);
-			return new CustomResponse("user saved successfully", 200, userDto);
+			return new CustomResponse("user data saved successfully", 200, userDto);
 
 		} catch (Exception e) {
 			e.printStackTrace();
