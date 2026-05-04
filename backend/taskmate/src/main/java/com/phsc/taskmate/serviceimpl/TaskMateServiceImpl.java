@@ -25,7 +25,7 @@ public class TaskMateServiceImpl implements TaskMateService {
 		try {
 
 			if (userDto == null) {
-				return new CustomResponse("user data missing", 400, userDto);
+				return new CustomResponse("userdata missing", 400, userDto);
 			}
 
 			List<TaskMateRegisterUser> userList = mateRepository.findAll();
