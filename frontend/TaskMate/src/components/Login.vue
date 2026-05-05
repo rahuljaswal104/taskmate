@@ -119,6 +119,7 @@ export default {
       .then(res => res.text())
       .then(data => {
         if (data.toLowerCase().includes("login success")) {
+          localStorage.setItem("isLoggedIn", "true")
           this.$router.push('/dashboard');
         } else {
           alert(data);
@@ -180,12 +181,12 @@ body {
 
 /* Navbar */
 .navbar {
-  background-color: #1f6f54;
+  background: #47b37b;
   color: white;
-  padding: 15px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 15px 30px;
 }
 
 /* Buttons */

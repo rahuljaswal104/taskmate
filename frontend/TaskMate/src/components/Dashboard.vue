@@ -1,21 +1,17 @@
 <template>
-  <div>
+  <div class="dashboard">
 
+    <!-- Navbar -->
     <nav class="navbar">
-      <h2>TaskMate</h2>
+      <h2 class="logo">TaskMate</h2>
 
-      <div class="nav-buttons">
-        
-        <!-- <button @click="goAddEmployee">Add Employee</button>
-        <button @click="goAssignTask">Assign Task</button>
-        <button @click="logout">Logout</button> -->
-
-         <button class="register-btn" @click="showPopup = true">Add Employee</button>
-          <button class="register-btn" @click="showPopup = true">Assign Task</button>
-           <button class="register-btn" @click="showPopup = true">Logout</button>
+      <div class="nav-actions">
+        <button class="nav-btn" @click="goAssignTask">Assign Task</button>
+        <button class="nav-btn logout" @click="logout">Logout</button>
       </div>
     </nav>
 
+    <!-- Blank Content -->
     <div class="content">
       <h2>Welcome to Dashboard</h2>
     </div>
@@ -26,26 +22,59 @@
 <script>
 export default {
   methods: {
-    goAddEmployee() {
-      //this.$router.push('/add-employee')
-    },
     goAssignTask() {
-     // this.$router.push('/assign-task')
+      this.$router.push('/asgintask');
     },
     logout() {
-      localStorage.clear()
-      this.$router.push('/')
+      localStorage.clear();
+      this.$router.push('/');
     }
   }
 }
 </script>
-<style>
-.register-btn {
+
+<style scoped>
+.dashboard {
+  min-height: 100vh;
+  background: #f5f7fb;
+}
+
+/* Navbar */
+.navbar {
+  background: #47b37b;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.nav-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-btn {
   background: white;
-  color: #1f6f54;
+  color: #47b37b;
   border: none;
   padding: 8px 15px;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
+}
+
+.logout {
+  background: #ef4444;
+  color: white;
+}
+
+/* Content */
+.content {
+  padding: 30px;
 }
 </style>
