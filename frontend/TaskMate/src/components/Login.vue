@@ -3,7 +3,7 @@
     <!-- 🔷 Navbar -->
     <nav class="navbar">
       <h2>TaskMate</h2>
-      <button class="register-btn" @click="showPopup = true">Register</button>
+      <button class="register-btn" @click="showPopup = true">Register User Detail</button>
     </nav>
 
     <!-- 🔷 Login -->
