@@ -12,6 +12,15 @@ public class CustomResponse {
 		this.code = code;
 		this.data = data;
 	}
+	
+	
+
+	public CustomResponse(String message) {
+		super();
+		this.message = message;
+	}
+
+
 
 	public String getMessage() {
 		return message;
