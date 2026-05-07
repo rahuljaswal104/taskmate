@@ -5,13 +5,15 @@ import Dashboard from './components/Dashboard.vue'
 import AsginTask from './components/AsginTask.vue'
 import AddRole from './components/AddRole.vue'
 import Navbar from './components/Navbar.vue'
+import SuperAdmin from './components/SuperAdmin.vue'
 
 const routes = [
   {path: '/',name: 'Login',component: LoginForm},
   {path:'/navbar', name: 'Navbar', component: Navbar, meta: { requiresAuth: true }},
   {path:'/addrole', name: 'AddRole', component: AddRole, meta: { requiresAuth: true }},
   {path: '/dashboard', name: 'Dashboard',component: Dashboard, meta: { requiresAuth: true }},
-  {path: '/asgintask', name: 'AssignTask', component: AsginTask, meta: { requiresAuth: true }}
+  {path: '/asgintask', name: 'AssignTask', component: AsginTask, meta: { requiresAuth: true }},
+   {path: '/SuperAdmin', name: 'SuperAdmin', component: SuperAdmin, meta: { requiresAuth: true }}
 ]
 
 const router = createRouter({
