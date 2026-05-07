@@ -1,5 +1,7 @@
 package com.phsc.taskmate.serviceimpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,13 @@ public class RoleSeviceImpl implements RoleService{
 		roleRepository.save(role);
 		
 		return new CustomResponse("role saved successfully", 200, role);
+	}
+
+
+	@Override
+	public CustomResponse getRoleList() {
+		List<Role> roleList = roleRepository.findAll();
+		return new CustomResponse("success", 200 ,roleList);
 	}
 
 }

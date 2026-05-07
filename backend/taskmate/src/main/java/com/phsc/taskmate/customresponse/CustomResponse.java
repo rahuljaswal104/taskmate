@@ -1,12 +1,14 @@
 package com.phsc.taskmate.customresponse;
 
-public class CustomResponse {
+public class CustomResponse<T> {
 	
 	private String message;
 	private int code;
-	private Object data;
+	private T data;
 	
-	public CustomResponse(String message, int code, Object data) {
+	
+	
+	public CustomResponse(String message, int code, T data) {
 		super();
 		this.message = message;
 		this.code = code;
@@ -15,17 +17,10 @@ public class CustomResponse {
 	
 	
 
-	public CustomResponse(String message) {
-		super();
-		this.message = message;
-	}
-
-
-
 	public String getMessage() {
 		return message;
 	}
-
+	
 	public void setMessage(String message) {
 		this.message = message;
 	}
@@ -38,21 +33,27 @@ public class CustomResponse {
 		this.code = code;
 	}
 
-	public Object getData() {
+	public T getData() {
 		return data;
 	}
 
-	public void setData(Object data) {
+	public void setData(T data) {
 		this.data = data;
 	}
 
-	
-	
-	
-	
-	
-	
-	
+	public CustomResponse(String message) {
+		super();
+		this.message = message;
+	}
+
+
+	@Override
+	public String toString() {
+		return "CustomResponse [message=" + message + ", code=" + code + ", data=" + data + "]";
+	}
+
+
+
 	
 
 }
