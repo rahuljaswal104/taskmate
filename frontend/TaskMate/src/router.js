@@ -3,11 +3,13 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginForm from './components/Login.vue'
 import Dashboard from './components/Dashboard.vue'
 import AsginTask from './components/AsginTask.vue'
+import SuperAdmin from './components/SuperAdmin.vue'
 
 const routes = [
   {path: '/',name: 'Login',component: LoginForm},
   {path: '/dashboard', name: 'Dashboard',component: Dashboard, meta: { requiresAuth: true }},
-  {path: '/asgintask', name: 'AssignTask', component: AsginTask, meta: { requiresAuth: true }}
+  {path: '/asgintask', name: 'AssignTask', component: AsginTask, meta: { requiresAuth: true }},
+   {path: '/SuperAdmin', name: 'SuperAdmin', component: SuperAdmin, meta: { requiresAuth: true }}
 ]
 
 const router = createRouter({
