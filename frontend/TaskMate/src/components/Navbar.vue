@@ -10,6 +10,10 @@
         Add Role
       </button>
 
+       <button class="nav-btn" @click="goAddDepartment">
+        Add Department
+      </button>
+
       <button class="nav-btn" @click="goAssignTask">
         Assign Task
       </button>
@@ -39,6 +43,13 @@ export default {
     goAddRole() {
 
       this.$router.push("/addrole");
+
+    },
+
+
+     goAddDepartment() {
+
+      this.$router.push("/adddepartment");
 
     },
 

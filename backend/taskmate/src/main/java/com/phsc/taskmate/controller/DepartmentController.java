@@ -27,8 +27,8 @@ public class DepartmentController {
 	@Autowired
 	private DepartmentService departmentService;
 	
-	@Autowired
-	private DepartmentRepository departmentRepo;
+//	@Autowired
+//	private DepartmentRepository departmentRepo;
 	
 	@GetMapping("/get")
 	public List<Department> getAll(){
@@ -44,17 +44,7 @@ public class DepartmentController {
 		
 	}
 
-//	@DeleteMapping("/{id}")
-//	public ResponseEntity<CustomResponse>  delete(@PathVariable Long id){
-//		Optional<Department> getdept = departmentRepo.findById(id);
-//		if(getdept.isPresent())
-//		{
-//			CustomResponse response= departmentService.delete(id);
-//			return ResponseEntity.ok(response);
-//		}
-//		return ;
-//		
-		
-		
-//	}
+
+	
+	
 }

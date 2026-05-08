@@ -22,19 +22,31 @@ public class DepartmentServiceImpl implements DepartmentService {
 
 	@Override
 	public CustomResponse save(Department d) {
-		if (d == null) {
+		
+		if (d.getDepartmentCode() == null ||d.getDepartmentCode().isEmpty()) {
+			return new CustomResponse("Please Enter Department code");
+		}
+		
+		if (d.getDepartmentName() == null ||d.getDepartmentName().isEmpty()) {
 			return new CustomResponse("Please Enter Department Name");
 		}
+		
 		
 		Department deptexist = departmentrRepo.findByDepartmentName(d.getDepartmentName());
 		if(deptexist!= null) {
 			return new CustomResponse("Department Already exist");
 		}
 		
-		Department dept = new Department();
-		dept.setDepartmentCode(d.getDepartmentCode());
-		dept.setDepartmentName(d.getDepartmentName());
-		departmentrRepo.save(dept);
+		Department codeExist = departmentrRepo.findByDepartmentCode(d.getDepartmentCode());
+
+		if(codeExist != null){
+		    return new CustomResponse("Department code already exists");
+		}
+		
+//		Department dept = new Department();
+//		dept.setDepartmentCode(d.getDepartmentCode());
+//		dept.setDepartmentName(d.getDepartmentName());
+		departmentrRepo.save(d);
 		
 		
 		return new CustomResponse("Deparment saved successfully");

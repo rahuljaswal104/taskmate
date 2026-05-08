@@ -9,4 +9,6 @@ import com.phsc.taskmate.entity.Department;
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
 	Department findByDepartmentName(String departmentName);
+	
+	Department findByDepartmentCode(String departmentCode);
 }
