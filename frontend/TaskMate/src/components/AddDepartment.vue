@@ -1,10 +1,12 @@
 <template>
-  <div class="page-container">
+    <div>
   <Navbar />
+  <div class="page-container">
+  
     <!-- Form Section -->
     <div class="left-panel">
       <div class="form-card">
-        <h1>Add Department</h1>
+        <h2>Add Department</h2>
 
         <div class="field-row">
           <div class="field-box">
@@ -74,6 +76,7 @@
       </table>
     </div>
 
+  </div>
   </div>
 </template>
 
@@ -181,15 +184,16 @@ export default {
   width: 100%;
   min-height: 100vh;
   background: #f8fafc;
-  padding: 30px;
+  padding: 10px;
   font-family: Arial, sans-serif;
 }
 
 /* Form Section */
 .left-panel {
-  margin-top: 30px;
+  margin-top: 15px;
   margin-bottom: 25px;
 }
+
 
 .form-card {
   max-width: 1100px;
@@ -200,10 +204,10 @@ export default {
   box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
-.form-card h1 {
+/* .form-card h2 {
   margin-bottom: 20px;
-  color: #1e293b;
-}
+   color: #1e293b; 
+} */
 
 /* Fields */
 .field-row {
@@ -266,9 +270,17 @@ button {
   box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
-.table-card h2 {
+/* .table-card h2 {
   margin-bottom: 20px;
   color: #1e293b;
+} */
+
+.form-card h2,
+.table-card h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #48bb78;
+  font-weight: 600;
 }
 
 table {
