@@ -44,6 +44,9 @@ public class RoleSeviceImpl implements RoleService{
 	@Override
 	public CustomResponse getRoleList() {
 		List<Role> roleList = roleRepository.findAll();
+		if(roleList.isEmpty()) {
+			return new CustomResponse("list empty", 200 ,roleList);
+		}
 		return new CustomResponse("success", 200 ,roleList);
 	}
 
