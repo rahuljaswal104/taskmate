@@ -196,8 +196,8 @@ export default {
 
 
 .form-card {
-  max-width: 1100px;
-  margin: auto;
+  /* max-width: 1100px;
+  margin: auto; */
   background: white;
   border-radius: 16px;
   padding: 25px;
@@ -262,8 +262,8 @@ button {
 
 /* Table */
 .table-card {
-  max-width: 1100px;
-  margin: auto;
+  /* max-width: 1100px;
+  margin: auto; */
   background: white;
   border-radius: 16px;
   padding: 25px;
@@ -277,6 +277,7 @@ button {
 
 .form-card h2,
 .table-card h2 {
+  width: 100%;
   margin-bottom: 20px;
   font-size: 24px;
   color: #48bb78;
