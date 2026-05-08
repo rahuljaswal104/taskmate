@@ -9,6 +9,7 @@ import com.phsc.taskmate.customresponse.CustomResponse;
 import com.phsc.taskmate.dto.ProjectDto;
 import com.phsc.taskmate.entity.Department;
 import com.phsc.taskmate.entity.Project;
+import com.phsc.taskmate.entity.Role;
 import com.phsc.taskmate.repository.DepartmentRepository;
 import com.phsc.taskmate.repository.ProjectRepository;
 import com.phsc.taskmate.service.ProjectService;
@@ -31,24 +32,25 @@ public class ProjectServiceImpl implements ProjectService {
 
 		Project projectPresent = projectRepository.findByProjectName(projectDto.getProjectName());
 
-		List<Department> departments = departmentRepository.findAllById(projectDto.getDepartmentIds());
-
 		if (projectPresent != null) {
 			return new CustomResponse<>("already exist", 409, null);
 		}
 
-		if (departments.size() != projectDto.getDepartmentIds().size()) {
-
-			return new CustomResponse<>("departments not found", 404, null);
-		}
-
 		Project project = new Project();
-
 		project.setProjectName(projectDto.getProjectName());
-		project.setDepartments(departments);
 		projectRepository.save(project);
 
 		return new CustomResponse<>("Project saved successfully", 200, project);
+	}
+
+	@Override
+	public CustomResponse getProjectList() {
+		List<Project> projectList = projectRepository.findAll();
+		
+		if(projectList.isEmpty()) {
+			return new CustomResponse("list empty", 200 ,projectList);
+		}
+		return new CustomResponse("success", 200 ,projectList);
 	}
 
 }

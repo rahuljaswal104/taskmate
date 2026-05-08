@@ -7,9 +7,11 @@ import AddRole from './components/AddRole.vue'
 import Navbar from './components/Navbar.vue'
 import SuperAdmin from './components/SuperAdmin.vue'
 import AddDepartment from './components/AddDepartment.vue'
+import AddProject from './components/AddProject.vue'
 
 const routes = [
   {path: '/',name: 'Login',component: LoginForm},
+  {path:'/addproject', name: 'AddProject', component: AddProject, meta: { requiresAuth: true }},
   {path:'/navbar', name: 'Navbar', component: Navbar, meta: { requiresAuth: true }},
   {path:'/addrole', name: 'AddRole', component: AddRole, meta: { requiresAuth: true }},
   {path: '/dashboard', name: 'Dashboard',component: Dashboard, meta: { requiresAuth: true }},

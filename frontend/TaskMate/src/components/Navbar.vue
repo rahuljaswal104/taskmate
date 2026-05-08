@@ -6,6 +6,10 @@
 
     <div class="nav-actions">
 
+      <button class="nav-btn" @click="goAddProject">
+        Add Project
+      </button>
+
       <button class="nav-btn" @click="goAddRole">
         Add Role
       </button>
@@ -34,6 +38,9 @@ export default {
 
   methods: {
 
+    goAddProject(){
+      this.$router.push("/addproject");
+    },
     goDashboard() {
 
       this.$router.push("/dashboard");

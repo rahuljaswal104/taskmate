@@ -31,7 +31,6 @@ public class RoleController {
 		return ResponseEntity.ok(response);
 	}
 	
-	
 	@GetMapping("/roleList")
 	public ResponseEntity<CustomResponse> getRoleList(){
 

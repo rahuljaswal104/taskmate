@@ -8,4 +8,6 @@ public interface ProjectService {
 
 	CustomResponse<Project> saveProject(ProjectDto projectDto);
 
+	CustomResponse getProjectList();
+
 }

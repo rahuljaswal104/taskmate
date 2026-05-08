@@ -3,18 +3,17 @@
   <div class="dashboard">
 
     <!-- Navbar -->
-
     <Navbar />
 
     <!-- Content -->
-
     <div class="content">
 
       <!-- Add Role -->
-
       <div class="card">
 
-        <h2>Add Role</h2>
+        <h2 class="title">
+          Add Role
+        </h2>
 
         <form @submit.prevent="saveRole">
 
@@ -57,49 +56,55 @@
       </div>
 
       <!-- Role List -->
-
       <div class="card">
 
-        <h2>Role List</h2>
+        <h2 class="title">
+          Role List
+        </h2>
 
-        <table>
+        <div class="table-container">
 
-          <thead>
+          <table>
 
-            <tr>
+            <thead>
 
-              <th>#</th>
+              <tr>
 
-              <th>Role Name</th>
+                <th>Role Name</th>
 
-            </tr>
+                <th>Created Date</th>
 
-          </thead>
+                <th>Status</th>
 
-          <tbody>
+              </tr>
 
-            <tr
-              v-for="(item,index) in roleList"
-              :key="index"
-            >
+            </thead>
 
-              <!-- <td>{{ index + 1 }}</td> -->
+            <tbody>
 
-              <td>{{ item.roleName }}</td>
+              <tr v-for="item in roleList" :key="item.id">
 
-            </tr>
+                <td>{{ item.roleName }}</td>
 
-            <tr v-if="roleList.length === 0">
+                <td>{{ item.createdAt.split("T")[0] }}</td>
 
-              <td colspan="2">
-                No Role Found
-              </td>
+                <td>{{ item.active == true ? 'Active' : 'Inactive' }}</td>
 
-            </tr>
+              </tr>
 
-          </tbody>
+              <tr v-if="roleList.length === 0">
 
-        </table>
+                <td colspan="3" class="empty-data">
+                  No Role Found
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
 
       </div>
 
@@ -112,15 +117,12 @@
 <script>
 
 import axios from "axios";
-
 import Navbar from "./Navbar.vue";
 
 export default {
 
   components: {
-
     Navbar
-
   },
 
   data() {
@@ -128,9 +130,7 @@ export default {
     return {
 
       role: {
-
         roleName: ""
-
       },
 
       roleList: []
@@ -180,9 +180,7 @@ export default {
           "http://localhost:8080/api/roles/roleList"
         );
 
-        // IMPORTANT
-
-        this.roleList = response.data;
+        this.roleList = response.data.data;
 
       } catch(error) {
 
@@ -200,13 +198,13 @@ export default {
 
 <style scoped>
 
+/* Dashboard */
+
 .dashboard {
 
   min-height: 100vh;
-
-  background: #f4f7fc;
-
-  font-family: Arial;
+  background: #f6fff9;
+  font-family: Arial, sans-serif;
 
 }
 
@@ -215,9 +213,7 @@ export default {
 .content {
 
   display: flex;
-
   gap: 20px;
-
   padding: 30px;
 
 }
@@ -227,14 +223,22 @@ export default {
 .card {
 
   width: 50%;
-
   background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(71,179,123,0.12);
+  border-top: 4px solid #47b37b;
 
-  padding: 20px;
+}
 
-  border-radius: 10px;
+/* Title */
 
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+.title {
+
+  color: #47b37b;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
 
 }
 
@@ -243,69 +247,148 @@ export default {
 label {
 
   display: block;
-
   margin-top: 15px;
-
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  color: #2f855a;
+  font-weight: 600;
 
 }
 
 select {
 
   width: 100%;
-
-  padding: 10px;
+  padding: 12px;
+  border: 1px solid #ccebd9;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
 
 }
+
+select:focus {
+
+  border-color: #47b37b;
+
+}
+
+/* Save Button */
 
 .save-btn {
 
   width: 100%;
-
   margin-top: 20px;
-
-  padding: 10px;
-
+  padding: 12px;
   border: none;
-
-  background: #2563eb;
-
+  background: #47b37b;
   color: white;
-
-  border-radius: 5px;
-
+  border-radius: 8px;
   cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+  transition: 0.3s;
+
+}
+
+.save-btn:hover {
+
+  background: #379764;
 
 }
 
 /* Table */
 
-table {
+.table-container {
 
-  width: 100%;
-
-  margin-top: 20px;
-
-  border-collapse: collapse;
+  overflow-x: auto;
 
 }
 
-th,
-td {
+table {
 
-  border: 1px solid #ddd;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
 
-  padding: 10px;
+}
 
-  text-align: left;
+thead {
+
+  background: #47b37b;
+  color: white;
 
 }
 
 th {
 
-  background: #1e293b;
+  padding: 14px;
+  text-align: left;
+  font-size: 14px;
 
-  color: white;
+}
+
+td {
+
+  padding: 14px;
+  border-bottom: 1px solid #e5f5ec;
+  font-size: 14px;
+
+}
+
+tbody tr:hover {
+
+  background: #f3fff7;
+
+}
+
+/* Status */
+
+.active-status {
+
+  background: #dcfce7;
+  color: #15803d;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+
+}
+
+.inactive-status {
+
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+
+}
+
+/* Empty Data */
+
+.empty-data {
+
+  text-align: center;
+  color: gray;
+  font-weight: bold;
+
+}
+
+/* Responsive */
+
+@media(max-width: 900px) {
+
+  .content {
+
+    flex-direction: column;
+
+  }
+
+  .card {
+
+    width: 100%;
+
+  }
 
 }
 
