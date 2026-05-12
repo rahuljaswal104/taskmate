@@ -1,13 +1,14 @@
 <template>
-
   <div class="page-container">
+
+    <Navbar />
 
     <!-- Header -->
     <div class="page-header">
 
       <div class="header-left">
 
-        <!-- Modern Back Button -->
+        <!-- Back Button -->
         <button
           class="back-btn"
           @click="goToDashboard"
@@ -16,13 +17,7 @@
         </button>
 
         <div>
-
-          <h2>Add Department</h2>
-
-          <p>
-            Manage and create departments professionally
-          </p>
-
+          <h2>Department</h2>
         </div>
 
       </div>
@@ -33,6 +28,8 @@
     <div class="left-panel">
 
       <div class="form-card">
+
+        <h2>Add Department</h2>
 
         <div class="field-row">
 
@@ -113,14 +110,12 @@
           <thead>
 
             <tr>
-
               <th>ID</th>
               <th>Department Code</th>
               <th>Department Name</th>
               <th>Created Date</th>
               <th>Updated Date</th>
               <th>Status</th>
-
             </tr>
 
           </thead>
@@ -134,21 +129,13 @@
 
               <td>{{ dept.id }}</td>
 
-              <td>
-                {{ dept.departmentCode }}
-              </td>
+              <td>{{ dept.departmentCode }}</td>
 
-              <td>
-                {{ dept.departmentName }}
-              </td>
+              <td>{{ dept.departmentName }}</td>
 
-              <td>
-                {{ formatDate(dept.createdAt) }}
-              </td>
+              <td>{{ formatDate(dept.createdAt) }}</td>
 
-              <td>
-                {{ formatDate(dept.updatedAt) }}
-              </td>
+              <td>{{ formatDate(dept.updatedAt) }}</td>
 
               <td>
 
@@ -183,11 +170,9 @@
     </div>
 
   </div>
-
 </template>
 
 <script>
-
 import axios from "axios";
 
 export default {
@@ -199,10 +184,8 @@ export default {
     return {
 
       department: {
-
         departmentCode: "",
         departmentName: ""
-
       },
 
       departments: []
@@ -287,10 +270,8 @@ export default {
     clearForm() {
 
       this.department = {
-
         departmentCode: "",
         departmentName: ""
-
       };
 
     }
@@ -298,410 +279,234 @@ export default {
   }
 
 };
-
 </script>
 
 <style scoped>
 
 * {
-
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-
 }
 
 .page-container {
-
   width: 100%;
   min-height: 100vh;
-
   background: #f4f7fb;
-
   padding: 25px;
-
   font-family: Arial, sans-serif;
-
 }
 
 /* Header */
 
 .page-header {
-
   margin-bottom: 25px;
-
 }
 
 .header-left {
-
   display: flex;
   align-items: center;
-
   gap: 18px;
-
 }
 
 .header-left h2 {
-
   font-size: 30px;
-
   color: #1e293b;
-
   margin-bottom: 4px;
-
 }
 
 .header-left p {
-
   color: #64748b;
-
   font-size: 14px;
-
 }
 
-/* Modern Back Button */
+/* Back Button */
 
 .back-btn {
-
   display: flex;
   align-items: center;
   gap: 8px;
-
-  background: linear-gradient(
-    135deg,
-    #ffffff,
-    #f8fafc
-  );
-
+  background: linear-gradient(135deg, #ffffff, #f8fafc);
   color: #1e293b;
-
   border: 1px solid #dbe4ee;
-
   padding: 12px 20px;
-
   border-radius: 14px;
-
   font-size: 14px;
   font-weight: 700;
-
   cursor: pointer;
-
   transition: all 0.3s ease;
-
-  box-shadow:
-    0 4px 12px rgba(0,0,0,0.05),
-    inset 0 1px 0 rgba(255,255,255,0.8);
-
 }
 
 .back-btn:hover {
-
-  background: linear-gradient(
-    135deg,
-    #48bb78,
-    #2f9e61
-  );
-
+  background: linear-gradient(135deg, #48bb78, #2f9e61);
   color: white;
-
   border-color: #48bb78;
-
   transform: translateY(-2px);
-
-  box-shadow:
-    0 10px 20px rgba(72,187,120,0.25);
-
-}
-
-.back-btn:active {
-
-  transform: scale(0.98);
-
 }
 
 /* Form */
 
 .left-panel {
-
   margin-bottom: 25px;
-
 }
 
 .form-card {
-
   background: white;
-
   border-radius: 18px;
-
   padding: 30px;
-
   box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
 
+.form-card h2 {
+  margin-bottom: 20px;
+  color: #1e293b;
 }
 
 .field-row {
-
   display: flex;
-
   gap: 20px;
-
 }
 
 .field-box {
-
   width: 50%;
-
   display: flex;
   flex-direction: column;
-
   gap: 8px;
-
 }
 
 label {
-
   font-size: 14px;
-
   font-weight: 600;
-
   color: #334155;
-
 }
 
 input {
-
   width: 100%;
-
   padding: 14px;
-
   border: 1px solid #dbe4ee;
-
   border-radius: 12px;
-
   font-size: 14px;
-
   outline: none;
-
-  transition: 0.3s;
-
 }
 
 input:focus {
-
   border-color: #48bb78;
-
   box-shadow: 0 0 0 3px rgba(72,187,120,0.12);
-
 }
 
 /* Buttons */
 
 .button-group {
-
   display: flex;
-
   gap: 14px;
-
   margin-top: 25px;
-
 }
 
 .save-btn {
-
-  background: linear-gradient(
-    135deg,
-    #48bb78,
-    #2f9e61
-  );
-
+  background: linear-gradient(135deg, #48bb78, #2f9e61);
   color: white;
-
   border: none;
-
   padding: 13px 24px;
-
   border-radius: 12px;
-
   font-size: 14px;
   font-weight: 600;
-
   cursor: pointer;
-
-  transition: 0.3s;
-
-}
-
-.save-btn:hover {
-
-  transform: translateY(-2px);
-
 }
 
 .clear-btn {
-
   background: #eef2f7;
-
   color: #334155;
-
   border: none;
-
   padding: 13px 24px;
-
   border-radius: 12px;
-
   font-size: 14px;
   font-weight: 600;
-
   cursor: pointer;
-
 }
 
 /* Table */
 
 .table-card {
-
   background: white;
-
   border-radius: 18px;
-
   padding: 30px;
-
   box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-
 }
 
 .table-header {
-
   display: flex;
-
   justify-content: space-between;
   align-items: center;
-
   margin-bottom: 20px;
-
 }
 
 .table-header h2 {
-
   font-size: 24px;
-
   color: #1e293b;
-
 }
 
 .table-count {
-
   background: #ecfdf3;
-
   color: #15803d;
-
   padding: 8px 14px;
-
   border-radius: 30px;
-
   font-size: 13px;
   font-weight: 600;
-
 }
 
-/* Table */
-
 .table-wrapper {
-
   overflow-x: auto;
-
 }
 
 table {
-
   width: 100%;
-
   border-collapse: collapse;
-
 }
 
 thead {
-
-  background: linear-gradient(
-    135deg,
-    #48bb78,
-    #2f9e61
-  );
-
+  background: linear-gradient(135deg, #48bb78, #2f9e61);
   color: white;
-
 }
 
-th {
-
-  padding: 15px;
-
-  text-align: left;
-
-  font-size: 14px;
-
-}
-
+th,
 td {
-
   padding: 15px;
-
+  text-align: left;
   border-bottom: 1px solid #eef2f7;
-
   font-size: 14px;
-
 }
 
 tbody tr:hover {
-
   background: #f8fafc;
-
 }
 
 /* Status */
 
 .active {
-
   background: #dcfce7;
-
   color: #15803d;
-
   padding: 6px 12px;
-
   border-radius: 30px;
-
   font-size: 12px;
   font-weight: 600;
-
 }
 
 .inactive {
-
   background: #fee2e2;
-
   color: #dc2626;
-
   padding: 6px 12px;
-
   border-radius: 30px;
-
   font-size: 12px;
   font-weight: 600;
-
 }
 
 /* Empty */
 
 .empty-data {
-
   text-align: center;
-
   color: #64748b;
-
   padding: 25px;
-
   font-weight: 600;
-
 }
 
 /* Responsive */
@@ -709,33 +514,23 @@ tbody tr:hover {
 @media(max-width: 768px) {
 
   .field-row {
-
     flex-direction: column;
-
   }
 
   .field-box {
-
     width: 100%;
-
   }
 
   .header-left {
-
     flex-direction: column;
     align-items: flex-start;
-
   }
 
   .table-header {
-
     flex-direction: column;
     align-items: flex-start;
-
     gap: 10px;
-
   }
 
 }
-
 </style>
