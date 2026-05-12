@@ -11,12 +11,12 @@ import AddProject from './components/AddProject.vue'
 
 const routes = [
   {path: '/',name: 'Login',component: LoginForm},
-  {path:'/addproject', name: 'AddProject', component: AddProject, meta: { requiresAuth: true }},
+  {path:'/project', name: 'AddProject', component: AddProject, meta: { requiresAuth: true }},
   {path:'/navbar', name: 'Navbar', component: Navbar, meta: { requiresAuth: true }},
-  {path:'/addrole', name: 'AddRole', component: AddRole, meta: { requiresAuth: true }},
+  {path:'/role', name: 'AddRole', component: AddRole, meta: { requiresAuth: true }},
   {path: '/dashboard', name: 'Dashboard',component: Dashboard, meta: { requiresAuth: true }},
   {path: '/asgintask', name: 'AssignTask', component: AsginTask, meta: { requiresAuth: true }},
-   {path: '/adddepartment', name: 'AddDepartment', component: AddDepartment, meta: { requiresAuth: true }},
+   {path: '/department', name: 'AddDepartment', component: AddDepartment, meta: { requiresAuth: true }},
    {path: '/SuperAdmin', name: 'SuperAdmin', component: SuperAdmin, meta: { requiresAuth: true }}
 ]
 

@@ -1,313 +1,741 @@
 <template>
-    <div>
-  <Navbar />
+
   <div class="page-container">
-  
+
+    <!-- Header -->
+    <div class="page-header">
+
+      <div class="header-left">
+
+        <!-- Modern Back Button -->
+        <button
+          class="back-btn"
+          @click="goToDashboard"
+        >
+          <span>←</span>
+        </button>
+
+        <div>
+
+          <h2>Add Department</h2>
+
+          <p>
+            Manage and create departments professionally
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
     <!-- Form Section -->
     <div class="left-panel">
+
       <div class="form-card">
-        <h2>Add Department</h2>
 
         <div class="field-row">
-          <div class="field-box">
-           
 
-<label for="departmentCode">Department Code</label>
-<input
-  id="departmentCode"
-  name="departmentCode"
-  v-model="department.departmentCode"
-  placeholder="Enter Department Code"
-/>
+          <!-- Department Code -->
+          <div class="field-box">
+
+            <label for="departmentCode">
+              Department Code
+            </label>
+
+            <input
+              id="departmentCode"
+              name="departmentCode"
+              v-model="department.departmentCode"
+              placeholder="Enter Department Code"
+            />
 
           </div>
 
+          <!-- Department Name -->
           <div class="field-box">
-          
-            <label for="departmentName">Department Name</label>
-<input
-  id="departmentName"
-  name="departmentName"
-  v-model="department.departmentName"
-  placeholder="Enter Department Name"
-/>
+
+            <label for="departmentName">
+              Department Name
+            </label>
+
+            <input
+              id="departmentName"
+              name="departmentName"
+              v-model="department.departmentName"
+              placeholder="Enter Department Name"
+            />
+
           </div>
+
         </div>
 
+        <!-- Buttons -->
         <div class="button-group">
-          <button class="save-btn" @click="saveDepartment">Save</button>
-          <button class="clear-btn" @click="clearForm">Clear</button>
+
+          <button
+            class="save-btn"
+            @click="saveDepartment"
+          >
+            Save Department
+          </button>
+
+          <button
+            class="clear-btn"
+            @click="clearForm"
+          >
+            Clear
+          </button>
+
         </div>
+
       </div>
+
     </div>
 
-    <!-- Table Section -->
+    <!-- Table -->
     <div class="table-card">
-      <h2>Department List</h2>
- 
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Created Date</th>
-             <th>Updated Date</th>
-            <th>Status</th>
-          </tr>
-        </thead>
 
-        <tbody>
-          <tr v-for="dept in departments" :key="dept.id">
-            <td>{{ dept.id }}</td>
-            <td>{{ dept.departmentCode }}</td>
-            <td>{{ dept.departmentName }}</td>
-             <!-- <td>{{ dept.createdAt.split('T')[0]}}</td> -->
-               <td>{{ formatDate(dept.createdAt) }}</td>
-             <td>{{ formatDate(dept.updatedAt) }}</td>
-            <!-- <td>{{ dept.updatedAt.split('T')[0] }}</td> -->
-            <td>
-              <span :class="dept.active ? 'active' : 'inactive'">
-                {{ dept.active ? "Active" : "Inactive" }}
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-header">
+
+        <h2>Department List</h2>
+
+        <div class="table-count">
+          Total : {{ departments.length }}
+        </div>
+
+      </div>
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>ID</th>
+              <th>Department Code</th>
+              <th>Department Name</th>
+              <th>Created Date</th>
+              <th>Updated Date</th>
+              <th>Status</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <tr
+              v-for="dept in departments"
+              :key="dept.id"
+            >
+
+              <td>{{ dept.id }}</td>
+
+              <td>
+                {{ dept.departmentCode }}
+              </td>
+
+              <td>
+                {{ dept.departmentName }}
+              </td>
+
+              <td>
+                {{ formatDate(dept.createdAt) }}
+              </td>
+
+              <td>
+                {{ formatDate(dept.updatedAt) }}
+              </td>
+
+              <td>
+
+                <span
+                  :class="dept.active ? 'active' : 'inactive'"
+                >
+                  {{ dept.active ? "Active" : "Inactive" }}
+                </span>
+
+              </td>
+
+            </tr>
+
+            <!-- Empty -->
+            <tr v-if="departments.length === 0">
+
+              <td
+                colspan="6"
+                class="empty-data"
+              >
+                No Department Found
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
     </div>
 
   </div>
-  </div>
+
 </template>
 
 <script>
+
 import axios from "axios";
-import Navbar from "./Navbar.vue";
 
 export default {
-
-    components: {
-
-    Navbar
-
-  },
 
   name: "DepartmentPage",
 
   data() {
+
     return {
+
       department: {
+
         departmentCode: "",
         departmentName: ""
+
       },
+
       departments: []
+
     };
+
   },
 
   mounted() {
+
     this.fetchDepartments();
+
   },
 
-  methods:
-  {
+  methods: {
+
+    goToDashboard() {
+
+      this.$router.push("/dashboard");
+
+    },
 
     formatDate(date) {
-  if (!date) return "";
 
-  const onlyDate = date.split("T")[0];
-  const parts = onlyDate.split("-");
+      if (!date) return "";
 
-  return `${parts[2]}-${parts[1]}-${parts[0]}`;
-},
+      const onlyDate = date.split("T")[0];
+      const parts = onlyDate.split("-");
 
+      return `${parts[2]}-${parts[1]}-${parts[0]}`;
+
+    },
 
     async fetchDepartments() {
+
       try {
+
         const response = await axios.get(
           "http://localhost:8080/api/departments/get"
         );
+
         this.departments = response.data;
+
       } catch (error) {
+
         console.error(error);
+
       }
+
     },
 
-    
     async saveDepartment() {
 
-        console.log("Save button clicked");
-  console.log("Data:", this.department);
-      
-  try {
-    const response = await axios.post(
-      "http://localhost:8080/api/departments/save",
-      this.department,
-      {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      }
-    );
- console.log("Success:", response.data);
-    alert(response.data.message);
-    await this.fetchDepartments();
-    this.clearForm();
+      try {
 
-  } catch (error) {
-     console.error("ERROR:", error);
-    console.error("Response:", error.response);
-    alert("Save failed");
-  }
-}
-    
-    
-    ,
+        const response = await axios.post(
+          "http://localhost:8080/api/departments/save",
+          this.department,
+          {
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+        );
+
+        alert(response.data.message);
+
+        await this.fetchDepartments();
+
+        this.clearForm();
+
+      } catch (error) {
+
+        console.error(error);
+
+        alert("Save Failed");
+
+      }
+
+    },
 
     clearForm() {
+
       this.department = {
+
         departmentCode: "",
         departmentName: ""
+
       };
+
     }
+
   }
+
 };
+
 </script>
 
 <style scoped>
+
 * {
+
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
 }
 
 .page-container {
+
   width: 100%;
   min-height: 100vh;
-  background: #f8fafc;
-  padding: 10px;
+
+  background: #f4f7fb;
+
+  padding: 25px;
+
   font-family: Arial, sans-serif;
+
 }
 
-/* Form Section */
-.left-panel {
-  margin-top: 15px;
+/* Header */
+
+.page-header {
+
   margin-bottom: 25px;
+
 }
 
+.header-left {
+
+  display: flex;
+  align-items: center;
+
+  gap: 18px;
+
+}
+
+.header-left h2 {
+
+  font-size: 30px;
+
+  color: #1e293b;
+
+  margin-bottom: 4px;
+
+}
+
+.header-left p {
+
+  color: #64748b;
+
+  font-size: 14px;
+
+}
+
+/* Modern Back Button */
+
+.back-btn {
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #f8fafc
+  );
+
+  color: #1e293b;
+
+  border: 1px solid #dbe4ee;
+
+  padding: 12px 20px;
+
+  border-radius: 14px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.05),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+
+}
+
+.back-btn:hover {
+
+  background: linear-gradient(
+    135deg,
+    #48bb78,
+    #2f9e61
+  );
+
+  color: white;
+
+  border-color: #48bb78;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 20px rgba(72,187,120,0.25);
+
+}
+
+.back-btn:active {
+
+  transform: scale(0.98);
+
+}
+
+/* Form */
+
+.left-panel {
+
+  margin-bottom: 25px;
+
+}
 
 .form-card {
-  /* max-width: 1100px;
-  margin: auto; */
+
   background: white;
-  border-radius: 16px;
-  padding: 25px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+
+  border-radius: 18px;
+
+  padding: 30px;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+
 }
 
-/* .form-card h2 {
-  margin-bottom: 20px;
-   color: #1e293b; 
-} */
-
-/* Fields */
 .field-row {
+
   display: flex;
-  justify-content: space-between;
+
   gap: 20px;
+
 }
 
 .field-box {
-  width: 48%;
+
+  width: 50%;
+
   display: flex;
   flex-direction: column;
+
   gap: 8px;
+
 }
 
 label {
+
+  font-size: 14px;
+
   font-weight: 600;
+
   color: #334155;
+
 }
 
 input {
+
   width: 100%;
-  padding: 12px;
-  border: 2px solid #e2e8f0;
-  border-radius: 10px;
-  font-size: 15px;
+
+  padding: 14px;
+
+  border: 1px solid #dbe4ee;
+
+  border-radius: 12px;
+
+  font-size: 14px;
+
+  outline: none;
+
+  transition: 0.3s;
+
+}
+
+input:focus {
+
+  border-color: #48bb78;
+
+  box-shadow: 0 0 0 3px rgba(72,187,120,0.12);
+
 }
 
 /* Buttons */
-.button-group {
-  display: flex;
-  gap: 15px;
-  margin-top: 20px;
-}
 
-button {
-  padding: 12px 25px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 15px;
+.button-group {
+
+  display: flex;
+
+  gap: 14px;
+
+  margin-top: 25px;
+
 }
 
 .save-btn {
-  background: #48bb78;
+
+  background: linear-gradient(
+    135deg,
+    #48bb78,
+    #2f9e61
+  );
+
   color: white;
+
+  border: none;
+
+  padding: 13px 24px;
+
+  border-radius: 12px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+
+}
+
+.save-btn:hover {
+
+  transform: translateY(-2px);
+
 }
 
 .clear-btn {
-  background: #e2e8f0;
+
+  background: #eef2f7;
+
+  color: #334155;
+
+  border: none;
+
+  padding: 13px 24px;
+
+  border-radius: 12px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
 }
 
 /* Table */
+
 .table-card {
-  /* max-width: 1100px;
-  margin: auto; */
+
   background: white;
-  border-radius: 16px;
-  padding: 25px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+
+  border-radius: 18px;
+
+  padding: 30px;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+
 }
 
-/* .table-card h2 {
-  margin-bottom: 20px;
-  color: #1e293b;
-} */
+.table-header {
 
-.form-card h2,
-.table-card h2 {
-  width: 100%;
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
   margin-bottom: 20px;
+
+}
+
+.table-header h2 {
+
   font-size: 24px;
-  color: #48bb78;
+
+  color: #1e293b;
+
+}
+
+.table-count {
+
+  background: #ecfdf3;
+
+  color: #15803d;
+
+  padding: 8px 14px;
+
+  border-radius: 30px;
+
+  font-size: 13px;
   font-weight: 600;
+
+}
+
+/* Table */
+
+.table-wrapper {
+
+  overflow-x: auto;
+
 }
 
 table {
+
   width: 100%;
+
   border-collapse: collapse;
+
+}
+
+thead {
+
+  background: linear-gradient(
+    135deg,
+    #48bb78,
+    #2f9e61
+  );
+
+  color: white;
+
 }
 
 th {
-  background: #48bb78;
-  color: white;
-  padding: 14px;
+
+  padding: 15px;
+
   text-align: left;
+
+  font-size: 14px;
+
 }
 
 td {
-  padding: 14px;
-  border-bottom: 1px solid #e2e8f0;
+
+  padding: 15px;
+
+  border-bottom: 1px solid #eef2f7;
+
+  font-size: 14px;
+
 }
 
+tbody tr:hover {
+
+  background: #f8fafc;
+
+}
+
+/* Status */
+
 .active {
-  color: green;
-  font-weight: bold;
+
+  background: #dcfce7;
+
+  color: #15803d;
+
+  padding: 6px 12px;
+
+  border-radius: 30px;
+
+  font-size: 12px;
+  font-weight: 600;
+
 }
 
 .inactive {
-  color: red;
-  font-weight: bold;
+
+  background: #fee2e2;
+
+  color: #dc2626;
+
+  padding: 6px 12px;
+
+  border-radius: 30px;
+
+  font-size: 12px;
+  font-weight: 600;
+
 }
+
+/* Empty */
+
+.empty-data {
+
+  text-align: center;
+
+  color: #64748b;
+
+  padding: 25px;
+
+  font-weight: 600;
+
+}
+
+/* Responsive */
+
+@media(max-width: 768px) {
+
+  .field-row {
+
+    flex-direction: column;
+
+  }
+
+  .field-box {
+
+    width: 100%;
+
+  }
+
+  .header-left {
+
+    flex-direction: column;
+    align-items: flex-start;
+
+  }
+
+  .table-header {
+
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 10px;
+
+  }
+
+}
+
 </style>

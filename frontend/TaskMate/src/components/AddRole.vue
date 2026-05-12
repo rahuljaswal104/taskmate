@@ -2,19 +2,30 @@
 
   <div class="dashboard">
 
-    <!-- Navbar -->
-    <Navbar />
-
-    <!-- Content -->
+    <!-- Main Content -->
     <div class="content">
 
-      <!-- Add Role -->
-      <div class="card">
+      <!-- Add Role Card -->
+      <div class="card form-card">
 
-        <h2 class="title">
-          Add Role
-        </h2>
+        <!-- Header -->
+        <div class="top-bar">
 
+          <!-- Back Arrow -->
+          <button
+            class="back-btn"
+            @click="goToDashboard"
+          >
+            ←
+          </button>
+
+          <h2 class="title">
+            Add Role
+          </h2>
+
+        </div>
+
+        <!-- Form -->
         <form @submit.prevent="saveRole">
 
           <label>Select Role</label>
@@ -41,13 +52,16 @@
               EMPLOYEE
             </option>
 
-            <option value="VIEWER">
+            <!-- <option value="VIEWER">
               VIEWER
-            </option>
+            </option> -->
 
           </select>
 
-          <button type="submit" class="save-btn">
+          <button
+            type="submit"
+            class="save-btn"
+          >
             Save Role
           </button>
 
@@ -56,9 +70,9 @@
       </div>
 
       <!-- Role List -->
-      <div class="card">
+      <div class="card table-card">
 
-        <h2 class="title">
+        <h2 class="table-title">
           Role List
         </h2>
 
@@ -82,19 +96,37 @@
 
             <tbody>
 
-              <tr v-for="item in roleList" :key="item.id">
+              <tr
+                v-for="item in roleList"
+                :key="item.id"
+              >
 
                 <td>{{ item.roleName }}</td>
 
                 <td>{{ item.createdAt.split("T")[0] }}</td>
 
-                <td>{{ item.active == true ? 'Active' : 'Inactive' }}</td>
+                <td>
+
+                  <span
+                    :class="
+                      item.active
+                        ? 'active-status'
+                        : 'inactive-status'
+                    "
+                  >
+                    {{ item.active ? 'Active' : 'Inactive' }}
+                  </span>
+
+                </td>
 
               </tr>
 
               <tr v-if="roleList.length === 0">
 
-                <td colspan="3" class="empty-data">
+                <td
+                  colspan="3"
+                  class="empty-data"
+                >
                   No Role Found
                 </td>
 
@@ -117,13 +149,8 @@
 <script>
 
 import axios from "axios";
-import Navbar from "./Navbar.vue";
 
 export default {
-
-  components: {
-    Navbar
-  },
 
   data() {
 
@@ -146,6 +173,12 @@ export default {
   },
 
   methods: {
+
+    goToDashboard() {
+
+      this.$router.push('/dashboard');
+
+    },
 
     async saveRole() {
 
@@ -198,12 +231,18 @@ export default {
 
 <style scoped>
 
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 /* Dashboard */
 
 .dashboard {
 
   min-height: 100vh;
-  background: #f6fff9;
+  background: #f3f7fb;
   font-family: Arial, sans-serif;
 
 }
@@ -213,7 +252,7 @@ export default {
 .content {
 
   display: flex;
-  gap: 20px;
+  gap: 25px;
   padding: 30px;
 
 }
@@ -224,21 +263,56 @@ export default {
 
   width: 50%;
   background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(71,179,123,0.12);
-  border-top: 4px solid #47b37b;
+  padding: 28px;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+  border: 1px solid #edf2f7;
 
 }
 
-/* Title */
+/* Top Header */
 
-.title {
+.top-bar{
 
-  color: #47b37b;
-  margin-bottom: 20px;
-  font-size: 24px;
-  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+
+}
+
+/* Back Button */
+
+.back-btn{
+
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 12px;
+  background: #43b77a;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 4px 12px rgba(67,183,122,0.25);
+
+}
+
+.back-btn:hover{
+
+  transform: translateX(-3px);
+  background: #369867;
+
+}
+
+/* Titles */
+
+.title,
+.table-title {
+
+  color: #1e293b;
+  font-size: 28px;
+  font-weight: 700;
 
 }
 
@@ -247,27 +321,31 @@ export default {
 label {
 
   display: block;
-  margin-top: 15px;
-  margin-bottom: 8px;
-  color: #2f855a;
+  margin-bottom: 10px;
+  color: #334155;
   font-weight: 600;
+  font-size: 15px;
 
 }
 
 select {
 
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ccebd9;
-  border-radius: 8px;
+  padding: 14px;
+  border: 1px solid #dbe4ee;
+  border-radius: 12px;
   outline: none;
-  font-size: 14px;
+  font-size: 15px;
+  background: #f8fafc;
+  transition: 0.3s;
 
 }
 
 select:focus {
 
-  border-color: #47b37b;
+  border-color: #43b77a;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(67,183,122,0.12);
 
 }
 
@@ -276,22 +354,23 @@ select:focus {
 .save-btn {
 
   width: 100%;
-  margin-top: 20px;
-  padding: 12px;
+  margin-top: 22px;
+  padding: 14px;
   border: none;
-  background: #47b37b;
+  background: #43b77a;
   color: white;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 15px;
-  font-weight: bold;
+  font-weight: 600;
   transition: 0.3s;
 
 }
 
 .save-btn:hover {
 
-  background: #379764;
+  background: #369867;
+  transform: translateY(-2px);
 
 }
 
@@ -300,6 +379,7 @@ select:focus {
 .table-container {
 
   overflow-x: auto;
+  margin-top: 20px;
 
 }
 
@@ -307,36 +387,43 @@ table {
 
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
 
 }
 
 thead {
 
-  background: #47b37b;
+  background: #43b77a;
   color: white;
 
 }
 
 th {
 
-  padding: 14px;
+  padding: 16px;
   text-align: left;
   font-size: 14px;
+  font-weight: 600;
 
 }
 
 td {
 
-  padding: 14px;
-  border-bottom: 1px solid #e5f5ec;
+  padding: 16px;
+  border-bottom: 1px solid #edf2f7;
   font-size: 14px;
+  color: #475569;
+
+}
+
+tbody tr{
+
+  transition: 0.3s;
 
 }
 
 tbody tr:hover {
 
-  background: #f3fff7;
+  background: #f8fafc;
 
 }
 
@@ -346,8 +433,8 @@ tbody tr:hover {
 
   background: #dcfce7;
   color: #15803d;
-  padding: 5px 12px;
-  border-radius: 20px;
+  padding: 6px 14px;
+  border-radius: 30px;
   font-size: 12px;
   font-weight: bold;
 
@@ -357,20 +444,21 @@ tbody tr:hover {
 
   background: #fee2e2;
   color: #dc2626;
-  padding: 5px 12px;
-  border-radius: 20px;
+  padding: 6px 14px;
+  border-radius: 30px;
   font-size: 12px;
   font-weight: bold;
 
 }
 
-/* Empty Data */
+/* Empty */
 
 .empty-data {
 
   text-align: center;
-  color: gray;
-  font-weight: bold;
+  color: #94a3b8;
+  padding: 25px;
+  font-weight: 600;
 
 }
 
