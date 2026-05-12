@@ -18,9 +18,6 @@
 
           <h1>Assign Task</h1>
 
-          <p>
-            Create and assign tasks professionally
-          </p>
 
         </div>
 
@@ -411,34 +408,17 @@ export default {
 
 /* Back Button */
 
-.back-btn {
-
-  width: 48px;
-  height: 48px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: white;
-
-  border: 1px solid #dbe4ee;
-
-  border-radius: 14px;
-
-  font-size: 24px;
-  font-weight: bold;
-
-  color: #1e293b;
-
+.back-btn{
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 12px;
+  background: #43b77a;
+  color: white;
+  font-size: 22px;
   cursor: pointer;
-
-  transition: all 0.3s ease;
-
-  box-shadow:
-    0 4px 12px rgba(0,0,0,0.05),
-    inset 0 1px 0 rgba(255,255,255,0.8);
-
+  transition: 0.3s;
+  box-shadow: 0 4px 12px rgba(67,183,122,0.25);
 }
 
 .back-btn:hover {

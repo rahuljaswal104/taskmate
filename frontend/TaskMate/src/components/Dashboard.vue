@@ -75,19 +75,15 @@
 
           <h1>Dashboard</h1>
 
-          <p>
-            Welcome back, manage everything from one place.
-          </p>
-
         </div>
 
         <!-- Right -->
         <div class="topbar-right">
 
-          <input
+          <!-- <input
             type="text"
             placeholder="Search..."
-          />
+          /> -->
 
           <!-- Admin -->
           <div class="admin-box">
@@ -119,12 +115,7 @@
 
       <!-- Hero Section -->
       <div class="hero-section">
-
         <div class="hero-left">
-
-          <span class="hero-badge">
-            TASK MANAGEMENT SYSTEM
-          </span>
 
           <h2>
             Manage Projects,
@@ -132,29 +123,8 @@
             Professionally
           </h2>
 
-          <p>
-            Modern admin dashboard for handling projects,
-            departments, employees and tasks efficiently.
-          </p>
-
           <div class="hero-buttons">
-
-            <button
-              class="primary-btn"
-              @click="goAssignTask"
-            >
-              Assign Task
-            </button>
-
-            <button
-              class="secondary-btn"
-              @click="goAddProject"
-            >
-              Add Project
-            </button>
-
           </div>
-
         </div>
 
         <!-- Right Stats -->

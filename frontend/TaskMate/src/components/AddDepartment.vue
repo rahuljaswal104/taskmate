@@ -322,19 +322,17 @@ export default {
 
 /* Back Button */
 
-.back-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #ffffff, #f8fafc);
-  color: #1e293b;
-  border: 1px solid #dbe4ee;
-  padding: 12px 20px;
-  border-radius: 14px;
-  font-size: 14px;
-  font-weight: 700;
+.back-btn{
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 12px;
+  background: #43b77a;
+  color: white;
+  font-size: 22px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: 0.3s;
+  box-shadow: 0 4px 12px rgba(67,183,122,0.25);
 }
 
 .back-btn:hover {
