@@ -319,13 +319,44 @@ export default {
 
     },
 
-    saveTask() {
+   async saveTask() {
+  try {
 
-      console.log(this.task);
+    const response = await axios.post(
+      "http://localhost:8080/api/assigntask/save",
+      this.task,
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
 
-      alert("Task Assigned Successfully!");
+    console.log("Task Saved:", response.data);
 
-    },
+    // optional reset form
+    this.task = {
+      title: "",
+      project: "",
+      taskType: "",
+      priority: "Medium",
+      description: "",
+      employeeName: "",
+      designation: "",
+      department: "",
+      assignedBy: "",
+      assignDate: "",
+      targetDate: "",
+      status: "Pending",
+      remarks: ""
+    };
+
+  } catch (error) {
+
+    console.error("Save Failed:", error);
+
+  }
+},
 
     resetForm() {
 
