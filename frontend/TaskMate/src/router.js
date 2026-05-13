@@ -8,6 +8,8 @@ import Navbar from './components/Navbar.vue'
 import SuperAdmin from './components/SuperAdmin.vue'
 import AddDepartment from './components/AddDepartment.vue'
 import AddProject from './components/AddProject.vue'
+import EmployeeReport from './components/EmployeeReport.vue'
+
 
 const routes = [
   {path: '/',name: 'Login',component: LoginForm},
@@ -17,7 +19,8 @@ const routes = [
   {path: '/dashboard', name: 'Dashboard',component: Dashboard, meta: { requiresAuth: true }},
   {path: '/asgintask', name: 'AssignTask', component: AsginTask, meta: { requiresAuth: true }},
    {path: '/department', name: 'AddDepartment', component: AddDepartment, meta: { requiresAuth: true }},
-   {path: '/SuperAdmin', name: 'SuperAdmin', component: SuperAdmin, meta: { requiresAuth: true }}
+   {path: '/SuperAdmin', name: 'SuperAdmin', component: SuperAdmin, meta: { requiresAuth: true }},
+    {path: '/employeereport', name: 'EmployeeReport', component: EmployeeReport, meta: { requiresAuth: true }}
 ]
 
 const router = createRouter({

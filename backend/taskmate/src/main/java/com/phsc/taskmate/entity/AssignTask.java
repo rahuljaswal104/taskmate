@@ -10,6 +10,7 @@ import com.phsc.taskmate.enums.Priority;
 import com.phsc.taskmate.enums.TaskStatus;
 import com.phsc.taskmate.enums.TaskType;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -39,6 +40,7 @@ public class AssignTask {
 	private Priority priority;
 
 	@Lob
+	@Column(columnDefinition = "TEXT")
 	private String description;
 
 	// Employee Details
@@ -68,6 +70,7 @@ public class AssignTask {
 	private TaskStatus taskStatus;
 
 	@Lob
+	@Column(columnDefinition = "TEXT")
 	private String remarks;
 
 	// Status
