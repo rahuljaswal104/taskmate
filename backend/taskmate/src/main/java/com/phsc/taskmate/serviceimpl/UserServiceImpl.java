@@ -4,20 +4,19 @@ import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.phsc.taskmate.customresponse.CustomResponse;
 import com.phsc.taskmate.dto.RegisterUserDTO;
-import com.phsc.taskmate.entity.TaskMateRegisterUser;
-import com.phsc.taskmate.repository.TaskMateRepository;
-import com.phsc.taskmate.service.TaskMateService;
+import com.phsc.taskmate.entity.UserRegister;
+import com.phsc.taskmate.repository.UserRepository;
+import com.phsc.taskmate.service.UserService;
 
 @Service
-public class TaskMateServiceImpl implements TaskMateService {
+public class UserServiceImpl implements UserService {
 
 	@Autowired
-	private TaskMateRepository mateRepository;
+	private UserRepository mateRepository;
 
 	@Override
 	public CustomResponse saveRegisterUser(RegisterUserDTO userDto) {
@@ -28,7 +27,7 @@ public class TaskMateServiceImpl implements TaskMateService {
 				return new CustomResponse("userdata missing", 400, userDto);
 			}
 
-			List<TaskMateRegisterUser> userList = mateRepository.findAll();
+			List<UserRegister> userList = mateRepository.findAll();
 			List<RegisterUserDTO> us = mateRepository.findByUsername(userDto.getUsername());
 
 			if (!us.isEmpty()) {
@@ -36,25 +35,26 @@ public class TaskMateServiceImpl implements TaskMateService {
 			}
 
 			if (userDto.getRole().contains("SUPERADMIN")) {
-				for (TaskMateRegisterUser u : userList) {
+				for (UserRegister u : userList) {
 					if (u.getRole().contains("SUPERADMIN")) {
 						return new CustomResponse("superadmin already exist", 409, userDto.getUsername());
 					}
 				}
 			}
 
-			TaskMateRegisterUser newUSer = new TaskMateRegisterUser();
+			UserRegister newUser = new UserRegister();
 
-			newUSer.setName(userDto.getName());
-			newUSer.setUsername(userDto.getUsername());
-			newUSer.setRole(userDto.getRole());
-			newUSer.setGender(userDto.getGender());
-			newUSer.setStatus("ACTIVE");
-
+			newUser.setName(userDto.getName());
+			newUser.setUsername(userDto.getUsername());
+			newUser.setRole(userDto.getRole());
+			newUser.setGender(userDto.getGender());
+			newUser.setPhone(userDto.getPhone());
+			newUser.setDepartment(userDto.getDepartment());
+			newUser.setDesignation(userDto.getDesignation());
+			newUser.setStatus("ACTIVE");
 			String encPassword = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt());
-			newUSer.setPassword(encPassword);
-
-			mateRepository.save(newUSer);
+			newUser.setPassword(encPassword);
+			mateRepository.save(newUser);
 			return new CustomResponse("user data saved successfully", 200, userDto);
 
 		} catch (Exception e) {

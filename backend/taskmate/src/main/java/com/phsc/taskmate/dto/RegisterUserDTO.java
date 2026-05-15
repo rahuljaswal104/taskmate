@@ -8,19 +8,16 @@ import jakarta.validation.constraints.Size;
 public class RegisterUserDTO {
 
 	@NotBlank(message = "Name is required")
-    @Pattern(
-        regexp = "^[A-Za-z ]+$",
-        message = "Name can contain only letters and spaces (no digits or special characters)"
-    )
-	@Size(min=3, message = "Name atleast 3 character")
+	@Pattern(regexp = "^[A-Za-z ]+$", message = "Name can contain only letters and spaces (no digits or special characters)")
+	@Size(min = 3, message = "Name atleast 3 character")
 	private String name;
 
 	@NotBlank(message = "Username (email) is required")
-    @Email(message = "Username must be a valid email")
+	@Email(message = "Username must be a valid email")
 	private String username;
 
-	 @NotBlank(message = "Password is required")
-	    @Size(min = 5, message = "Password must be at least 8 characters long")
+	@NotBlank(message = "Password is required")
+	@Size(min = 5, message = "Password must be at least 8 characters long")
 	private String password;
 
 	private String role;
@@ -28,29 +25,33 @@ public class RegisterUserDTO {
 	private String status;
 
 	private String gender;
-	
+
+	private String phone;
+
+	private String designation;
+
+	private String department;
+
 	public RegisterUserDTO() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-
-	public RegisterUserDTO(String username, String role, String status) {
+	public RegisterUserDTO(
+			@NotBlank(message = "Name is required") @Pattern(regexp = "^[A-Za-z ]+$", message = "Name can contain only letters and spaces (no digits or special characters)") @Size(min = 3, message = "Name atleast 3 character") String name,
+			@NotBlank(message = "Username (email) is required") @Email(message = "Username must be a valid email") String username,
+			@NotBlank(message = "Password is required") @Size(min = 5, message = "Password must be at least 8 characters long") String password,
+			String role, String status, String gender, String phone, String designation, String department) {
 		super();
-		this.username = username;
-		this.role = role;
-		this.status = status;
-	}
-	
-
-	public RegisterUserDTO(String username, String password, String role, String status) {
-		super();
+		this.name = name;
 		this.username = username;
 		this.password = password;
 		this.role = role;
 		this.status = status;
+		this.gender = gender;
+		this.phone = phone;
+		this.designation = designation;
+		this.department = department;
 	}
-
 
 	public String getName() {
 		return name;
@@ -100,10 +101,35 @@ public class RegisterUserDTO {
 		this.gender = gender;
 	}
 
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
 	@Override
 	public String toString() {
 		return "RegisterUserDTO [name=" + name + ", username=" + username + ", password=" + password + ", role=" + role
-				+ ", status=" + status + ", gender=" + gender + "]";
+				+ ", status=" + status + ", gender=" + gender + ", phone=" + phone + ", designation=" + designation
+				+ ", department=" + department + "]";
 	}
 
 }

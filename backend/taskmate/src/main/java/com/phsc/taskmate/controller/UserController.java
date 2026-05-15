@@ -10,18 +10,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.phsc.taskmate.customresponse.CustomResponse;
 import com.phsc.taskmate.dto.RegisterUserDTO;
-import com.phsc.taskmate.entity.TaskMateRegisterUser;
-import com.phsc.taskmate.service.TaskMateService;
+import com.phsc.taskmate.entity.UserRegister;
+import com.phsc.taskmate.service.UserService;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "*")
-public class TaskMateController {
+public class UserController {
 
 	@Autowired
-	private TaskMateService mateService;
+	private UserService mateService;
 
 	@PostMapping("/register")
 	public ResponseEntity<CustomResponse> register(@Valid @RequestBody RegisterUserDTO userDto) {

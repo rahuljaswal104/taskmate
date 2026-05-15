@@ -8,10 +8,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.phsc.taskmate.dto.RegisterUserDTO;
-import com.phsc.taskmate.entity.TaskMateRegisterUser;
+import com.phsc.taskmate.entity.UserRegister;
 
 @Repository
-public interface TaskMateRepository extends JpaRepository<TaskMateRegisterUser, Long>{
+public interface UserRepository extends JpaRepository<UserRegister, Long>{
 
 	                                                   
 	@Query(value = "SELECT username, role, status FROM registeruser WHERE username = :name",nativeQuery = true)

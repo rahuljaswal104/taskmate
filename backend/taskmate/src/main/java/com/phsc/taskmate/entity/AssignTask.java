@@ -2,6 +2,7 @@ package com.phsc.taskmate.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -17,7 +18,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -44,13 +48,22 @@ public class AssignTask {
 	private String description;
 
 	// Employee Details
-	private Long employeeId;
-
-	private String employeeName;
-
-	private String designation;
-
-	private String department;
+//	private Long employeeId;
+//
+//	private String employeeName;
+//
+//	private String designation;
+//
+//	private String department;
+	
+	
+	@ManyToMany
+	@JoinTable(
+			name="employee_tasks",
+			joinColumns = @JoinColumn(name ="task_id"),
+			inverseJoinColumns = @JoinColumn(name="employee_id")
+			)
+	private List<UserRegister> employees;
 
 	// Assignment Details
 	private String assignedBy;
@@ -89,10 +102,9 @@ public class AssignTask {
 	}
 
 	public AssignTask(Long id, String title, String project, TaskType taskType, Priority priority, String description,
-			Long employeeId, String employeeName, String designation, String department, String assignedBy,
-			LocalDate assignedDate, LocalDate startDate, LocalDate endDate, Integer progressPercentage,
-			LocalDate completedDate, TaskStatus taskStatus, String remarks, String status, LocalDateTime createdDate,
-			LocalDateTime updatedDate) {
+			List<UserRegister> employees, String assignedBy, LocalDate assignedDate, LocalDate startDate,
+			LocalDate endDate, Integer progressPercentage, LocalDate completedDate, TaskStatus taskStatus,
+			String remarks, String status, LocalDateTime createdDate, LocalDateTime updatedDate) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -100,10 +112,7 @@ public class AssignTask {
 		this.taskType = taskType;
 		this.priority = priority;
 		this.description = description;
-		this.employeeId = employeeId;
-		this.employeeName = employeeName;
-		this.designation = designation;
-		this.department = department;
+		this.employees = employees;
 		this.assignedBy = assignedBy;
 		this.assignedDate = assignedDate;
 		this.startDate = startDate;
@@ -165,36 +174,12 @@ public class AssignTask {
 		this.description = description;
 	}
 
-	public Long getEmployeeId() {
-		return employeeId;
+	public List<UserRegister> getEmployees() {
+		return employees;
 	}
 
-	public void setEmployeeId(Long employeeId) {
-		this.employeeId = employeeId;
-	}
-
-	public String getEmployeeName() {
-		return employeeName;
-	}
-
-	public void setEmployeeName(String employeeName) {
-		this.employeeName = employeeName;
-	}
-
-	public String getDesignation() {
-		return designation;
-	}
-
-	public void setDesignation(String designation) {
-		this.designation = designation;
-	}
-
-	public String getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(String department) {
-		this.department = department;
+	public void setEmployees(List<UserRegister> employees) {
+		this.employees = employees;
 	}
 
 	public String getAssignedBy() {
@@ -288,14 +273,14 @@ public class AssignTask {
 	@Override
 	public String toString() {
 		return "AssignTask [id=" + id + ", title=" + title + ", project=" + project + ", taskType=" + taskType
-				+ ", priority=" + priority + ", description=" + description + ", employeeId=" + employeeId
-				+ ", employeeName=" + employeeName + ", designation=" + designation + ", department=" + department
+				+ ", priority=" + priority + ", description=" + description + ", employees=" + employees
 				+ ", assignedBy=" + assignedBy + ", assignedDate=" + assignedDate + ", startDate=" + startDate
 				+ ", endDate=" + endDate + ", progressPercentage=" + progressPercentage + ", completedDate="
 				+ completedDate + ", taskStatus=" + taskStatus + ", remarks=" + remarks + ", status=" + status
 				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + "]";
 	}
 
+	
 	
 	
 }
