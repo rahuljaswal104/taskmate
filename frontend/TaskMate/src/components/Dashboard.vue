@@ -67,6 +67,13 @@
 
           <div
             class="menu-item"
+            @click="goTaskList"
+          >
+            Task List
+          </div>
+
+          <div
+            class="menu-item"
             @click="goEmployeeReport"
           >
             Reports
@@ -277,6 +284,11 @@ export default {
 
   methods: {
 
+    goTaskList(){
+
+    this.$router.push("/tasklist");
+
+    },
     goDashboard() {
 
       this.$router.push("/dashboard");

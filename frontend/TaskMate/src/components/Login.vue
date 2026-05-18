@@ -1,283 +1,984 @@
 <template>
-  <div>
-    <!-- 🔷 Navbar -->
+
+  <div class="page">
+
+    <!-- Navbar -->
+
     <nav class="navbar">
-      <h2>TaskMate</h2>
-      <button class="register-btn" @click="showPopup = true">Register</button>
+
+      <div class="logo-area">
+
+        <div class="logo-circle">
+          TM
+        </div>
+
+        <div>
+
+          <h2>TaskMate</h2>
+
+          <p>Task Management System</p>
+
+        </div>
+
+      </div>
+
+      <button
+        class="register-btn"
+        @click="openPopup"
+      >
+        Register
+      </button>
+
     </nav>
 
-    <!-- 🔷 Login -->
+    <!-- Login Section -->
+
     <div class="container">
-      <div class="form-box">
-        <h2>Welcome</h2>
+
+      <div class="login-card">
+
+        <h1>Welcome Back</h1>
+
         <p>Please login to continue</p>
 
-        <div class="form-group">
-          <input type="text" v-model="loginusername" placeholder="Enter username" />
+        <!-- Username -->
+
+        <div class="input-group">
+
+          <input
+            type="text"
+            v-model="loginusername"
+            placeholder="Enter Username"
+          />
+
         </div>
 
-        <div class="form-group">
-          <input type="password" v-model="password" placeholder="Enter password" />
+        <!-- Password -->
+
+        <div class="input-group">
+
+          <input
+            type="password"
+            v-model="password"
+            placeholder="Enter Password"
+          />
+
         </div>
 
-        <button class="primary-btn" @click="login">Login</button>
+        <!-- Login Button -->
+
+        <button
+          class="login-btn"
+          @click="login"
+        >
+          Login
+        </button>
+
       </div>
+
     </div>
 
-    <!-- 🔷 Register Modal -->
-    <div v-if="showPopup" class="modal-overlay">
-      <div class="modal">
-        <span class="close-icon" @click="showPopup = false">&times;</span>
-        <h2>Register User</h2>
+    <!-- Register Popup -->
 
-        <div class="form-group">
-          <input type="text" v-model="register.name" placeholder="Name" />
-          <small v-if="errors.name" class="error">{{ errors.name }}</small>
+    <div
+      v-if="showPopup"
+      class="popup-overlay"
+    >
+
+      <div class="popup-box">
+
+        <!-- Close -->
+
+        <span
+          class="close-btn"
+          @click="closePopup"
+        >
+          ×
+        </span>
+
+        <!-- Header -->
+
+        <div class="popup-header">
+
+          <h2>Register Employee</h2>
+
+          <p>Create new employee account</p>
+
         </div>
 
-        <div class="form-group">
-          <input type="email" v-model="register.username" placeholder="Email" />
-          <small v-if="errors.username" class="error">{{ errors.username }}</small>
+        <!-- Full Name -->
+
+        <div class="input-group">
+
+          <input
+            type="text"
+            v-model="register.name"
+            placeholder="Full Name"
+          />
+
+          <small
+            v-if="errors.name"
+            class="error-text"
+          >
+            {{ errors.name }}
+          </small>
+
         </div>
 
-        <div class="form-group">
-          <input type="password" v-model="register.password" placeholder="Password" />
+        <!-- Email -->
+
+        <div class="input-group">
+
+          <input
+            type="email"
+            v-model="register.username"
+            placeholder="Enter Email"
+          />
+
+          <small
+            v-if="errors.username"
+            class="error-text"
+          >
+            {{ errors.username }}
+          </small>
+
         </div>
 
-        <div class="form-group">
-          <input type="password" v-model="register.repassword" placeholder="Confirm Password" />
-          <small v-if="errors.password" class="error">{{ errors.password }}</small>
-          <small v-if="errors.repassword" class="error">{{ errors.repassword }}</small>
+        <!-- Password Row -->
+
+        <div class="row">
+
+          <div class="input-group">
+
+            <input
+              type="password"
+              v-model="register.password"
+              placeholder="Password"
+            />
+
+            <small
+              v-if="errors.password"
+              class="error-text"
+            >
+              {{ errors.password }}
+            </small>
+
+          </div>
+
+          <div class="input-group">
+
+            <input
+              type="password"
+              v-model="register.repassword"
+              placeholder="Confirm Password"
+            />
+
+            <small
+              v-if="errors.repassword"
+              class="error-text"
+            >
+              {{ errors.repassword }}
+            </small>
+
+          </div>
+
         </div>
 
-        <div class="form-group">
-          <select v-model="register.role">
-            <option disabled value="">Select Role</option>
-            <option>SUPERADMIN</option>
-            <option>ADMIN</option>
-            <option>EMPLOYEE</option>
-          </select>
-          <small v-if="errors.role" class="error">{{ errors.role }}</small>
+        <!-- Phone -->
+
+        <div class="input-group">
+
+          <input
+            type="text"
+            v-model="register.phone"
+            placeholder="Phone Number"
+          />
+
+          <small
+            v-if="errors.phone"
+            class="error-text"
+          >
+            {{ errors.phone }}
+          </small>
+
         </div>
 
-        <div class="form-group">
-          <select v-model="register.gender">
-            <option disabled value="">Select Gender</option>
-            <option>Male</option>
-            <option>Female</option>
-            <option>Other</option>
-          </select>
-          <small v-if="errors.gender" class="error">{{ errors.gender }}</small>
+        <!-- Department + Designation -->
+
+        <div class="row">
+
+          <div class="input-group">
+
+            <select v-model="register.department">
+
+              <option disabled value="">
+                Select Department
+              </option>
+
+              <option
+                v-for="dept in departmentNameList"
+                :key="dept.id"
+                :value="dept.departmentName"
+              >
+                {{ dept.departmentName }}
+              </option>
+
+            </select>
+
+            <small
+              v-if="errors.department"
+              class="error-text"
+            >
+              {{ errors.department }}
+            </small>
+
+          </div>
+
+          <div class="input-group">
+
+            <select v-model="register.designation">
+
+              <option disabled value="">
+                Select Designation
+              </option>
+
+              <option
+                v-for="des in designationList"
+                :key="des"
+                :value="des"
+              >
+                {{ des }}
+              </option>
+
+            </select>
+
+            <small
+              v-if="errors.designation"
+              class="error-text"
+            >
+              {{ errors.designation }}
+            </small>
+
+          </div>
+
         </div>
 
-        <button class="primary-btn" @click="registerUser">Submit</button>
+        <!-- Role + Gender -->
+
+        <div class="row">
+
+          <div class="input-group">
+
+            <select v-model="register.role">
+
+              <option disabled value="">
+                Select Role
+              </option>
+
+              <option
+                v-for="role in roleList"
+                :key="role.id"
+                :value="role.roleName"
+              >
+                {{ role.roleName }}
+              </option>
+
+            </select>
+
+            <small
+              v-if="errors.role"
+              class="error-text"
+            >
+              {{ errors.role }}
+            </small>
+
+          </div>
+
+          <div class="input-group">
+
+            <select v-model="register.gender">
+
+              <option disabled value="">
+                Select Gender
+              </option>
+
+              <option value="Male">
+                Male
+              </option>
+
+              <option value="Female">
+                Female
+              </option>
+
+              <option value="Other">
+                Other
+              </option>
+
+            </select>
+
+            <small
+              v-if="errors.gender"
+              class="error-text"
+            >
+              {{ errors.gender }}
+            </small>
+
+          </div>
+
+        </div>
+
+        <!-- Register Button -->
+
+        <div class="btn-center">
+
+          <button
+            class="login-btn"
+            @click="registerUser"
+          >
+            Register Employee
+          </button>
+
+        </div>
+
       </div>
+
     </div>
+
   </div>
+
 </template>
 
 <script>
+
 import axios from "axios";
 
 export default {
+
   name: "LoginForm",
 
   data() {
+
     return {
-      errors: {},
+
       loginusername: "",
+
       password: "",
+
       showPopup: false,
+
+      errors: {},
+
+      departmentNameList: [],
+
+      designationList: [
+
+        "Managing Director",
+
+        "Director",
+
+        "Manager",
+
+        "Team Leader",
+
+        "Developer",
+
+        "Tester",
+
+        "Computer Operator"
+
+      ],
+
+      roleList: [],
+
       register: {
+
         name: "",
+
         username: "",
+
         password: "",
+
         repassword: "",
+
+        phone: "",
+
+        department: "",
+
+        designation: "",
+
         role: "",
-        gender: "",
+
+        gender: ""
       }
     };
   },
 
+  mounted() {
+
+    this.fetchDepartments();
+
+    this.getRoles();
+  },
+
   methods: {
+
+    openPopup() {
+
+      this.showPopup = true;
+
+      this.errors = {};
+    },
+
+    closePopup() {
+
+      this.showPopup = false;
+
+      this.errors = {};
+    },
+
+    // Login
+
     login() {
-      if (!this.loginusername || !this.password) {
-        alert("Please fill in both fields");
+
+      if (
+        !this.loginusername ||
+        !this.password
+      ) {
+
+        alert("Please fill all fields");
+
         return;
       }
 
-      fetch("http://localhost:8080/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          username: this.loginusername,
-          password: this.password
-        })
-      })
+      fetch(
+        "http://localhost:8080/api/login",
+        {
+
+          method: "POST",
+
+          headers: {
+
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+
+            username:
+              this.loginusername,
+
+            password:
+              this.password
+          })
+        }
+      )
+
       .then(res => res.text())
+
       .then(data => {
-        if (data.toLowerCase().includes("login success")) {
-          localStorage.setItem("isLoggedIn", "true")
-          this.$router.push('/dashboard');
+
+        if (
+          data.toLowerCase().includes("login success")) {
+
+          localStorage.setItem("isLoggedIn","true");
+
+          this.$router.push(
+            "/dashboard"
+          );
+
         } else {
           alert(data);
         }
       })
-      .catch(() => alert("Login failed"));
+
+      .catch(() => {
+
+        alert("Login Failed");
+      });
     },
 
-    registerUser() {
+    // Register
+
+    async registerUser() {
+
+      // Clear Old Errors
+
       this.errors = {};
-      const r = this.register;
 
-      if (!r.name) this.errors.name = "Name is required";
-      if (!r.username) this.errors.username = "Email is required";
-      if (!r.password) this.errors.password = "Password is required";
-      if (!r.repassword) this.errors.repassword = "Confirm password required";
-      if (!r.role) this.errors.role = "Role is required";
-      if (!r.gender) this.errors.gender = "Gender is required";
+      // Name Validation
 
-      if (Object.keys(this.errors).length > 0) return;
+      if (!this.register.name.trim()) {
 
-      if (r.password !== r.repassword) {
-        this.errors.repassword = "Passwords do not match";
+        this.errors.name =
+          "Full name is required";
+      }
+
+      // Email Validation
+
+      const emailRegex =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (
+        !emailRegex.test(
+          this.register.username
+        )
+      ) {
+
+        this.errors.username =
+          "Username must be a valid email";
+      }
+
+      // Password Validation
+
+      if (
+        !this.register.password
+      ) {
+
+        this.errors.password =
+          "Password is required";
+      }
+
+      // Confirm Password
+
+      if (
+        this.register.password !==
+        this.register.repassword
+      ) {
+
+        this.errors.repassword =
+          "Passwords do not match";
+      }
+
+      // Phone Validation
+
+      const phoneRegex =
+        /^[0-9]{10}$/;
+
+      if (
+        !phoneRegex.test(
+          this.register.phone
+        )
+      ) {
+
+        this.errors.phone =
+          "Phone number must be exactly 10 digits";
+      }
+
+      // Department Validation
+
+      if (
+        !this.register.department
+      ) {
+
+        this.errors.department =
+          "Department is required";
+      }
+
+      // Designation Validation
+
+      if (
+        !this.register.designation
+      ) {
+
+        this.errors.designation =
+          "Designation is required";
+      }
+
+      // Role Validation
+
+      if (
+        !this.register.role
+      ) {
+
+        this.errors.role =
+          "Role is required";
+      }
+
+      // Gender Validation
+
+      if (
+        !this.register.gender
+      ) {
+
+        this.errors.gender =
+          "Gender is required";
+      }
+
+      // Stop If Any Error Exists
+
+      if (
+        Object.keys(this.errors).length > 0
+      ) {
+
         return;
       }
 
-      axios.post("http://localhost:8080/api/register", r)
-      .then(res => {
-        alert(res.data.message);
+      try {
+
+        const response = await axios.post(
+          "http://localhost:8080/api/register",
+          this.register
+        );
+
+        // Success Message
+
+        if (
+          response.data &&
+          response.data.message
+        ) {
+
+          alert(
+            response.data.message
+          );
+
+        } else {
+
+          alert(
+            "User Registered Successfully"
+          );
+        }
+
+        // Close Popup
+
+        this.showPopup = false;
+
+        // Reset Form
 
         this.register = {
+
           name: "",
+
           username: "",
+
           password: "",
+
           repassword: "",
+
+          phone: "",
+
+          department: "",
+
+          designation: "",
+
           role: "",
+
           gender: ""
         };
 
-        this.showPopup = false;
-      })
-      .catch(err => {
-        if (err.response?.data?.data) {
-          this.errors = err.response.data.data;
+      } catch(error) {
+
+        console.log(error);
+
+        // Backend Validation Errors
+
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.data
+        ) {
+
+          // Merge Backend Errors
+
+          this.errors = {
+
+            ...this.errors,
+
+            ...error.response.data.data
+          };
+
         } else {
-          alert("Something went wrong");
+
+          alert(
+            "Registration Failed"
+          );
         }
-      });
+      }
+    },
+
+    // Fetch Departments
+
+    async fetchDepartments() {
+
+      try {
+
+        const response =
+          await axios.get(
+            "http://localhost:8080/api/departments/get"
+          );
+
+        this.departmentNameList =
+          response.data;
+
+      } catch(error) {
+
+        console.log(error);
+      }
+    },
+
+    // Fetch Roles
+
+    async getRoles() {
+
+      try {
+
+        const response =
+          await axios.get(
+            "http://localhost:8080/api/roles/roleList"
+          );
+
+        this.roleList =
+          response.data.data;
+
+      } catch(error) {
+
+        console.log(error);
+      }
     }
   }
 };
+
 </script>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
+
+/* Global */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI",sans-serif;
+}
+
+body{
+  background:#f4f7fb;
 }
 
 /* Navbar */
-.navbar {
-  background: #47b37b;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 30px;
+
+.navbar{
+  height:85px;
+  background:#42b883;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0 40px;
+}
+
+/* Logo */
+
+.logo-area{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.logo-circle{
+  width:58px;
+  height:58px;
+  border-radius:14px;
+  background:white;
+  color:#42b883;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:20px;
+  font-weight:bold;
+}
+
+.logo-area h2{
+  color:white;
+  font-size:32px;
+}
+
+.logo-area p{
+  color:#eafff5;
+  font-size:14px;
 }
 
 /* Buttons */
-.primary-btn {
-  width: 100%;
-  padding: 10px;
-  background-color: #42b983;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+
+.register-btn,
+.login-btn{
+  border:none;
+  padding:12px 24px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:15px;
+  font-weight:600;
 }
 
-.primary-btn:hover {
-  background-color: #369870;
+.register-btn{
+  background:white;
+  color:#42b883;
 }
 
-.register-btn {
-  background: white;
-  color: #1f6f54;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 5px;
-  cursor: pointer;
+.login-btn{
+  background:#42b883;
+  color:white;
 }
 
-/* Layout */
-.container {
-  height: calc(100vh - 70px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f4f6f8;
+/* Container */
+
+.container{
+  height:calc(100vh - 85px);
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
-/* Form box */
-.form-box {
-  padding: 30px;
-  width: 320px;
-  border-radius: 12px;
-  background: white;
-  text-align: center;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+/* Login Card */
+
+.login-card{
+  width:400px;
+  background:white;
+  padding:40px;
+  border-radius:25px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
-/* KEY FIX HERE */
-.form-group {
-  margin-bottom: 15px;
+.login-card h1{
+  margin-bottom:10px;
+}
+
+.login-card p{
+  color:#6b7280;
+  margin-bottom:25px;
+}
+
+/* Inputs */
+
+.input-group{
+  width:100%;
+  margin-bottom:18px;
 }
 
 input,
-select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  box-sizing: border-box; /* 🔥 IMPORTANT */
+select{
+  width:100%;
+  padding:14px;
+  border-radius:10px;
+  border:1px solid #d1d5db;
+  outline:none;
+  font-size:14px;
+  color:#6b7280;
+  background:white;
 }
 
-/* Errors */
-.error {
-  color: red;
-  font-size: 12px;
+input::placeholder{
+  color:#9ca3af;
 }
 
-/* Modal */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+input:focus,
+select:focus{
+  border-color:#42b883;
 }
 
-.modal {
-  position: relative;
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  width: 350px;
+/* Popup */
+
+.popup-overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.45);
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
-.close-icon {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 22px;
-  cursor: pointer;
+.popup-box{
+  width:650px;
+  background:white;
+  border-radius:35px;
+  padding:30px;
+  position:relative;
+  max-height:88vh;
+  overflow-y:auto;
 }
+
+/* Popup Header */
+
+.popup-header{
+  text-align:center;
+  margin-bottom:25px;
+}
+
+.popup-header h2{
+  font-size:30px;
+}
+
+.popup-header p{
+  color:#6b7280;
+  margin-top:5px;
+}
+
+/* Close */
+
+.close-btn{
+  position:absolute;
+  top:15px;
+  right:20px;
+  font-size:30px;
+  cursor:pointer;
+}
+
+/* Row */
+
+.row{
+  display:flex;
+  gap:15px;
+}
+
+.row .input-group{
+  flex:1;
+}
+
+/* Button Center */
+
+.btn-center{
+  text-align:center;
+  margin-top:10px;
+}
+
+/* Error */
+
+.error-text{
+  color:red;
+  font-size:13px;
+  margin-top:5px;
+  display:block;
+  text-align:left;
+  padding-left:2px;
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+  .popup-box{
+    width:95%;
+    padding:22px;
+  }
+
+  .row{
+    flex-direction:column;
+    gap:0;
+  }
+
+  .login-card{
+    width:92%;
+  }
+
+  .navbar{
+    padding:0 18px;
+  }
+
+  .logo-area h2{
+    font-size:26px;
+  }
+}
+
 </style>

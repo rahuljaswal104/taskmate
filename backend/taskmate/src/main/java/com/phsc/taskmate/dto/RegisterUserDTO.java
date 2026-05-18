@@ -53,6 +53,17 @@ public class RegisterUserDTO {
 		this.department = department;
 	}
 
+	public RegisterUserDTO(
+			@NotBlank(message = "Username (email) is required") @Email(message = "Username must be a valid email") String username,
+			@NotBlank(message = "Password is required") @Size(min = 5, message = "Password must be at least 8 characters long") String password,
+			String role, String status) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.role = role;
+		this.status = status;
+	}
+
 	public String getName() {
 		return name;
 	}
