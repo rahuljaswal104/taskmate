@@ -6,4 +6,6 @@ import com.phsc.taskmate.entity.AssignTask;
 public interface AssignTaskService {
 
 	CustomResponse save(AssignTask assignTask);
+	
+	CustomResponse getAllUser();
 }

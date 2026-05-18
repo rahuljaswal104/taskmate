@@ -84,6 +84,18 @@ public class UserRegister {
 		this.updatedDate = updatedDate;
 	}
 
+	public UserRegister(Long id, String name, String username, String phone, String designation, String department,
+			String gender) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.username = username;
+		this.phone = phone;
+		this.designation = designation;
+		this.department = department;
+		this.gender = gender;
+	}
+
 	public Long getId() {
 		return id;
 	}
