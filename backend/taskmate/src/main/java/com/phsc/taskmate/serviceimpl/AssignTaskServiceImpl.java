@@ -1,7 +1,9 @@
 package com.phsc.taskmate.serviceimpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,5 +79,38 @@ public class AssignTaskServiceImpl implements AssignTaskService {
 		}
 		return new CustomResponse("Success ", 200, userList);
 	}
+
+	@Override
+	public CustomResponse getTaskList() {
+		
+		 List<Object[]> taskList = assignTaskRepo.getTaskListData();
+
+		    if(taskList.isEmpty()) {
+		        return new CustomResponse("list empty", 400, null);
+		    }
+
+		    List<Map<String, Object>> response = new ArrayList<>();
+
+		    for(Object[] obj : taskList) {
+
+		        Map<String, Object> map = new HashMap<>();
+
+		        map.put("title", obj[0]);
+		        map.put("employeeName", obj[1]);
+		        map.put("assignedBy", obj[2]);
+		        map.put("assignedDate", obj[3]);
+		        map.put("endDate", obj[4]);
+		        map.put("taskStatus", obj[5]);
+		        map.put("project", obj[6]);
+
+		        response.add(map);
+		    }
+
+		    return new CustomResponse("Task List", 200, response);
+	}
+	
+	
+	
+	
 
 }

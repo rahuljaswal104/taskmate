@@ -36,4 +36,10 @@ public class AssignTaskController {
 		return ResponseEntity.ok(response);
 		
 	}
+	
+	@GetMapping("/getTaskList")
+	public ResponseEntity<CustomResponse> getTaskList(){
+		CustomResponse response = assignTaskService.getTaskList();
+		return ResponseEntity.ok(response);
+	}
 }

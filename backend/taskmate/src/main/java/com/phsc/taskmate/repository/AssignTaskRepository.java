@@ -31,4 +31,10 @@ public interface AssignTaskRepository extends JpaRepository<AssignTask, Long> {
 	List<Object[]> getEmployeeReport();
 
 	//Long countByTaskStatus(com.phsc.taskmate.enums.TaskStatus taskStatus);
+	
+	
+	
+	@Query("SELECT t.title, u.name, t.assignedBy, t.assignedDate, t.endDate, t.taskStatus, t.project FROM AssignTask t JOIN t.employees u")
+		List<Object[]> getTaskListData();
+	
 }

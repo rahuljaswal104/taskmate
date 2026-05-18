@@ -8,4 +8,6 @@ public interface AssignTaskService {
 	CustomResponse save(AssignTask assignTask);
 	
 	CustomResponse getAllUser();
+
+	CustomResponse getTaskList();
 }
