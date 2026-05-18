@@ -43,7 +43,6 @@ public class AssignTask {
 	@Enumerated(EnumType.STRING)
 	private Priority priority;
 
-	@Lob
 	@Column(columnDefinition = "TEXT")
 	private String description;
 
@@ -82,7 +81,6 @@ public class AssignTask {
 	@Enumerated(EnumType.STRING)
 	private TaskStatus taskStatus;
 
-	@Lob
 	@Column(columnDefinition = "TEXT")
 	private String remarks;
 

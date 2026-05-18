@@ -15,10 +15,7 @@
         </button>
 
         <div class="heading-text">
-
           <h1>Assign Task</h1>
-
-
         </div>
 
       </div>
@@ -28,7 +25,10 @@
     <!-- Main Container -->
     <div class="task-container">
 
-      <!-- Task Details -->
+      <!-- ========================= -->
+      <!-- TASK DETAILS -->
+      <!-- ========================= -->
+
       <div class="section-card compact-card">
 
         <div class="section-title">
@@ -37,6 +37,7 @@
 
         <div class="form-grid">
 
+          <!-- Task Title -->
           <div class="form-group">
 
             <label>Task Title</label>
@@ -49,6 +50,7 @@
 
           </div>
 
+          <!-- Project -->
           <div class="form-group">
 
             <label>Project</label>
@@ -67,6 +69,7 @@
 
           </div>
 
+          <!-- Task Type -->
           <div class="form-group">
 
             <label>Task Type</label>
@@ -77,30 +80,54 @@
                 Select Type
               </option>
 
-              <option>Bug</option>
-              <option>Feature</option>
-              <option>Enhancement</option>
-              <option>Testing</option>
-              <option>Support</option>
+              <option value="BUG_FIX">
+                Bug
+              </option>
+
+              <option value="FEATURE">
+                Feature
+              </option>
+
+              <option value="ENHANCEMENT">
+                Enhancement
+              </option>
+
+              <option value="TESTING">
+                Testing
+              </option>
+
+              <option value="SUPPORT">
+                Support
+              </option>
 
             </select>
 
           </div>
 
+          <!-- Priority -->
           <div class="form-group">
 
             <label>Priority</label>
 
             <select v-model="task.priority">
 
-              <option>Low</option>
-              <option>Medium</option>
-              <option>High</option>
+              <option value="LOW">
+                Low
+              </option>
+
+              <option value="MEDIUM">
+                Medium
+              </option>
+
+              <option value="HIGH">
+                High
+              </option>
 
             </select>
 
           </div>
 
+          <!-- Description -->
           <div class="form-group full-width">
 
             <label>Description</label>
@@ -116,7 +143,10 @@
 
       </div>
 
-      <!-- Assign To -->
+      <!-- ========================= -->
+      <!-- ASSIGN TO -->
+      <!-- ========================= -->
+
       <div class="section-card compact-card">
 
         <div class="section-title">
@@ -125,56 +155,61 @@
 
         <div class="form-grid">
 
+          <!-- Employee Dropdown -->
           <div class="form-group">
 
             <label>Employee Name</label>
 
-            <input
-              type="text"
-              v-model="task.employeeName"
-              placeholder="Enter Employee Name"
-            />
+            <select
+              v-model="selectedEmployeeId"
+              @change="onEmployeeChange"
+            >
+
+              <option value="">
+                Select Employee
+              </option>
+
+              <option
+                v-for="emp in userList"
+                :key="emp.id"
+                :value="emp.id"
+              >
+                {{ emp.name }}
+              </option>
+
+            </select>
 
           </div>
 
+          <!-- Designation -->
           <div class="form-group">
 
             <label>Designation</label>
 
-            <select v-model="task.designation">
-
-              <option value="">
-                Select Designation
-              </option>
-
-              <option>Director</option>
-              <option>Manager</option>
-              <option>Developer</option>
-              <option>Computer Operator</option>
-
-            </select>
+            <input
+              type="text"
+              v-model="task.designation"
+              readonly
+              placeholder="Auto Filled"
+            />
 
           </div>
 
+          <!-- Department -->
           <div class="form-group">
 
             <label>Department</label>
 
-            <select v-model="task.department">
-
-              <option value="">
-                Select Department
-              </option>
-
-              <option>IT Cell</option>
-              <option>Procurement</option>
-              <option>Finance</option>
-              <option>Education Board</option>
-
-            </select>
+            <input
+              type="text"
+              v-model="task.department"
+              readonly
+              placeholder="Auto Filled"
+            />
 
           </div>
 
+          <!-- Assigned By -->
           <div class="form-group">
 
             <label>Assigned By</label>
@@ -191,7 +226,10 @@
 
       </div>
 
-      <!-- Time & Status -->
+      <!-- ========================= -->
+      <!-- TIME & STATUS -->
+      <!-- ========================= -->
+
       <div class="section-card compact-card">
 
         <div class="section-title">
@@ -200,6 +238,7 @@
 
         <div class="form-grid">
 
+          <!-- Assign Date -->
           <div class="form-group">
 
             <label>Assign Date</label>
@@ -211,6 +250,7 @@
 
           </div>
 
+          <!-- Target Date -->
           <div class="form-group">
 
             <label>Target Date</label>
@@ -222,20 +262,30 @@
 
           </div>
 
+          <!-- Status -->
           <div class="form-group">
 
             <label>Status</label>
 
             <select v-model="task.status">
 
-              <option>Pending</option>
-              <option>In Progress</option>
-              <option>Completed</option>
+              <option value="PENDING">
+                Pending
+              </option>
+
+              <option value="IN_PROGRESS">
+                In Progress
+              </option>
+
+              <option value="COMPLETED">
+                Completed
+              </option>
 
             </select>
 
           </div>
 
+          <!-- Remarks -->
           <div class="form-group full-width">
 
             <label>Remarks</label>
@@ -253,7 +303,10 @@
 
     </div>
 
-    <!-- Buttons -->
+    <!-- ========================= -->
+    <!-- BUTTONS -->
+    <!-- ========================= -->
+
     <div class="action-buttons">
 
       <button
@@ -278,30 +331,48 @@
 
 <script>
 
+import axios from "axios";
+
 export default {
 
   data() {
 
     return {
 
+      // Employee List
+      userList: [],
+
+      // Selected Employee
+      selectedEmployeeId: "",
+
+      // Task Object
       task: {
 
         title: "",
-        description: "",
+
         project: "",
+
         taskType: "",
-        priority: "Medium",
+
+        priority: "MEDIUM",
+
+        description: "",
+
+        employeeId: "",
 
         employeeName: "",
+
         designation: "",
+
         department: "",
 
         assignedBy: "",
 
         assignDate: "",
+
         targetDate: "",
 
-        status: "Pending",
+        status: "PENDING",
 
         remarks: ""
 
@@ -311,7 +382,21 @@ export default {
 
   },
 
+  // =========================
+  // PAGE LOAD
+  // =========================
+
+  mounted() {
+
+    this.getUserList();
+
+  },
+
   methods: {
+
+    // =========================
+    // GO TO DASHBOARD
+    // =========================
 
     goToDashboard() {
 
@@ -319,65 +404,213 @@ export default {
 
     },
 
-   async saveTask() {
-  try {
+    // =========================
+    // FETCH EMPLOYEE LIST
+    // =========================
 
-    const response = await axios.post(
-      "http://localhost:8080/api/assigntask/save",
-      this.task,
-      {
-        headers: {
-          "Content-Type": "application/json"
-        }
+    async getUserList() {
+
+      try {
+
+        const response = await axios.get(
+          "http://localhost:8080/api/assgintask/getuserlist"
+        );
+
+        // IMPORTANT
+        this.userList = response.data.data;
+
+        console.log("User List:", this.userList);
+
+      } catch (error) {
+
+        console.error("Employee Fetch Failed:", error);
+
       }
-    );
 
-    console.log("Task Saved:", response.data);
+    },
 
-    // optional reset form
-    this.task = {
-      title: "",
-      project: "",
-      taskType: "",
-      priority: "Medium",
-      description: "",
-      employeeName: "",
-      designation: "",
-      department: "",
-      assignedBy: "",
-      assignDate: "",
-      targetDate: "",
-      status: "Pending",
-      remarks: ""
-    };
+    // =========================
+    // AUTO FILL EMPLOYEE DETAILS
+    // =========================
 
-  } catch (error) {
+    onEmployeeChange() {
 
-    console.error("Save Failed:", error);
+      const selectedEmp = this.userList.find(
+        emp => emp.id === this.selectedEmployeeId
+      );
 
-  }
-},
+      if (selectedEmp) {
+
+        // SAVE EMPLOYEE ID
+        this.task.employeeId = selectedEmp.id;
+
+        // SAVE EMPLOYEE NAME
+        this.task.employeeName = selectedEmp.name;
+
+        // AUTO FILL DATA
+        this.task.designation = selectedEmp.designation;
+
+        this.task.department = selectedEmp.department;
+
+      }
+
+    },
+
+    // =========================
+    // SAVE TASK
+    // =========================
+
+    async saveTask() {
+
+      try {
+
+        // VALIDATION
+
+        if (!this.task.title) {
+
+          alert("Please Enter Task Title");
+
+          return;
+
+        }
+
+        if (!this.task.project) {
+
+          alert("Please Select Project");
+
+          return;
+
+        }
+
+        if (!this.task.taskType) {
+
+          alert("Please Select Task Type");
+
+          return;
+
+        }
+
+        if (!this.task.employeeId) {
+
+          alert("Please Select Employee");
+
+          return;
+
+        }
+
+        // PAYLOAD
+
+        const payload = {
+
+          // TASK DETAILS
+
+          title: this.task.title,
+
+          project: this.task.project,
+
+          taskType: this.task.taskType,
+
+          priority: this.task.priority,
+
+          description: this.task.description,
+
+          // MANY TO MANY EMPLOYEE LIST
+
+          employees: [
+            {
+              id: this.task.employeeId
+            }
+          ],
+
+          // ASSIGNMENT DETAILS
+
+          assignedBy: this.task.assignedBy,
+
+          assignedDate: this.task.assignDate,
+
+          startDate: this.task.assignDate,
+
+          endDate: this.task.targetDate,
+
+          // STATUS
+
+          taskStatus: this.task.status,
+
+          remarks: this.task.remarks,
+
+          progressPercentage: 0,
+
+          status: "ACTIVE"
+
+        };
+
+        console.log("Payload:", payload);
+
+        // API CALL
+
+        const response = await axios.post(
+          "http://localhost:8080/api/assgintask/save",
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+        );
+
+        console.log("Task Saved:", response.data);
+
+        alert("Task Assigned Successfully");
+
+        // RESET FORM
+
+        this.resetForm();
+
+      } catch (error) {
+
+        console.error("Save Failed:", error);
+
+        alert("Failed To Save Task");
+
+      }
+
+    },
+
+    // =========================
+    // RESET FORM
+    // =========================
 
     resetForm() {
+
+      this.selectedEmployeeId = "";
 
       this.task = {
 
         title: "",
-        description: "",
+
         project: "",
+
         taskType: "",
-        priority: "Medium",
+
+        priority: "MEDIUM",
+
+        description: "",
+
+        employeeId: "",
 
         employeeName: "",
+
         designation: "",
+
         department: "",
 
         assignedBy: "",
 
         assignDate: "",
+
         targetDate: "",
 
-        status: "Pending",
+        status: "PENDING",
 
         remarks: ""
 
@@ -402,7 +635,7 @@ export default {
 
 }
 
-/* Header */
+/* HEADER */
 
 .page-header {
 
@@ -420,7 +653,7 @@ export default {
 
 }
 
-/* Heading */
+/* HEADING */
 
 .heading-text h1 {
 
@@ -430,16 +663,10 @@ export default {
 
 }
 
-.heading-text p {
+/* BACK BUTTON */
 
-  color: #64748b;
-  font-size: 14px;
+.back-btn {
 
-}
-
-/* Back Button */
-
-.back-btn{
   width: 42px;
   height: 42px;
   border: none;
@@ -450,6 +677,7 @@ export default {
   cursor: pointer;
   transition: 0.3s;
   box-shadow: 0 4px 12px rgba(67,183,122,0.25);
+
 }
 
 .back-btn:hover {
@@ -460,15 +688,11 @@ export default {
     #2f9e61
   );
 
-  color: white;
-
-  border-color: #48bb78;
-
   transform: translateY(-2px);
 
 }
 
-/* Layout */
+/* LAYOUT */
 
 .task-container {
 
@@ -478,7 +702,7 @@ export default {
 
 }
 
-/* Cards */
+/* CARD */
 
 .section-card {
 
@@ -491,7 +715,7 @@ export default {
 
 }
 
-/* Section Title */
+/* SECTION TITLE */
 
 .section-title {
 
@@ -506,14 +730,12 @@ export default {
 
 }
 
-/* Grid */
+/* GRID */
 
 .form-grid {
 
   display: grid;
-
   grid-template-columns: repeat(2, 1fr);
-
   gap: 14px 18px;
 
 }
@@ -524,43 +746,32 @@ export default {
 
 }
 
-/* Form Group */
+/* FORM GROUP */
 
 .form-group label {
 
   display: block;
-
   margin-bottom: 7px;
-
   font-size: 14px;
   font-weight: 600;
-
   color: #334155;
 
 }
 
-/* Inputs */
+/* INPUTS */
 
 input,
 textarea,
 select {
 
   width: 100%;
-
   padding: 11px 14px;
-
   border: 1px solid #dbe4ee;
-
   border-radius: 12px;
-
   font-size: 14px;
-
   outline: none;
-
   transition: 0.3s;
-
   box-sizing: border-box;
-
   background: #fff;
 
 }
@@ -583,16 +794,22 @@ select:focus {
 
 }
 
-/* Buttons */
+/* READONLY */
+
+input[readonly] {
+
+  background: #f8fafc;
+  cursor: not-allowed;
+
+}
+
+/* BUTTONS */
 
 .action-buttons {
 
   margin-top: 24px;
-
   display: flex;
-
   justify-content: center;
-
   gap: 14px;
 
 }
@@ -606,18 +823,12 @@ select:focus {
   );
 
   color: white;
-
   border: none;
-
   padding: 12px 28px;
-
   border-radius: 12px;
-
   font-size: 14px;
   font-weight: 600;
-
   cursor: pointer;
-
   transition: 0.3s;
 
   box-shadow:
@@ -634,18 +845,12 @@ select:focus {
 .reset-btn {
 
   background: white;
-
   color: #334155;
-
   border: 1px solid #dbe4ee;
-
   padding: 12px 28px;
-
   border-radius: 12px;
-
   font-size: 14px;
   font-weight: 600;
-
   cursor: pointer;
 
 }
@@ -656,7 +861,7 @@ select:focus {
 
 }
 
-/* Responsive */
+/* RESPONSIVE */
 
 @media (max-width: 768px) {
 

@@ -1,5 +1,6 @@
 package com.phsc.taskmate.serviceimpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,21 @@ public class AssignTaskServiceImpl implements AssignTaskService {
 	@Autowired
 	private UserRepository userRepo;
 
-	@Override
+//	@Override
+//	public CustomResponse save(AssignTask assignTask) {
+//
+//		if (assignTask == null) {
+//			return new CustomResponse("please enter fields", 400, null);
+//		}
+//
+//		AssignTask titlerepo = assignTaskRepo.findByTasktitle(assignTask.getTitle());
+//		if (titlerepo != null) {
+//			return new CustomResponse("This title already register", 409, assignTask);
+//		}
+//		assignTaskRepo.save(assignTask);
+//		return new CustomResponse("TaskAssign successfully ", 200, assignTask);
+//	}
+
 	public CustomResponse save(AssignTask assignTask) {
 
 		if (assignTask == null) {
@@ -32,19 +47,35 @@ public class AssignTaskServiceImpl implements AssignTaskService {
 		if (titlerepo != null) {
 			return new CustomResponse("This title already register", 409, assignTask);
 		}
+
+		List<UserRegister> employeeList = new ArrayList<>();
+
+		if (assignTask.getEmployees() != null) {
+
+			for (UserRegister emp : assignTask.getEmployees()) {
+
+				UserRegister employee = userRepo.findById(emp.getId())
+						.orElseThrow(() -> new RuntimeException("Employee Not Found : " + emp.getId()));
+
+				employeeList.add(employee);
+
+			}
+		}
+
+		assignTask.setEmployees(employeeList);
 		assignTaskRepo.save(assignTask);
 		return new CustomResponse("TaskAssign successfully ", 200, assignTask);
+
 	}
 
 	@Override
 	public CustomResponse getAllUser() {
 
-		
 		List<UserRegister> userList = userRepo.getAllUserByStatus();
-		if(userList.isEmpty()) {
-			return new CustomResponse("list empty",400,null);
+		if (userList.isEmpty()) {
+			return new CustomResponse("list empty", 400, null);
 		}
-		return new CustomResponse("Success ",200,userList); 
+		return new CustomResponse("Success ", 200, userList);
 	}
 
 }
