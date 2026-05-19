@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.phsc.taskmate.customresponse.CustomResponse;
+import com.phsc.taskmate.dto.TaskListDTO;
 import com.phsc.taskmate.entity.AssignTask;
 import com.phsc.taskmate.entity.UserRegister;
 import com.phsc.taskmate.repository.AssignTaskRepository;
@@ -83,30 +84,13 @@ public class AssignTaskServiceImpl implements AssignTaskService {
 	@Override
 	public CustomResponse getTaskList() {
 		
-		 List<Object[]> taskList = assignTaskRepo.getTaskListData();
+		List<TaskListDTO> taskList = assignTaskRepo.getTaskListData();
 
 		    if(taskList.isEmpty()) {
 		        return new CustomResponse("list empty", 400, null);
 		    }
 
-		    List<Map<String, Object>> response = new ArrayList<>();
-
-		    for(Object[] obj : taskList) {
-
-		        Map<String, Object> map = new HashMap<>();
-
-		        map.put("title", obj[0]);
-		        map.put("employeeName", obj[1]);
-		        map.put("assignedBy", obj[2]);
-		        map.put("assignedDate", obj[3]);
-		        map.put("endDate", obj[4]);
-		        map.put("taskStatus", obj[5]);
-		        map.put("project", obj[6]);
-
-		        response.add(map);
-		    }
-
-		    return new CustomResponse("Task List", 200, response);
+		    return new CustomResponse("Task List", 200, taskList);
 	}
 	
 	

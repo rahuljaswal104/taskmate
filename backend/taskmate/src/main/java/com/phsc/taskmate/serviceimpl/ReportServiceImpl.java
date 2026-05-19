@@ -18,25 +18,8 @@ public class ReportServiceImpl implements ReportService{
 	
 	@Override
 	public List<EmployeeReportDTO> getEmployeeReports() {
-		 List<Object[]> rows = assignTaskRepo.getEmployeeReport();
-
-	        List<EmployeeReportDTO> reports = new ArrayList<>();
-
-	        for (Object[] row : rows) {
-
-	            EmployeeReportDTO dto = new EmployeeReportDTO(
-	                    (String) row[0],
-	                    ((Number) row[1]).longValue(),
-	                    ((Number) row[2]).longValue(),
-	                    ((Number) row[3]).longValue(),
-	                    ((Number) row[4]).longValue(),
-	                    ((Number) row[5]).doubleValue());
-
-	            reports.add(dto);
-	        }
-
-	        return reports;
-	  
+		
+		return assignTaskRepo.getEmployeeReport();
 	}
 
 }

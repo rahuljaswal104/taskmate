@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.phsc.taskmate.dto.EmployeeReportDTO;
+import com.phsc.taskmate.dto.TaskListDTO;
 import com.phsc.taskmate.entity.AssignTask;
 
 @Repository
@@ -15,26 +17,10 @@ public interface AssignTaskRepository extends JpaRepository<AssignTask, Long> {
 	@Query(value = "select * from assign_tasks where title =:title", nativeQuery = true)
 	AssignTask findByTasktitle(@Param("title") String title);
 
-	@Query(value = """
-			SELECT employee_name, COUNT(*) AS totalTasks,
+	@Query("SELECT new com.phsc.taskmate.dto.EmployeeReportDTO(u.name, COUNT(t), SUM(CASE WHEN t.taskStatus = 'COMPLETED' THEN 1 ELSE 0 END), SUM(CASE WHEN t.taskStatus = 'PENDING' THEN 1 ELSE 0 END), SUM(CASE WHEN t.taskStatus = 'IN_PROGRESS' THEN 1 ELSE 0 END), ROUND((SUM(CASE WHEN t.taskStatus = 'COMPLETED' THEN 1 ELSE 0 END) * 100.0 / COUNT(t)), 1)) FROM AssignTask t JOIN t.employees u GROUP BY u.name")
+	List<EmployeeReportDTO> getEmployeeReport();
 
-			    SUM(CASE WHEN task_status = 'COMPLETED' THEN 1 ELSE 0 END) AS completedTasks,
+	@Query("SELECT new com.phsc.taskmate.dto.TaskListDTO(t.title, u.name, t.assignedBy, t.assignedDate, t.endDate, t.taskStatus, t.project) FROM AssignTask t JOIN t.employees u")
+	List<TaskListDTO> getTaskListData();
 
-			    SUM(CASE WHEN task_status = 'PENDING' THEN 1 ELSE 0 END) AS pendingTasks,
-
-			    SUM(CASE WHEN task_status = 'IN_PROGRESS' THEN 1 ELSE 0 END) AS inProgressTasks,
-
-			    ROUND((SUM(CASE WHEN task_status = 'COMPLETED' THEN 1 ELSE 0 END) * 100.0 / COUNT(*)),
-			    
-			    1) AS completionPercentage FROM assign_tasks GROUP BY employee_name
-			""", nativeQuery = true)
-	List<Object[]> getEmployeeReport();
-
-	//Long countByTaskStatus(com.phsc.taskmate.enums.TaskStatus taskStatus);
-	
-	
-	
-	@Query("SELECT t.title, u.name, t.assignedBy, t.assignedDate, t.endDate, t.taskStatus, t.project FROM AssignTask t JOIN t.employees u")
-		List<Object[]> getTaskListData();
-	
 }

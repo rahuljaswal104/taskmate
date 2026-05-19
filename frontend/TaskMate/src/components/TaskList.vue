@@ -45,7 +45,7 @@
 
               <td>{{ task.project }}</td>
 
-              <td>{{ task.employeeName }}</td>
+              <td>{{ task.name }}</td>
 
               <td>{{ task.assignedBy }}</td>
 
