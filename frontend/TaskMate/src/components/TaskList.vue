@@ -37,7 +37,7 @@
               <th>Assign Date</th>
               <th>Target Date</th>
               <th>Status</th>
-              <th>Action</th>
+              <th v-if="role==='EMPLOYEE'">Action</th>
             </tr>
           </thead>
 
@@ -66,7 +66,7 @@
                 </span>
               </td>
              
-             <td>
+             <td v-if="role==='EMPLOYEE'">
             <button class="update-btn" @click="gotoUpdateTask">
               <i class="fa-solid fa-pen-to-square"></i>
 
