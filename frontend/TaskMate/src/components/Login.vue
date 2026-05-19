@@ -516,7 +516,7 @@ export default {
           localStorage.setItem("name",data.data.name);
 
           // REDIRECT
-          if (data.data.role === "SUPERADMIN") {
+          if (data.data.role === "SUPER_ADMIN") {
            this.$router.push("/dashboard");
           }
           else{
