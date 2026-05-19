@@ -5,7 +5,7 @@
     <h2 class="logo">TaskMate</h2>
 
     <div class="nav-actions">
-
+<!-- 
       <button class="nav-btn" @click="goAddProject">
         Add Project
       </button>
@@ -20,7 +20,7 @@
 
       <button class="nav-btn" @click="goAssignTask">
         Assign Task
-      </button>
+      </button> -->
 
       <button class="nav-btn logout" @click="logout">
         Logout
@@ -38,33 +38,33 @@ export default {
 
   methods: {
 
-    goAddProject(){
-      this.$router.push("/addproject");
-    },
-    goDashboard() {
+    // goAddProject(){
+    //   this.$router.push("/addproject");
+    // },
+    // goDashboard() {
 
-      this.$router.push("/dashboard");
+    //   this.$router.push("/dashboard");
 
-    },
+    // },
 
-    goAddRole() {
+    // goAddRole() {
 
-      this.$router.push("/addrole");
+    //   this.$router.push("/addrole");
 
-    },
+    // },
 
 
-     goAddDepartment() {
+    //  goAddDepartment() {
 
-      this.$router.push("/adddepartment");
+    //   this.$router.push("/adddepartment");
 
-    },
+    // },
 
-    goAssignTask() {
+    // goAssignTask() {
 
-      this.$router.push("/asgintask");
+    //   this.$router.push("/asgintask");
 
-    },
+    // },
 
     logout() {
 

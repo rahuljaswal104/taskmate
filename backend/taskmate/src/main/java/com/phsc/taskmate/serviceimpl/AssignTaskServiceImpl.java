@@ -1,9 +1,7 @@
 package com.phsc.taskmate.serviceimpl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,6 +89,15 @@ public class AssignTaskServiceImpl implements AssignTaskService {
 		    }
 
 		    return new CustomResponse("Task List", 200, taskList);
+	}
+
+	@Override
+	public List<TaskListDTO> getTaskByEmployee(String username) {
+		
+		List<TaskListDTO> usertasks = assignTaskRepo.getTaskByUserName(username);
+		
+		
+		return usertasks;
 	}
 	
 	

@@ -15,6 +15,7 @@ import AddDepartment from "./components/AddDepartment.vue";
 import AddProject from "./components/AddProject.vue";
 import EmployeeReport from "./components/EmployeeReport.vue";
 import TaskList from "./components/TaskList.vue";
+import UpdateTask from "./components/UpdateTask.vue";
 const routes = [
 
   {path: "/", name: "Login",component: LoginForm},
@@ -26,8 +27,8 @@ const routes = [
   {path: "/superadmin", name: "SuperAdmin",component: SuperAdmin, meta: {requiresAuth: true}},
   {path: "/navbar", name: "Navbar", component: Navbar,meta: {requiresAuth: true}},
   {path: "/employeereport",name: "EmployeeReport", component: EmployeeReport,meta: {requiresAuth: true}},
-  {path: "/tasklist",name: "TaskList", component: TaskList,meta: {requiresAuth: true}}
-
+  {path: "/tasklist",name: "TaskList", component: TaskList,meta: {requiresAuth: true}},
+{path: "/updatetask",name: "UpdateTask", component: UpdateTask,meta: {requiresAuth: true}}
 ];
 
 const router = createRouter({

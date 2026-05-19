@@ -1,4 +1,5 @@
 <template>
+  <Navbar v-if="role === 'EMPLOYEE'" />
   <div class="page-container">
 
     <!-- Back Button -->
@@ -36,6 +37,7 @@
               <th>Assign Date</th>
               <th>Target Date</th>
               <th>Status</th>
+              <th>Action</th>
             </tr>
           </thead>
 
@@ -63,7 +65,16 @@
                   {{ task.taskStatus }}
                 </span>
               </td>
+             
+             <td>
+            <button class="update-btn" @click="gotoUpdateTask">
+              <i class="fa-solid fa-pen-to-square"></i>
 
+              <span class="tooltip-text">
+                Update Task
+              </span>
+            </button>
+          </td>
             </tr>
 
             <!-- No Data -->
@@ -86,14 +97,17 @@
 
 <script>
 import axios from "axios";
-
+import Navbar from "./Navbar.vue";
 export default {
   name: "TaskTable",
-
+components:{
+Navbar
+},
   data() {
     return {
       tasks: [],
-      role:localStorage.getItem("role"),
+      role: localStorage.getItem("role"),
+      username: localStorage.getItem("username"),
     };
   },
 
@@ -103,26 +117,43 @@ export default {
 
   methods: {
 
+
+gotoUpdateTask(){
+this.$router.push("/upadtetask")
+},
+
     async fetchTasks() {
+  try {
 
-      try {
+    let response;
 
-        const response = await axios.get(
-          "http://localhost:8080/api/assgintask/getTaskList"
-        );
+    // SUPERADMIN => sab tasks
+    if (this.role === "SUPERADMIN" || this.role === "ADMIN") {
+      
+      response = await axios.get(
+        "http://localhost:8080/api/assgintask/getTaskList"
+      );
 
-        console.log(response.data);
+    } 
+    
+    // EMPLOYEE => sirf uske tasks
+    else {
+      
+      response = await axios.get(
+        `http://localhost:8080/api/assgintask/getTaskByEmployee/${this.username}`
+      );
 
-        // If using CustomResponse
+    }
 
-        this.tasks = response.data.data;
 
-      } catch (error) {
+    this.tasks = response.data.data;
 
-        console.error("Error Fetching Tasks :", error);
+  } catch (error) {
 
-      }
-    },
+    console.error("Error Fetching Tasks :", error);
+
+  }
+},
 
     formatDate(date) {
 
@@ -331,4 +362,59 @@ export default {
 
 }
 
+.update-btn {
+  position: relative;
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Tooltip */
+.tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  background: #111827;
+  color: white;
+
+  padding: 6px 10px;
+  border-radius: 6px;
+
+  font-size: 12px;
+  white-space: nowrap;
+
+  transition: 0.3s;
+
+  z-index: 10;
+}
+
+/* Arrow */
+.tooltip-text::after {
+  content: "";
+  position: absolute;
+
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  border-width: 5px;
+  border-style: solid;
+
+  border-color: #111827 transparent transparent transparent;
+}
+
+/* Show Tooltip */
+.update-btn:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
 </style>
