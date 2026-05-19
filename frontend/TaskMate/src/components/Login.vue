@@ -409,8 +409,11 @@ export default {
         role: "",
 
         gender: ""
+
       }
+
     };
+
   },
 
   mounted() {
@@ -418,25 +421,32 @@ export default {
     this.fetchDepartments();
 
     this.getRoles();
+
   },
 
   methods: {
+
+    // OPEN POPUP
 
     openPopup() {
 
       this.showPopup = true;
 
       this.errors = {};
+
     },
+
+    // CLOSE POPUP
 
     closePopup() {
 
       this.showPopup = false;
 
       this.errors = {};
+
     },
 
-    // Login
+    // ================= LOGIN =================
 
     login() {
 
@@ -448,6 +458,7 @@ export default {
         alert("Please fill all fields");
 
         return;
+
       }
 
       fetch(
@@ -460,6 +471,7 @@ export default {
 
             "Content-Type":
               "application/json"
+
           },
 
           body: JSON.stringify({
@@ -469,51 +481,83 @@ export default {
 
             password:
               this.password
+
           })
+
         }
       )
 
-      .then(res => res.text())
+      .then(res => res.json())
 
       .then(data => {
 
-        if (
-          data.toLowerCase().includes("login success")) {
+        console.log(data);
+
+        // SUCCESS
+
+        if (data.code === 200) {
+
+          // LOGIN STATUS
 
           localStorage.setItem("isLoggedIn","true");
 
-          this.$router.push(
-            "/dashboard"
-          );
+          // USER SAVE
 
-        } else {
-          alert(data);
+          // ROLE SAVE
+
+          localStorage.setItem("role", data.data.role);
+
+          // USERNAME SAVE
+
+          localStorage.setItem("username",data.data.username);
+
+          // NAME SAVE
+
+          localStorage.setItem("name",data.data.name);
+
+          // REDIRECT
+          if (data.data.role === "SUPERADMIN") {
+           this.$router.push("/dashboard");
+          }
+          else{
+            this.$router.push("/taskList");
+          }
         }
+
+        else {
+          alert(data.message);
+        }
+
       })
 
-      .catch(() => {
+      .catch(error => {
+
+        console.log(error);
 
         alert("Login Failed");
+
       });
+
     },
 
-    // Register
+    // ================= REGISTER =================
 
     async registerUser() {
 
-      // Clear Old Errors
-
       this.errors = {};
 
-      // Name Validation
+      // NAME
 
-      if (!this.register.name.trim()) {
+      if (
+        !this.register.name.trim()
+      ) {
 
         this.errors.name =
           "Full name is required";
+
       }
 
-      // Email Validation
+      // EMAIL
 
       const emailRegex =
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -526,9 +570,10 @@ export default {
 
         this.errors.username =
           "Username must be a valid email";
+
       }
 
-      // Password Validation
+      // PASSWORD
 
       if (
         !this.register.password
@@ -536,9 +581,10 @@ export default {
 
         this.errors.password =
           "Password is required";
+
       }
 
-      // Confirm Password
+      // CONFIRM PASSWORD
 
       if (
         this.register.password !==
@@ -547,9 +593,10 @@ export default {
 
         this.errors.repassword =
           "Passwords do not match";
+
       }
 
-      // Phone Validation
+      // PHONE
 
       const phoneRegex =
         /^[0-9]{10}$/;
@@ -562,9 +609,10 @@ export default {
 
         this.errors.phone =
           "Phone number must be exactly 10 digits";
+
       }
 
-      // Department Validation
+      // DEPARTMENT
 
       if (
         !this.register.department
@@ -572,9 +620,10 @@ export default {
 
         this.errors.department =
           "Department is required";
+
       }
 
-      // Designation Validation
+      // DESIGNATION
 
       if (
         !this.register.designation
@@ -582,9 +631,10 @@ export default {
 
         this.errors.designation =
           "Designation is required";
+
       }
 
-      // Role Validation
+      // ROLE
 
       if (
         !this.register.role
@@ -592,9 +642,10 @@ export default {
 
         this.errors.role =
           "Role is required";
+
       }
 
-      // Gender Validation
+      // GENDER
 
       if (
         !this.register.gender
@@ -602,25 +653,30 @@ export default {
 
         this.errors.gender =
           "Gender is required";
+
       }
 
-      // Stop If Any Error Exists
+      // STOP IF ERROR
 
       if (
-        Object.keys(this.errors).length > 0
+        Object.keys(this.errors)
+          .length > 0
       ) {
 
         return;
+
       }
 
       try {
 
-        const response = await axios.post(
-          "http://localhost:8080/api/register",
-          this.register
-        );
+        const response =
+          await axios.post(
 
-        // Success Message
+            "http://localhost:8080/api/register",
+
+            this.register
+
+          );
 
         if (
           response.data &&
@@ -631,18 +687,21 @@ export default {
             response.data.message
           );
 
-        } else {
+        }
+
+        else {
 
           alert(
             "User Registered Successfully"
           );
+
         }
 
-        // Close Popup
+        // CLOSE POPUP
 
         this.showPopup = false;
 
-        // Reset Form
+        // RESET FORM
 
         this.register = {
 
@@ -663,39 +722,24 @@ export default {
           role: "",
 
           gender: ""
+
         };
 
-      } catch(error) {
+      }
+
+      catch(error) {
 
         console.log(error);
 
-        // Backend Validation Errors
+        alert(
+          "Registration Failed"
+        );
 
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.data
-        ) {
-
-          // Merge Backend Errors
-
-          this.errors = {
-
-            ...this.errors,
-
-            ...error.response.data.data
-          };
-
-        } else {
-
-          alert(
-            "Registration Failed"
-          );
-        }
       }
+
     },
 
-    // Fetch Departments
+    // ================= FETCH DEPARTMENTS =================
 
     async fetchDepartments() {
 
@@ -703,19 +747,25 @@ export default {
 
         const response =
           await axios.get(
+
             "http://localhost:8080/api/departments/get"
+
           );
 
         this.departmentNameList =
           response.data;
 
-      } catch(error) {
+      }
+
+      catch(error) {
 
         console.log(error);
+
       }
+
     },
 
-    // Fetch Roles
+    // ================= FETCH ROLES =================
 
     async getRoles() {
 
@@ -723,18 +773,26 @@ export default {
 
         const response =
           await axios.get(
+
             "http://localhost:8080/api/roles/roleList"
+
           );
 
         this.roleList =
           response.data.data;
 
-      } catch(error) {
+      }
+
+      catch(error) {
 
         console.log(error);
+
       }
+
     }
+
   }
+
 };
 
 </script>

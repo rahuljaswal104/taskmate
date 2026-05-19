@@ -2,11 +2,13 @@
   <div class="page-container">
 
     <!-- Back Button -->
-    <div class="top-bar">
-      <button class="back-btn" @click="$router.back()">
+    <div class="top-bar" v-if="role !== 'EMPLOYEE'" >
+      <button  class="back-btn" @click="$router.back()">
         ← Back
       </button>
     </div>
+
+    
 
     <!-- Table Card -->
     <div class="table-card">
@@ -91,6 +93,7 @@ export default {
   data() {
     return {
       tasks: [],
+      role:localStorage.getItem("role"),
     };
   },
 

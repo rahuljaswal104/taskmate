@@ -77,15 +77,15 @@ public class UserServiceImpl implements UserService {
 		}
 
 		boolean isPasswordMatch = BCrypt.checkpw(userDto.getPassword(), us.getPassword());
-		
-		
-		System.out.println(userDto.getPassword());
-		System.out.println(us.getPassword());
 
 		if (!isPasswordMatch) {
 			return new CustomResponse("Incorrect password", 401, null);
 		}
-
+		
+		 userDto.setName(us.getName());
+		 userDto.setUsername(us.getUsername());
+		 userDto.setRole(us.getRole());
+         userDto.setPassword(null);
 		return new CustomResponse("Login successful", 200, userDto);
 
 	}

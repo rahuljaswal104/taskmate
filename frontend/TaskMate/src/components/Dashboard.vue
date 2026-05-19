@@ -117,7 +117,7 @@
 
             </div>
 
-            <button
+            <button 
               class="logout-btn"
               @click="logout"
             >
