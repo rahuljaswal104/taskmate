@@ -36,8 +36,8 @@
               -- Select Role --
             </option>
 
-            <option value="SUPER_ADMIN">
-              SUPER_ADMIN
+            <option value="SUPERADMIN">
+              SUPERADMIN
             </option>
 
             <option value="DEPARTMENT_ADMIN">
