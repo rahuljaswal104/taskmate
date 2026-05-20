@@ -128,7 +128,7 @@ this.$router.push("/upadtetask")
     let response;
 
     // SUPERADMIN => sab tasks
-    if (this.role === "SUPERADMIN" || this.role === "ADMIN") {
+    if (this.role === "SUPERADMIN" || this.role === "DEPARTMENT ADMIN") {
       
       response = await axios.get(
         "http://localhost:8080/api/assgintask/getTaskList"

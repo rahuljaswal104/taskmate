@@ -40,8 +40,8 @@
               SUPERADMIN
             </option>
 
-            <option value="DEPARTMENT_ADMIN">
-              DEPARTMENT_ADMIN
+            <option value="DEPARTMENT ADMIN">
+              DEPARTMENT ADMIN
             </option>
 
             <option value="MANAGER">
