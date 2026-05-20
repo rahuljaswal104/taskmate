@@ -28,7 +28,7 @@ const routes = [
   {path: "/navbar", name: "Navbar", component: Navbar,meta: {requiresAuth: true}},
   {path: "/employeereport",name: "EmployeeReport", component: EmployeeReport,meta: {requiresAuth: true}},
   {path: "/tasklist",name: "TaskList", component: TaskList,meta: {requiresAuth: true}},
-{path: "/updatetask",name: "UpdateTask", component: UpdateTask,meta: {requiresAuth: true}}
+  {path: "/updatetask/:id",name: "UpdateTask", component: UpdateTask,meta: {requiresAuth: true}}
 ];
 
 const router = createRouter({

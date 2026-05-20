@@ -7,6 +7,7 @@ import com.phsc.taskmate.enums.TaskStatus;
 public class TaskListDTO {
 
 	private String title;
+	private Long id;
 	private String name;
 	private String assignedBy;
 	private LocalDate assignedDate;
@@ -29,6 +30,19 @@ public class TaskListDTO {
 		this.taskStatus = taskStatus;
 		this.project = project;
 	}
+	
+	public TaskListDTO(String title,Long id, String name, String assignedBy, LocalDate assignedDate, LocalDate endDate,
+			TaskStatus taskStatus, String project) {
+		super();
+		this.title = title;
+		this.id= id;
+		this.name = name;
+		this.assignedBy = assignedBy;
+		this.assignedDate = assignedDate;
+		this.endDate = endDate;
+		this.taskStatus = taskStatus;
+		this.project = project;
+	}
 
 	public String getTitle() {
 		return title;
@@ -44,6 +58,14 @@ public class TaskListDTO {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getAssignedBy() {
@@ -74,7 +96,7 @@ public class TaskListDTO {
 		return taskStatus;
 	}
 
-	public void setTaskStatus(TaskStatus  taskStatus) {
+	public void setTaskStatus(TaskStatus taskStatus) {
 		this.taskStatus = taskStatus;
 	}
 
@@ -85,6 +107,5 @@ public class TaskListDTO {
 	public void setProject(String project) {
 		this.project = project;
 	}
-
 
 }

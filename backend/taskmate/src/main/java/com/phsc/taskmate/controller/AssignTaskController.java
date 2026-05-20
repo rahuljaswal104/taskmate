@@ -61,4 +61,11 @@ public class AssignTaskController {
 	        new CustomResponse<>("Tasks Fetch Successfully",200, tasks)
 	    );
 	}
+	
+	@GetMapping("/getTaskById/{id}")
+	public ResponseEntity<?> getTaskById(@PathVariable Long id){
+		CustomResponse taskdtl = assignTaskService.getTaskById(id);
+		return ResponseEntity.ok(new CustomResponse("Task fetch successfully", 200, taskdtl));
+		
+	}
 }

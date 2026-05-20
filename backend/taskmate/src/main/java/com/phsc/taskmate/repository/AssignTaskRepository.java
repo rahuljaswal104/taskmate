@@ -23,7 +23,7 @@ public interface AssignTaskRepository extends JpaRepository<AssignTask, Long> {
 	@Query("SELECT new com.phsc.taskmate.dto.TaskListDTO(t.title, u.name, t.assignedBy, t.assignedDate, t.endDate, t.taskStatus, t.project) FROM AssignTask t JOIN t.employees u")
 	List<TaskListDTO> getTaskListData();
 	
-	@Query("SELECT new com.phsc.taskmate.dto.TaskListDTO(t.title, u.name, t.assignedBy, t.assignedDate, t.endDate, t.taskStatus, t.project) FROM AssignTask t JOIN t.employees u where u.username =:username")
+	@Query("SELECT new com.phsc.taskmate.dto.TaskListDTO(t.title,t.id, u.name, t.assignedBy, t.assignedDate, t.endDate, t.taskStatus, t.project) FROM AssignTask t JOIN t.employees u where u.username =:username")
 	List<TaskListDTO> getTaskByUserName(@Param("username")String username);
 
 }

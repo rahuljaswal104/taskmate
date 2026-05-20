@@ -2,6 +2,7 @@ package com.phsc.taskmate.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -98,6 +99,17 @@ public class AssignTaskServiceImpl implements AssignTaskService {
 		
 		
 		return usertasks;
+	}
+
+	@Override
+	public CustomResponse getTaskById(Long id) {
+		  Optional<AssignTask> taskdtl = assignTaskRepo.findById(id);
+		  
+		if (taskdtl.isEmpty()) {
+			return new CustomResponse("task detail not get", 400, null);
+		}
+	
+		return new CustomResponse("success", 200, taskdtl);
 	}
 	
 	

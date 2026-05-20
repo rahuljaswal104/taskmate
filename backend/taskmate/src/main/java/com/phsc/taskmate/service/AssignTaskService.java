@@ -15,4 +15,6 @@ public interface AssignTaskService {
 	CustomResponse getTaskList();
 
 	List<TaskListDTO> getTaskByEmployee(String username);
+
+	CustomResponse getTaskById(Long id);
 }

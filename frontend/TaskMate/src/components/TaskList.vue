@@ -67,7 +67,7 @@
               </td>
              
              <td v-if="role==='EMPLOYEE'">
-            <button class="update-btn" @click="gotoUpdateTask">
+            <button class="update-btn" @click="gotoUpdateTask(task.id)">
               <i class="fa-solid fa-pen-to-square"></i>
 
               <span class="tooltip-text">
@@ -118,8 +118,8 @@ Navbar
   methods: {
 
 
-gotoUpdateTask(){
-this.$router.push("/upadtetask")
+gotoUpdateTask(id){
+this.$router.push(`/updatetask/${id}`)
 },
 
     async fetchTasks() {
