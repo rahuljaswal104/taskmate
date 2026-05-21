@@ -207,18 +207,20 @@
 
         <div class="row">
 
+          <!-- Department -->
+
           <div class="input-group">
 
             <select v-model="register.department">
 
-              <option disabled value="">
+              <option disabled :value="null">
                 Select Department
               </option>
 
               <option
                 v-for="dept in departmentNameList"
                 :key="dept.id"
-                :value="dept.departmentName"
+                :value="dept"
               >
                 {{ dept.departmentName }}
               </option>
@@ -233,6 +235,8 @@
             </small>
 
           </div>
+
+          <!-- Designation -->
 
           <div class="input-group">
 
@@ -267,18 +271,20 @@
 
         <div class="row">
 
+          <!-- Role -->
+
           <div class="input-group">
 
             <select v-model="register.role">
 
-              <option disabled value="">
+              <option disabled :value="null">
                 Select Role
               </option>
 
               <option
                 v-for="role in roleList"
                 :key="role.id"
-                :value="role.roleName"
+                :value="role"
               >
                 {{ role.roleName }}
               </option>
@@ -293,6 +299,8 @@
             </small>
 
           </div>
+
+          <!-- Gender -->
 
           <div class="input-group">
 
@@ -402,11 +410,11 @@ export default {
 
         phone: "",
 
-        department: "",
+        department: null,
 
         designation: "",
 
-        role: "",
+        role: null,
 
         gender: ""
 
@@ -426,8 +434,6 @@ export default {
 
   methods: {
 
-    // OPEN POPUP
-
     openPopup() {
 
       this.showPopup = true;
@@ -435,8 +441,6 @@ export default {
       this.errors = {};
 
     },
-
-    // CLOSE POPUP
 
     closePopup() {
 
@@ -446,14 +450,9 @@ export default {
 
     },
 
-    // ================= LOGIN =================
-
     login() {
 
-      if (
-        !this.loginusername ||
-        !this.password
-      ) {
+      if (!this.loginusername || !this.password) {
 
         alert("Please fill all fields");
 
@@ -491,41 +490,34 @@ export default {
 
       .then(data => {
 
-        console.log(data);
-
-        // SUCCESS
-
         if (data.code === 200) {
-
-          // LOGIN STATUS
 
           localStorage.setItem("isLoggedIn","true");
 
-          // USER SAVE
-
-          // ROLE SAVE
-
-          localStorage.setItem("role", data.data.role);
-
-          // USERNAME SAVE
+          localStorage.setItem("role", data.data.role.roleName);
 
           localStorage.setItem("username",data.data.username);
 
-          // NAME SAVE
-
           localStorage.setItem("name",data.data.name);
 
-          // REDIRECT
-          if (data.data.role === "SUPERADMIN") {
-           this.$router.push("/dashboard");
+          if (data.data.role.roleName === "SUPERADMIN") {
+
+            this.$router.push("/dashboard");
+
           }
-          else{
+
+          else {
+
             this.$router.push("/taskList");
+
           }
+
         }
 
         else {
+
           alert(data.message);
+
         }
 
       })
@@ -540,24 +532,16 @@ export default {
 
     },
 
-    // ================= REGISTER =================
-
     async registerUser() {
 
       this.errors = {};
 
-      // NAME
-
-      if (
-        !this.register.name.trim()
-      ) {
+      if (!this.register.name.trim()) {
 
         this.errors.name =
           "Full name is required";
 
       }
-
-      // EMAIL
 
       const emailRegex =
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -573,18 +557,12 @@ export default {
 
       }
 
-      // PASSWORD
-
-      if (
-        !this.register.password
-      ) {
+      if (!this.register.password) {
 
         this.errors.password =
           "Password is required";
 
       }
-
-      // CONFIRM PASSWORD
 
       if (
         this.register.password !==
@@ -595,8 +573,6 @@ export default {
           "Passwords do not match";
 
       }
-
-      // PHONE
 
       const phoneRegex =
         /^[0-9]{10}$/;
@@ -612,51 +588,33 @@ export default {
 
       }
 
-      // DEPARTMENT
-
-      if (
-        !this.register.department
-      ) {
+      if (!this.register.department) {
 
         this.errors.department =
           "Department is required";
 
       }
 
-      // DESIGNATION
-
-      if (
-        !this.register.designation
-      ) {
+      if (!this.register.designation) {
 
         this.errors.designation =
           "Designation is required";
 
       }
 
-      // ROLE
-
-      if (
-        !this.register.role
-      ) {
+      if (!this.register.role) {
 
         this.errors.role =
           "Role is required";
 
       }
 
-      // GENDER
-
-      if (
-        !this.register.gender
-      ) {
+      if (!this.register.gender) {
 
         this.errors.gender =
           "Gender is required";
 
       }
-
-      // STOP IF ERROR
 
       if (
         Object.keys(this.errors)
@@ -678,52 +636,12 @@ export default {
 
           );
 
-        if (
-          response.data &&
-          response.data.message
-        ) {
-
-          alert(
-            response.data.message
-          );
-
-        }
-
-        else {
-
-          alert(
-            "User Registered Successfully"
-          );
-
-        }
-
-        // CLOSE POPUP
+        alert(
+          response.data.message ||
+          "User Registered Successfully"
+        );
 
         this.showPopup = false;
-
-        // RESET FORM
-
-        this.register = {
-
-          name: "",
-
-          username: "",
-
-          password: "",
-
-          repassword: "",
-
-          phone: "",
-
-          department: "",
-
-          designation: "",
-
-          role: "",
-
-          gender: ""
-
-        };
 
       }
 
@@ -738,8 +656,6 @@ export default {
       }
 
     },
-
-    // ================= FETCH DEPARTMENTS =================
 
     async fetchDepartments() {
 
@@ -764,8 +680,6 @@ export default {
       }
 
     },
-
-    // ================= FETCH ROLES =================
 
     async getRoles() {
 
@@ -809,14 +723,14 @@ export default {
 }
 
 body{
-  background:#f4f7fb;
+  background:#eef1f5;
 }
 
 /* Navbar */
 
 .navbar{
-  height:85px;
-  background:#42b883;
+  height:90px;
+  background:#43c18c;
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -828,30 +742,32 @@ body{
 .logo-area{
   display:flex;
   align-items:center;
-  gap:14px;
+  gap:16px;
 }
 
 .logo-circle{
-  width:58px;
-  height:58px;
-  border-radius:14px;
+  width:62px;
+  height:62px;
+  border-radius:16px;
   background:white;
-  color:#42b883;
+  color:#43c18c;
   display:flex;
   justify-content:center;
   align-items:center;
-  font-size:20px;
+  font-size:26px;
   font-weight:bold;
 }
 
 .logo-area h2{
   color:white;
-  font-size:32px;
+  font-size:42px;
+  font-weight:700;
 }
 
 .logo-area p{
-  color:#eafff5;
-  font-size:14px;
+  color:#f4fff8;
+  font-size:15px;
+  margin-top:3px;
 }
 
 /* Buttons */
@@ -859,27 +775,31 @@ body{
 .register-btn,
 .login-btn{
   border:none;
-  padding:12px 24px;
-  border-radius:10px;
   cursor:pointer;
-  font-size:15px;
   font-weight:600;
 }
 
 .register-btn{
   background:white;
-  color:#42b883;
+  color:#43c18c;
+  padding:14px 28px;
+  border-radius:14px;
+  font-size:16px;
 }
 
 .login-btn{
-  background:#42b883;
+  background:#43c18c;
   color:white;
+  padding:13px 30px;
+  border-radius:12px;
+  font-size:17px;
+  margin-top:10px;
 }
 
 /* Container */
 
 .container{
-  height:calc(100vh - 85px);
+  height:calc(100vh - 90px);
   display:flex;
   justify-content:center;
   align-items:center;
@@ -888,21 +808,25 @@ body{
 /* Login Card */
 
 .login-card{
-  width:400px;
+  width:430px;
   background:white;
   padding:40px;
-  border-radius:25px;
+  border-radius:30px;
   text-align:center;
   box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
 .login-card h1{
-  margin-bottom:10px;
+  font-size:42px;
+  margin-bottom:12px;
+  color:#1f2937;
+  line-height:1.2;
 }
 
 .login-card p{
   color:#6b7280;
-  margin-bottom:25px;
+  font-size:16px;
+  margin-bottom:28px;
 }
 
 /* Inputs */
@@ -915,12 +839,12 @@ body{
 input,
 select{
   width:100%;
-  padding:14px;
-  border-radius:10px;
+  padding:15px;
+  border-radius:12px;
   border:1px solid #d1d5db;
   outline:none;
-  font-size:14px;
-  color:#6b7280;
+  font-size:15px;
+  color:#4b5563;
   background:white;
 }
 
@@ -930,7 +854,7 @@ input::placeholder{
 
 input:focus,
 select:focus{
-  border-color:#42b883;
+  border-color:#43c18c;
 }
 
 /* Popup */
@@ -950,7 +874,7 @@ select:focus{
 .popup-box{
   width:650px;
   background:white;
-  border-radius:35px;
+  border-radius:30px;
   padding:30px;
   position:relative;
   max-height:88vh;
@@ -965,7 +889,7 @@ select:focus{
 }
 
 .popup-header h2{
-  font-size:30px;
+  font-size:32px;
 }
 
 .popup-header p{
@@ -1035,8 +959,9 @@ select:focus{
   }
 
   .logo-area h2{
-    font-size:26px;
+    font-size:28px;
   }
+
 }
 
 </style>

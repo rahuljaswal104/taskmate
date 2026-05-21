@@ -1,5 +1,8 @@
 package com.phsc.taskmate.dto;
 
+import com.phsc.taskmate.entity.Department;
+import com.phsc.taskmate.entity.Role;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -20,7 +23,9 @@ public class RegisterUserDTO {
 	@Size(min = 5, message = "Password must be at least 8 characters long")
 	private String password;
 
-	private String role;
+	private Role role;
+	
+	private Department department;
 
 	private String status;
 
@@ -30,7 +35,6 @@ public class RegisterUserDTO {
 
 	private String designation;
 
-	private String department;
 
 	public RegisterUserDTO() {
 		super();
@@ -40,7 +44,7 @@ public class RegisterUserDTO {
 			@NotBlank(message = "Name is required") @Pattern(regexp = "^[A-Za-z ]+$", message = "Name can contain only letters and spaces (no digits or special characters)") @Size(min = 3, message = "Name atleast 3 character") String name,
 			@NotBlank(message = "Username (email) is required") @Email(message = "Username must be a valid email") String username,
 			@NotBlank(message = "Password is required") @Size(min = 5, message = "Password must be at least 8 characters long") String password,
-			String role, String status, String gender, String phone, String designation, String department) {
+			Role role, String status, String gender, String phone, String designation, Department department) {
 		super();
 		this.name = name;
 		this.username = username;
@@ -61,7 +65,7 @@ public class RegisterUserDTO {
 
 			@NotBlank(message = "Password is required") @Size(min = 5, message = "Password must be at least 8 characters long") String password,
 
-			String role,
+			Role role,
 
 			String status
 
@@ -105,11 +109,11 @@ public class RegisterUserDTO {
 		this.password = password;
 	}
 
-	public String getRole() {
+	public Role getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 
@@ -145,11 +149,11 @@ public class RegisterUserDTO {
 		this.designation = designation;
 	}
 
-	public String getDepartment() {
+	public Department getDepartment() {
 		return department;
 	}
 
-	public void setDepartment(String department) {
+	public void setDepartment(Department department) {
 		this.department = department;
 	}
 

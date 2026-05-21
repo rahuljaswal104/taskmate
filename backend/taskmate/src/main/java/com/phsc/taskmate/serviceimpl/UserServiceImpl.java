@@ -1,6 +1,7 @@
 package com.phsc.taskmate.serviceimpl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.phsc.taskmate.customresponse.CustomResponse;
 import com.phsc.taskmate.dto.RegisterUserDTO;
+import com.phsc.taskmate.entity.Department;
+import com.phsc.taskmate.entity.Role;
 import com.phsc.taskmate.entity.UserRegister;
+import com.phsc.taskmate.repository.DepartmentRepository;
+import com.phsc.taskmate.repository.RoleRepository;
 import com.phsc.taskmate.repository.UserRepository;
 import com.phsc.taskmate.service.UserService;
 
@@ -17,6 +22,12 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository mateRepository;
+	
+	@Autowired
+	private RoleRepository roleRepository;
+	
+	@Autowired
+	private DepartmentRepository departmentRepository;
 
 	@Override
 	public CustomResponse saveRegisterUser(RegisterUserDTO userDto) {
@@ -34,9 +45,9 @@ public class UserServiceImpl implements UserService {
 				return new CustomResponse("userdata missing", 400, userDto);
 			}
 
-			if (userDto.getRole().contains("SUPERADMIN")) {
+			if (userDto.getRole().equals("SUPERADMIN")) {
 				for (UserRegister u : userList) {
-					if (u.getRole().contains("SUPERADMIN")) {
+					if (u.getRole().equals("SUPERADMIN")) {
 						return new CustomResponse("superadmin already exist", 409, userDto.getUsername());
 					}
 				}
@@ -46,10 +57,18 @@ public class UserServiceImpl implements UserService {
 
 			newUser.setName(userDto.getName());
 			newUser.setUsername(userDto.getUsername());
-			newUser.setRole(userDto.getRole());
+			
+			Role role = roleRepository.findById(userDto.getRole().getId())
+			        .orElseThrow(() -> new RuntimeException("Role not found"));
+			newUser.setRole(role);
+			
 			newUser.setGender(userDto.getGender());
 			newUser.setPhone(userDto.getPhone());
-			newUser.setDepartment(userDto.getDepartment());
+			
+			Department department = departmentRepository.findById(userDto.getDepartment().getId())
+			        .orElseThrow(() -> new RuntimeException("Department not found"));
+			newUser.setDepartment(department);
+			
 			newUser.setDesignation(userDto.getDesignation());
 			newUser.setStatus("ACTIVE");
 			String encPassword = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt());

@@ -22,7 +22,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "assign_tasks")
@@ -33,9 +36,12 @@ public class AssignTask {
 	private Long id;
 
 	// Task Details
+	@NotBlank
 	private String title;
 
-	private String project;
+	@ManyToOne
+	@JoinColumn(name="project_id")
+	private Project project;
 
 	@Enumerated(EnumType.STRING)
 	private TaskType taskType;
@@ -65,7 +71,10 @@ public class AssignTask {
 	private List<UserRegister> employees;
 
 	// Assignment Details
-	private String assignedBy;
+	
+	@ManyToOne
+	@JoinColumn(name="assign_by")
+	private UserRegister assignedBy;
 
 	private LocalDate assignedDate;
 
@@ -76,13 +85,21 @@ public class AssignTask {
 	// Progress Tracking
 	private Integer progressPercentage = 0;
 
-	private LocalDate completedDate;
+	private LocalDate targetDate;
 
 	@Enumerated(EnumType.STRING)
-	private TaskStatus taskStatus;
+	private TaskStatus taskStatus = TaskStatus.PENDING ;
 
 	@Column(columnDefinition = "TEXT")
 	private String remarks;
+	
+	  private String fileName;
+
+	    // File type مثل image/png, application/pdf
+	  private String fileType;
+
+	    // File path OR URL
+	  private String filePath;
 
 	// Status
 	private String status = "ACTIVE";
@@ -98,10 +115,42 @@ public class AssignTask {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public AssignTask(Long id, @NotBlank String title, Project project, TaskType taskType, Priority priority,
+			String description, List<UserRegister> employees, UserRegister assignedBy, LocalDate assignedDate,
+			LocalDate startDate, LocalDate endDate, Integer progressPercentage, LocalDate targetDate,
+			TaskStatus taskStatus, String remarks, String fileName, String fileType, String filePath, String status,
+			LocalDateTime createdDate, LocalDateTime updatedDate) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.project = project;
+		this.taskType = taskType;
+		this.priority = priority;
+		this.description = description;
+		this.employees = employees;
+		this.assignedBy = assignedBy;
+		this.assignedDate = assignedDate;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.progressPercentage = progressPercentage;
+		this.targetDate = targetDate;
+		this.taskStatus = taskStatus;
+		this.remarks = remarks;
+		this.fileName = fileName;
+		this.fileType = fileType;
+		this.filePath = filePath;
+		this.status = status;
+		this.createdDate = createdDate;
+		this.updatedDate = updatedDate;
+	}
 
-	public AssignTask(Long id, String title, String project, TaskType taskType, Priority priority, String description,
-			List<UserRegister> employees, String assignedBy, LocalDate assignedDate, LocalDate startDate,
-			LocalDate endDate, Integer progressPercentage, LocalDate completedDate, TaskStatus taskStatus,
+
+
+
+	public AssignTask(Long id, String title, Project project, TaskType taskType, Priority priority, String description,
+			List<UserRegister> employees, UserRegister assignedBy, LocalDate assignedDate, LocalDate startDate,
+			LocalDate endDate, Integer progressPercentage, LocalDate targetDate, TaskStatus taskStatus,
 			String remarks, String status, LocalDateTime createdDate, LocalDateTime updatedDate) {
 		super();
 		this.id = id;
@@ -116,7 +165,7 @@ public class AssignTask {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.progressPercentage = progressPercentage;
-		this.completedDate = completedDate;
+		this.targetDate = targetDate;
 		this.taskStatus = taskStatus;
 		this.remarks = remarks;
 		this.status = status;
@@ -140,11 +189,11 @@ public class AssignTask {
 		this.title = title;
 	}
 
-	public String getProject() {
+	public Project getProject() {
 		return project;
 	}
 
-	public void setProject(String project) {
+	public void setProject(Project project) {
 		this.project = project;
 	}
 
@@ -180,11 +229,11 @@ public class AssignTask {
 		this.employees = employees;
 	}
 
-	public String getAssignedBy() {
+	public UserRegister getAssignedBy() {
 		return assignedBy;
 	}
 
-	public void setAssignedBy(String assignedBy) {
+	public void setAssignedBy(UserRegister assignedBy) {
 		this.assignedBy = assignedBy;
 	}
 
@@ -220,13 +269,49 @@ public class AssignTask {
 		this.progressPercentage = progressPercentage;
 	}
 
-	public LocalDate getCompletedDate() {
-		return completedDate;
+	public LocalDate getTargetDate() {
+		return targetDate;
 	}
 
-	public void setCompletedDate(LocalDate completedDate) {
-		this.completedDate = completedDate;
+	public void setTargetDate(LocalDate targetDate) {
+		this.targetDate = targetDate;
 	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+
+
+
+
+	public String getFileType() {
+		return fileType;
+	}
+
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
+	}
+	
+	public String getFilePath() {
+		return filePath;
+	}
+
+
+
+
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+
+
+
 
 	public TaskStatus getTaskStatus() {
 		return taskStatus;
@@ -273,12 +358,10 @@ public class AssignTask {
 		return "AssignTask [id=" + id + ", title=" + title + ", project=" + project + ", taskType=" + taskType
 				+ ", priority=" + priority + ", description=" + description + ", employees=" + employees
 				+ ", assignedBy=" + assignedBy + ", assignedDate=" + assignedDate + ", startDate=" + startDate
-				+ ", endDate=" + endDate + ", progressPercentage=" + progressPercentage + ", completedDate="
-				+ completedDate + ", taskStatus=" + taskStatus + ", remarks=" + remarks + ", status=" + status
-				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + "]";
+				+ ", endDate=" + endDate + ", progressPercentage=" + progressPercentage + ", targetDate=" + targetDate
+				+ ", taskStatus=" + taskStatus + ", remarks=" + remarks + ", fileName=" + fileName + ", fileType="
+				+ fileType + ", filePath=" + filePath + ", status=" + status + ", createdDate=" + createdDate
+				+ ", updatedDate=" + updatedDate + "]";
 	}
-
-	
-	
 	
 }

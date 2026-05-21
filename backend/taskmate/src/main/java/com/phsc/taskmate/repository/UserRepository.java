@@ -14,11 +14,17 @@ import com.phsc.taskmate.entity.UserRegister;
 public interface UserRepository extends JpaRepository<UserRegister, Long>{
 
 	                                                   
-	@Query(value = "SELECT username, role, status FROM registeruser WHERE username = :name",nativeQuery = true)
-    List<RegisterUserDTO> findByUsername(@Param("name") String st);
+//	@Query(value = "SELECT username, role, status FROM registeruser WHERE username = :name",nativeQuery = true)
+//    List<RegisterUserDTO> findByUsername(@Param("name") String st);
 	
-	@Query(value = "SELECT name,username, password, role, status FROM registeruser WHERE username = :name",nativeQuery = true)
-	RegisterUserDTO findByUser(@Param("name") String st);
+	@Query("SELECT new com.phsc.taskmate.dto.RegisterUserDTO(u.name, u.username, u.password, u.role, u.status) " +
+		       "FROM UserRegister u WHERE u.username = :name")
+		List<RegisterUserDTO> findByUsername(@Param("name") String st);
+	
+	@Query("SELECT new com.phsc.taskmate.dto.RegisterUserDTO(" +
+		       "u.name, u.username, u.password, u.role, u.status) " +
+		       "FROM UserRegister u WHERE u.username = :name")
+		RegisterUserDTO findByUser(@Param("name") String st);
 
 	@Query("SELECT new com.phsc.taskmate.entity.UserRegister(u.id, u.name, u.username, u.phone, u.designation, u.department, u.gender) FROM UserRegister u WHERE u.status = 'ACTIVE'")
 	List<UserRegister> getAllUserByStatus();

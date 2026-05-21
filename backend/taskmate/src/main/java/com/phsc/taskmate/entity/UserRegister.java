@@ -13,7 +13,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -38,12 +40,20 @@ public class UserRegister {
 	
 	private String designation;
 	
-	private String department;
+//	private String department;
+	
+	@ManyToOne
+	@JoinColumn(name = "department_id")
+	private Department department;
 	
 	private String employeeCode;
 
-	@Column(name = "role")
-	private String role; // e.g., USER, ADMIN
+//	@Column(name = "role")
+//	private String role; // e.g., USER, ADMIN
+	
+	@ManyToOne
+	@JoinColumn(name = "role_id")
+	private Role role;
 
 	@Column(name = "status")
 	private String status = "ACTIVE"; // e.g., ACTIVE, INACTIVE
@@ -68,7 +78,7 @@ public class UserRegister {
 	}
 
 	public UserRegister(Long id, String name, String username, String password, String phone,
-			String designation, String department, String employeeCode, String role, String status, String gender,
+			String designation, Department department, String employeeCode, Role role, String status, String gender,
 			List<AssignTask> tasks, LocalDateTime createdDate, LocalDateTime updatedDate) {
 		super();
 		this.id = id;
@@ -87,7 +97,7 @@ public class UserRegister {
 		this.updatedDate = updatedDate;
 	}
 
-	public UserRegister(Long id, String name, String username, String phone, String designation, String department,
+	public UserRegister(Long id, String name, String username, String phone, String designation, Department department,
 			String gender) {
 		super();
 		this.id = id;
@@ -147,11 +157,11 @@ public class UserRegister {
 		this.designation = designation;
 	}
 
-	public String getDepartment() {
+	public Department getDepartment() {
 		return department;
 	}
 
-	public void setDepartment(String department) {
+	public void setDepartment(Department department) {
 		this.department = department;
 	}
 
@@ -163,11 +173,11 @@ public class UserRegister {
 		this.employeeCode = employeeCode;
 	}
 
-	public String getRole() {
+	public Role getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 

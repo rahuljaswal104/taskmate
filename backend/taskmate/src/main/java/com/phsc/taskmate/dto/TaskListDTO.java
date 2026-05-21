@@ -2,6 +2,8 @@ package com.phsc.taskmate.dto;
 
 import java.time.LocalDate;
 
+import com.phsc.taskmate.entity.Project;
+import com.phsc.taskmate.entity.UserRegister;
 import com.phsc.taskmate.enums.TaskStatus;
 
 public class TaskListDTO {
@@ -9,18 +11,18 @@ public class TaskListDTO {
 	private String title;
 	private Long id;
 	private String name;
-	private String assignedBy;
+	private UserRegister assignedBy;
 	private LocalDate assignedDate;
 	private LocalDate endDate;
 	private TaskStatus taskStatus;
-	private String project;
+	private Project project;
 
 	public TaskListDTO() {
 		super();
 	}
 
-	public TaskListDTO(String title, String name, String assignedBy, LocalDate assignedDate, LocalDate endDate,
-			TaskStatus taskStatus, String project) {
+	public TaskListDTO(String title, String name, UserRegister assignedBy, LocalDate assignedDate, LocalDate endDate,
+			TaskStatus taskStatus, Project project) {
 		super();
 		this.title = title;
 		this.name = name;
@@ -31,8 +33,8 @@ public class TaskListDTO {
 		this.project = project;
 	}
 	
-	public TaskListDTO(String title,Long id, String name, String assignedBy, LocalDate assignedDate, LocalDate endDate,
-			TaskStatus taskStatus, String project) {
+	public TaskListDTO(String title,Long id, String name, UserRegister assignedBy, LocalDate assignedDate, LocalDate endDate,
+			TaskStatus taskStatus, Project project) {
 		super();
 		this.title = title;
 		this.id= id;
@@ -68,11 +70,11 @@ public class TaskListDTO {
 		this.id = id;
 	}
 
-	public String getAssignedBy() {
+	public UserRegister getAssignedBy() {
 		return assignedBy;
 	}
 
-	public void setAssignedBy(String assignedBy) {
+	public void setAssignedBy(UserRegister assignedBy) {
 		this.assignedBy = assignedBy;
 	}
 
@@ -100,11 +102,11 @@ public class TaskListDTO {
 		this.taskStatus = taskStatus;
 	}
 
-	public String getProject() {
+	public Project getProject() {
 		return project;
 	}
 
-	public void setProject(String project) {
+	public void setProject(Project project) {
 		this.project = project;
 	}
 
