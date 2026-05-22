@@ -47,11 +47,11 @@
 
               <td>{{ task.title }}</td>
 
-              <td>{{ task.project }}</td>
+              <td>{{ task.project.projectName }}</td>
 
               <td>{{ task.name }}</td>
 
-              <td>{{ task.assignedBy }}</td>
+              <td>{{ task.assignedBy.name }}</td>
 
               <td>{{ formatDate(task.assignedDate) }}</td>
 
