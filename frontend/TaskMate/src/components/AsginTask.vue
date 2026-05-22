@@ -374,7 +374,7 @@ export default {
 
       task: {
 
-        title: "hjhkjhkjhjkh",
+        title: "",
 
         project: {
           id: ""
