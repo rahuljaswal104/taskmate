@@ -297,7 +297,7 @@
 
             <label>Status</label>
 
-            <select v-model="task.status">
+            <select v-model="task.status" disabled>
 
               <option value="PENDING">
                 Pending
