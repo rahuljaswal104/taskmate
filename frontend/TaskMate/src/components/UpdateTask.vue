@@ -1,3 +1,4 @@
+
 <template>
 
   <div class="update-page">
@@ -68,7 +69,7 @@
 
             <div class="detail-row">
               <span>Project:</span>
-              <strong>{{ task.project }}</strong>
+              <strong>{{ task.project.projectName }}</strong>
             </div>
 
             <div class="detail-row">
@@ -89,17 +90,17 @@
 
             <div class="detail-row">
               <span>Assigned By:</span>
-              <strong>{{ task.assignedBy }}</strong>
+              <strong>{{ task.assignedBy.name }}</strong>
             </div>
 
             <div class="detail-row">
               <span>Assigned Date:</span>
-              <strong>{{ task.assignedDate }}</strong>
+              <strong>{{ formatDate(task.assignedDate )}}</strong>
             </div>
 
             <div class="detail-row">
               <span>Target Date:</span>
-              <strong>{{ task.endDate }}</strong>
+              <strong>{{formatDate(task.targetDate)  }}</strong>
             </div>
 
           </div>
@@ -108,67 +109,6 @@
 
       </div>
 
-      <!-- ================================= -->
-      <!-- EMPLOYEE DETAILS -->
-      <!-- ================================= -->
-
-      <div class="section-wrapper">
-
-        <div class="section-title">
-          Employee Details
-        </div>
-
-        <div class="details-grid">
-
-          <!-- LEFT -->
-
-          <div class="details-column">
-
-            <div class="detail-row">
-              <span>Employee Name:</span>
-              <strong>{{ task.employees?.[0]?.name }}</strong>
-            </div>
-
-            <div class="detail-row">
-              <span>Email:</span>
-              <strong>{{ task.employees?.[0]?.username }}</strong>
-            </div>
-
-            <div class="detail-row">
-              <span>Department:</span>
-              <strong>{{ task.employees?.[0]?.department }}</strong>
-            </div>
-
-          </div>
-
-          <!-- RIGHT -->
-
-          <div class="details-column">
-
-            <div class="detail-row">
-              <span>Designation:</span>
-              <strong>{{ task.employees?.[0]?.designation }}</strong>
-            </div>
-
-            <div class="detail-row">
-              <span>Phone:</span>
-              <strong>{{ task.employees?.[0]?.phone }}</strong>
-            </div>
-
-            <div class="detail-row">
-              <span>Role:</span>
-              <strong>{{ task.employees?.[0]?.role }}</strong>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- ================================= -->
-      <!-- UPDATE PROGRESS -->
-      <!-- ================================= -->
 
       <div class="section-wrapper">
 
@@ -234,7 +174,13 @@
 
             <label>Upload File</label>
 
-            <input type="file" />
+            <!-- <input type="file" /> -->
+
+            <input
+             type="file"
+             accept=".pdf,.png,.jpg,.jpeg,.docx,.xls,.xlsx"
+             @change="handleFileUpload"
+             />
 
           </div>
 
@@ -283,11 +229,14 @@ export default {
 
     return {
 
-      task: null
+     task: null,
+
+    selectedFile: null
 
     };
 
   },
+  
 
   mounted() {
 
@@ -296,6 +245,13 @@ export default {
   },
 
   methods: {
+
+   formatDate(date) {
+
+      if (!date) return "-";
+
+      return new Date(date).toLocaleDateString("en-GB").replace(/\//g, "-");
+    },
 
     async fetchTaskById() {
 
@@ -317,26 +273,127 @@ export default {
 
     },
 
-    async updateTask() {
 
-      try {
+ handleFileUpload(event) {
 
-        await axios.put(
-          `http://localhost:8080/api/assgintask/update/${this.task.id}`,
-          this.task
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    const allowedTypes = [
+
+      "application/pdf",
+
+      "image/png",
+
+      "image/jpeg",
+
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+
+      "application/vnd.ms-excel",
+
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+
+      alert(
+        "Only PDF, JPG, PNG, DOCX and Excel files are allowed"
+      );
+
+      event.target.value = "";
+
+      return;
+    }
+
+    this.selectedFile = file;
+  },
+
+  async updateTask() {
+
+    try {
+
+      const formData = new FormData();
+
+      const taskData = {
+
+        taskStatus: this.task.taskStatus,
+
+        startDate: this.task.startDate,
+
+        endDate: this.task.endDate,
+
+        remarks: this.task.remarks
+
+      };
+
+      formData.append(
+        "task",
+        JSON.stringify(taskData)
+      );
+
+      if (this.selectedFile) {
+
+        formData.append(
+          "file",
+          this.selectedFile
         );
-
-        alert("Task Updated Successfully");
-
-      } catch (error) {
-
-        console.error(error);
-
-        alert("Update Failed");
 
       }
 
+      await axios.put(
+
+        `http://localhost:8080/api/assgintask/update/${this.task.id}`,
+
+        formData,
+
+        {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        }
+
+      );
+
+      alert("Task Updated Successfully");
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert("Update Failed");
+
     }
+
+  }
+
+
+
+
+
+
+
+    // async updateTask() {
+
+    //   try {
+
+    //     await axios.put(
+    //       `http://localhost:8080/api/assgintask/update/${this.task.id}`,
+    //       this.task
+    //     );
+
+    //     alert("Task Updated Successfully");
+
+    //   } catch (error) {
+
+    //     console.error(error);
+
+    //     alert("Update Failed");
+
+    //   }
+
+    // }
 
   }
 

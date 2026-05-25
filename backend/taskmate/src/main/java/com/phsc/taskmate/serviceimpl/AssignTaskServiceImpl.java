@@ -1,14 +1,21 @@
 package com.phsc.taskmate.serviceimpl;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.phsc.taskmate.customresponse.CustomResponse;
 import com.phsc.taskmate.dto.TaskListDTO;
+import com.phsc.taskmate.dto.UpdateTaskDto;
 import com.phsc.taskmate.entity.AssignTask;
 import com.phsc.taskmate.entity.UserRegister;
 import com.phsc.taskmate.repository.AssignTaskRepository;
@@ -82,38 +89,126 @@ public class AssignTaskServiceImpl implements AssignTaskService {
 
 	@Override
 	public CustomResponse getTaskList() {
-		
+
 		List<TaskListDTO> taskList = assignTaskRepo.getTaskListData();
 
-		    if(taskList.isEmpty()) {
-		        return new CustomResponse("list empty", 400, null);
-		    }
+		if (taskList.isEmpty()) {
+			return new CustomResponse("list empty", 400, null);
+		}
 
-		    return new CustomResponse("Task List", 200, taskList);
+		return new CustomResponse("Task List", 200, taskList);
 	}
 
 	@Override
 	public List<TaskListDTO> getTaskByEmployee(String username) {
-		
+
 		List<TaskListDTO> usertasks = assignTaskRepo.getTaskByUserName(username);
-		
-		
+
 		return usertasks;
 	}
 
+	
+	
 	@Override
 	public CustomResponse getTaskById(Long id) {
-		  Optional<AssignTask> taskdtl = assignTaskRepo.findById(id);
-		  
+		Optional<AssignTask> taskdtl = assignTaskRepo.findById(id);
+
 		if (taskdtl.isEmpty()) {
 			return new CustomResponse("task detail not get", 400, null);
 		}
-	
+
 		return new CustomResponse("success", 200, taskdtl);
 	}
 	
 	
 	
-	
+
+	@Override
+	public AssignTask updateTask(Long id, UpdateTaskDto request, MultipartFile file) {
+
+		AssignTask task = assignTaskRepo.findById(id).orElseThrow(() -> new RuntimeException("Task Not Found"));
+
+		// ===============================
+		// UPDATE REQUIRED FIELDS
+		// ===============================
+
+		task.setTaskStatus(request.getTaskStatus());
+
+		task.setStartDate(request.getStartDate());
+
+		task.setEndDate(request.getEndDate());
+
+		task.setRemarks(request.getRemarks());
+
+		// ===============================
+		// FILE VALIDATION + UPLOAD
+		// ===============================
+
+		if (file != null && !file.isEmpty()) {
+
+			String contentType = file.getContentType();
+
+			// Allowed File Types
+
+			if (
+
+			!contentType.equals("application/pdf")
+
+					&& !contentType.equals("image/png")
+
+					&& !contentType.equals("image/jpeg")
+
+					&& !contentType.equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+
+					&& !contentType.equals("application/vnd.ms-excel")
+
+					&& !contentType.equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+
+			) {
+
+				throw new RuntimeException("Only PDF, JPG, PNG, DOCX and Excel files are allowed");
+			}
+
+			// Max File Size = 5MB
+
+			if (file.getSize() > 5 * 1024 * 1024) {
+
+				throw new RuntimeException("File size must be less than 5MB");
+			}
+
+			try {
+
+				String uploadDir = "uploads/";
+
+				File dir = new File(uploadDir);
+
+				if (!dir.exists()) {
+
+					dir.mkdirs();
+
+				}
+
+				String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+
+				String filePath = uploadDir + fileName;
+
+				Files.copy(file.getInputStream(), Paths.get(filePath));
+
+				// Save File Details
+
+				task.setFileName(fileName);
+
+				task.setFileType(contentType);
+
+				task.setFilePath(filePath);
+
+			} catch (IOException e) {
+
+				throw new RuntimeException("File Upload Failed");
+			}
+		}
+
+		return assignTaskRepo.save(task);
+	}
 
 }

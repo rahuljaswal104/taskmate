@@ -20,10 +20,10 @@ public interface AssignTaskRepository extends JpaRepository<AssignTask, Long> {
 	@Query("SELECT new com.phsc.taskmate.dto.EmployeeReportDTO(u.name, COUNT(t), SUM(CASE WHEN t.taskStatus = 'COMPLETED' THEN 1 ELSE 0 END), SUM(CASE WHEN t.taskStatus = 'PENDING' THEN 1 ELSE 0 END), SUM(CASE WHEN t.taskStatus = 'IN_PROGRESS' THEN 1 ELSE 0 END), ROUND((SUM(CASE WHEN t.taskStatus = 'COMPLETED' THEN 1 ELSE 0 END) * 100.0 / COUNT(t)), 1)) FROM AssignTask t JOIN t.employees u GROUP BY u.name")
 	List<EmployeeReportDTO> getEmployeeReport();
 
-	@Query("SELECT new com.phsc.taskmate.dto.TaskListDTO(t.title, u.name, t.assignedBy, t.assignedDate, t.endDate, t.taskStatus, t.project) FROM AssignTask t JOIN t.employees u")
+	@Query("SELECT new com.phsc.taskmate.dto.TaskListDTO(t.title, u.name, t.assignedBy, t.assignedDate, t.targetDate, t.taskStatus, t.project) FROM AssignTask t JOIN t.employees u")
 	List<TaskListDTO> getTaskListData();
 	
-	@Query("SELECT new com.phsc.taskmate.dto.TaskListDTO(t.title,t.id, u.name, t.assignedBy, t.assignedDate, t.endDate, t.taskStatus, t.project) FROM AssignTask t JOIN t.employees u where u.username =:username")
+	@Query("SELECT new com.phsc.taskmate.dto.TaskListDTO(t.title,t.id, u.name, t.assignedBy, t.assignedDate, t.targetDate, t.taskStatus, t.project) FROM AssignTask t JOIN t.employees u where u.username =:username")
 	List<TaskListDTO> getTaskByUserName(@Param("username")String username);
 
 }

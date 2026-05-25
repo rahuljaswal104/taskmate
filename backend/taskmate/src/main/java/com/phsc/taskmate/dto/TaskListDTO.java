@@ -13,7 +13,7 @@ public class TaskListDTO {
 	private String name;
 	private UserRegister assignedBy;
 	private LocalDate assignedDate;
-	private LocalDate endDate;
+	private LocalDate targetDate;
 	private TaskStatus taskStatus;
 	private Project project;
 
@@ -21,19 +21,19 @@ public class TaskListDTO {
 		super();
 	}
 
-	public TaskListDTO(String title, String name, UserRegister assignedBy, LocalDate assignedDate, LocalDate endDate,
+	public TaskListDTO(String title, String name, UserRegister assignedBy, LocalDate assignedDate, LocalDate targetDate,
 			TaskStatus taskStatus, Project project) {
 		super();
 		this.title = title;
 		this.name = name;
 		this.assignedBy = assignedBy;
 		this.assignedDate = assignedDate;
-		this.endDate = endDate;
+		this.targetDate = targetDate;
 		this.taskStatus = taskStatus;
 		this.project = project;
 	}
 	
-	public TaskListDTO(String title,Long id, String name, UserRegister assignedBy, LocalDate assignedDate, LocalDate endDate,
+	public TaskListDTO(String title,Long id, String name, UserRegister assignedBy, LocalDate assignedDate, LocalDate targetDate,
 			TaskStatus taskStatus, Project project) {
 		super();
 		this.title = title;
@@ -41,7 +41,7 @@ public class TaskListDTO {
 		this.name = name;
 		this.assignedBy = assignedBy;
 		this.assignedDate = assignedDate;
-		this.endDate = endDate;
+		this.targetDate = targetDate;
 		this.taskStatus = taskStatus;
 		this.project = project;
 	}
@@ -86,12 +86,12 @@ public class TaskListDTO {
 		this.assignedDate = assignedDate;
 	}
 
-	public LocalDate getEndDate() {
-		return endDate;
+	public LocalDate getTargetDate() {
+		return targetDate;
 	}
 
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
+	public void setTargetDate(LocalDate targetDate) {
+		this.targetDate = targetDate;
 	}
 
 	public TaskStatus getTaskStatus() {

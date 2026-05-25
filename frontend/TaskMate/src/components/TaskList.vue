@@ -55,7 +55,7 @@
 
               <td>{{ formatDate(task.assignedDate) }}</td>
 
-              <td>{{ formatDate(task.endDate) }}</td>
+              <td>{{ formatDate(task.targetDate) }}</td>
 
               <td>
                 <span

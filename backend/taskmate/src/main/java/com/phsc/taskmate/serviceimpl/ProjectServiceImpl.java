@@ -40,7 +40,7 @@ public class ProjectServiceImpl implements ProjectService {
 		project.setProjectName(projectDto.getProjectName());
 		projectRepository.save(project);
 
-		return new CustomResponse<>("Project saved successfully", 200, project);
+		return new CustomResponse("Project saved successfully", 200, project);
 	}
 
 	@Override

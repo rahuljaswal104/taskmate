@@ -545,9 +545,7 @@ export default {
 
           assignedDate: this.task.assignDate,
 
-          startDate: this.task.assignDate,
-
-          endDate: this.task.targetDate,
+          targetDate: this.task.targetDate,
 
           taskStatus: this.task.status,
 
