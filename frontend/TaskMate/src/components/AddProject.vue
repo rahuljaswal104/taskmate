@@ -172,6 +172,10 @@ export default {
     },
 
     async saveProject() {
+    if(this.project.projectName==""){
+      alert("please enter name of project")
+      return ;
+    }
 
       try {
 

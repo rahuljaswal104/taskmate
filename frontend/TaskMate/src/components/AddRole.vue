@@ -181,6 +181,10 @@ export default {
     },
 
     async saveRole() {
+      if(this.role.roleName==""){
+      alert("please select role")
+      return ;
+    }
 
       try {
 
