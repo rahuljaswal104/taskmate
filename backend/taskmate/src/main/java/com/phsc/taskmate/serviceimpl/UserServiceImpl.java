@@ -21,7 +21,7 @@ import com.phsc.taskmate.service.UserService;
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	private UserRepository mateRepository;
+	private UserRepository userRepository;
 	
 	@Autowired
 	private RoleRepository roleRepository;
@@ -38,8 +38,8 @@ public class UserServiceImpl implements UserService {
 				return new CustomResponse("userdata missing", 400, userDto);
 			}
 
-			List<UserRegister> userList = mateRepository.findAll();
-			List<RegisterUserDTO> us = mateRepository.findByUsername(userDto.getUsername());
+			List<UserRegister> userList = userRepository.findAll();
+			List<RegisterUserDTO> us = userRepository.findByUsername(userDto.getUsername());
 
 			if (!us.isEmpty()) {
 				return new CustomResponse("userdata missing", 400, userDto);
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
 			newUser.setStatus("ACTIVE");
 			String encPassword = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt());
 			newUser.setPassword(encPassword);
-			mateRepository.save(newUser);
+			userRepository.save(newUser);
 			return new CustomResponse("user data saved successfully", 200, userDto);
 
 		} catch (Exception e) {
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public CustomResponse loginUser(RegisterUserDTO userDto) {
 
-		RegisterUserDTO us = mateRepository.findByUser(userDto.getUsername());
+		RegisterUserDTO us = userRepository.findByUser(userDto.getUsername());
 
 		if (us == null) {
 			return new CustomResponse("No user found", 404, null);
@@ -107,6 +107,13 @@ public class UserServiceImpl implements UserService {
          userDto.setPassword(null);
 		return new CustomResponse("Login successful", 200, userDto);
 
+	}
+
+	@Override
+	public CustomResponse employeeCount() {
+		long employeecount = userRepository.count();
+		
+		return new CustomResponse("employee count", 200, employeecount);
 	}
 
 }

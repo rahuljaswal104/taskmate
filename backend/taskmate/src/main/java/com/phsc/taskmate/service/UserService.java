@@ -8,4 +8,5 @@ public interface UserService {
 	public CustomResponse saveRegisterUser(RegisterUserDTO user);
 	
 	public CustomResponse loginUser(RegisterUserDTO user);
+	public CustomResponse employeeCount();
 }
