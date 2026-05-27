@@ -160,7 +160,7 @@
 
           <div class="mini-card">
 
-            <h3>40</h3>
+            <h3>{{ totalEmployeeCount }}</h3>
 
             <p>Total Employees</p>
 
@@ -220,7 +220,7 @@
 
             </span>
 
-            <h2>40</h2>
+            <h2>{{ totalEmployeeCount }}</h2>
 
           </div>
 
@@ -287,7 +287,8 @@ export default {
       projectCount:0,
       departmentCount:0,
       pendingTaskCount:0,
-      completeTaskCount:0
+      completeTaskCount:0,
+      totalEmployeeCount:0
     }
   },
 
@@ -295,6 +296,7 @@ export default {
      this.getProjectCount();
      this.getDepartmentCount();
      this.getCountPendingAndCompleteTask();
+     this.getTotalEmployeeCount();
   },
 
   methods: {
@@ -382,6 +384,22 @@ export default {
 
     this.pendingTaskCount = response.data.data.pendingCount;
     this.completeTaskCount = response.data.data.completedCount;
+
+  } catch(error) {
+
+    console.log(error);
+
+  }
+   },
+   async getTotalEmployeeCount() {
+
+  try {
+
+    const response = await axios.get(
+      "http://localhost:8080/api/employeecount"
+    );
+
+    this.totalEmployeeCount = response.data.data;
 
   } catch(error) {
 
