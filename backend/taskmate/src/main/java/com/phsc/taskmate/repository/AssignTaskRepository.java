@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.phsc.taskmate.dto.EmployeeReportDTO;
 import com.phsc.taskmate.dto.TaskListDTO;
 import com.phsc.taskmate.entity.AssignTask;
+import com.phsc.taskmate.enums.TaskStatus;
 
 @Repository
 public interface AssignTaskRepository extends JpaRepository<AssignTask, Long> {
@@ -25,5 +26,9 @@ public interface AssignTaskRepository extends JpaRepository<AssignTask, Long> {
 	
 	@Query("SELECT new com.phsc.taskmate.dto.TaskListDTO(t.title,t.id, u.name, t.assignedBy, t.assignedDate, t.targetDate, t.taskStatus, t.project) FROM AssignTask t JOIN t.employees u where u.username =:username")
 	List<TaskListDTO> getTaskByUserName(@Param("username")String username);
+
+	 Long countByTaskStatus(TaskStatus taskStatus);
+
+	
 
 }

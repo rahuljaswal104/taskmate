@@ -152,7 +152,7 @@
 
           <div class="mini-card">
 
-            <h3>24</h3>
+            <h3>{{ projectCount }}</h3>
 
             <p>Total Projects</p>
 
@@ -168,7 +168,7 @@
 
           <div class="mini-card">
 
-            <h3>18</h3>
+            <h3>{{ pendingTaskCount }}</h3>
 
             <p>Pending Tasks</p>
 
@@ -176,7 +176,7 @@
 
           <div class="mini-card">
 
-            <h3>12</h3>
+            <h3>{{departmentCount}}</h3>
 
             <p>Departments</p>
 
@@ -200,7 +200,7 @@
 
             </span>
 
-            <h2>24</h2>
+            <h2>{{ projectCount }}</h2>
 
           </div>
 
@@ -240,7 +240,7 @@
 
             </span>
 
-            <h2>18</h2>
+            <h2>{{pendingTaskCount}}</h2>
 
           </div>
 
@@ -260,7 +260,7 @@
 
             </span>
 
-            <h2>62</h2>
+            <h2>{{ completeTaskCount }}</h2>
 
           </div>
 
@@ -279,8 +279,23 @@
 </template>
 
 <script>
-
+import axios from 'axios';
 export default {
+
+  data(){
+    return{
+      projectCount:0,
+      departmentCount:0,
+      pendingTaskCount:0,
+      completeTaskCount:0
+    }
+  },
+
+  mounted(){
+     this.getProjectCount();
+     this.getDepartmentCount();
+     this.getCountPendingAndCompleteTask();
+  },
 
   methods: {
 
@@ -324,8 +339,58 @@ export default {
       localStorage.clear();
 
       this.$router.push("/");
-    }
+    },
+  async getProjectCount() {
+
+  try {
+
+    const response = await axios.get(
+      "http://localhost:8080/api/project/getProjectCount"
+    );
+
+    this.projectCount = response.data.data;
+
+  } catch(error) {
+
+    console.log(error);
+
   }
+   },
+   async getDepartmentCount() {
+
+  try {
+
+    const response = await axios.get(
+      "http://localhost:8080/api/departments/getDepartmentCount"
+    );
+
+    this.departmentCount = response.data.data;
+
+  } catch(error) {
+
+    console.log(error);
+
+  }
+   },
+   async getCountPendingAndCompleteTask() {
+
+  try {
+
+    const response = await axios.get(
+      "http://localhost:8080/api/assgintask/getCountPendingAndCompleteTask"
+    );
+
+    this.pendingTaskCount = response.data.data.pendingCount;
+    this.completeTaskCount = response.data.data.completedCount;
+
+  } catch(error) {
+
+    console.log(error);
+
+  }
+   }
+  },
+  
 };
 
 </script>

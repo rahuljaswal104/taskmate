@@ -53,4 +53,12 @@ public class ProjectServiceImpl implements ProjectService {
 		return new CustomResponse("success", 200 ,projectList);
 	}
 
+	@Override
+	public CustomResponse getTotalProjectCount() {
+		
+		Long count = projectRepository.count();
+		
+		return new CustomResponse("success", 200 ,count);
+	}
+
 }

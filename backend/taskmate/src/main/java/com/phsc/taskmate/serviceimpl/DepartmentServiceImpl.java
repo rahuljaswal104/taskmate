@@ -52,4 +52,13 @@ public class DepartmentServiceImpl implements DepartmentService {
 		return new CustomResponse("Deparment saved successfully");
 	}
 
+	@Override
+	public CustomResponse getTotalDepartmentCount() {
+		Long count = departmentrRepo.count();
+		return new CustomResponse("Success",200,count);
+	}
+	
+	
+	
+
 }

@@ -37,5 +37,13 @@ public class ProjectController {
 
 	    return ResponseEntity.ok(response);
 	}
+	
+	@GetMapping("/getProjectCount")
+	public ResponseEntity<CustomResponse> getTotalProjectCount(){
+		
+		CustomResponse response = projectService.getTotalProjectCount();
+		
+		return ResponseEntity.ok(response);
+	}
 
 }

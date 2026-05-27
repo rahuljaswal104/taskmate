@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -18,6 +20,7 @@ import com.phsc.taskmate.dto.TaskListDTO;
 import com.phsc.taskmate.dto.UpdateTaskDto;
 import com.phsc.taskmate.entity.AssignTask;
 import com.phsc.taskmate.entity.UserRegister;
+import com.phsc.taskmate.enums.TaskStatus;
 import com.phsc.taskmate.repository.AssignTaskRepository;
 import com.phsc.taskmate.repository.UserRepository;
 import com.phsc.taskmate.service.AssignTaskService;
@@ -209,6 +212,24 @@ public class AssignTaskServiceImpl implements AssignTaskService {
 		}
 
 		return assignTaskRepo.save(task);
+	}
+
+	@Override
+	public CustomResponse getCountPendingAndCompleteTask() {
+
+	    Long pendingCount =
+	    		assignTaskRepo.countByTaskStatus(TaskStatus.PENDING);
+
+	    Long completedCount =
+	    		assignTaskRepo.countByTaskStatus(TaskStatus.COMPLETED);
+
+	    Map<String, Long> map = new HashMap<>();
+
+	    map.put("pendingCount", pendingCount);
+
+	    map.put("completedCount", completedCount);
+		
+		return new CustomResponse("Success", 200, map);
 	}
 
 }

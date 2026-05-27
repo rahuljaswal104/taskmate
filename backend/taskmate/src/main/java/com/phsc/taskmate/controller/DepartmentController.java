@@ -43,6 +43,14 @@ public class DepartmentController {
 		return ResponseEntity.ok(response);
 		
 	}
+	
+	@GetMapping("/getDepartmentCount")
+	public ResponseEntity<CustomResponse> getTotalDepartmentCount(){
+		
+		CustomResponse response = departmentService.getTotalDepartmentCount();
+		
+		return ResponseEntity.ok(response);
+	}
 
 
 	

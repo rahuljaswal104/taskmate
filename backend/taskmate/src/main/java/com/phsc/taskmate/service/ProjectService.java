@@ -10,4 +10,5 @@ public interface ProjectService {
 
 	CustomResponse getProjectList();
 
+	CustomResponse getTotalProjectCount();
 }

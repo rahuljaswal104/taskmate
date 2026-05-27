@@ -10,7 +10,8 @@ public interface DepartmentService {
 	List<Department> getAll();
 	
 	CustomResponse save(Department d);
+
+	CustomResponse getTotalDepartmentCount();
 	
-	//CustomResponse delete(Long id);
 
 }
