@@ -106,14 +106,14 @@
           <div class="admin-box">
 
             <div class="admin-avatar">
-              S
+                {{ name.charAt(0).toUpperCase() }}
             </div>
 
             <div class="admin-info">
 
-              <h4>Super Admin</h4>
+              <h4>{{name}}</h4>
 
-              <p>Administrator</p>
+              <p>{{role}}</p>
 
             </div>
 
@@ -288,7 +288,9 @@ export default {
       departmentCount:0,
       pendingTaskCount:0,
       completeTaskCount:0,
-      totalEmployeeCount:0
+      totalEmployeeCount:0,
+      name: localStorage.getItem('name'),
+      role: localStorage.getItem('role')
     }
   },
 

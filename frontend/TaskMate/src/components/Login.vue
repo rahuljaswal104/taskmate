@@ -574,6 +574,8 @@ export default {
 
       }
 
+
+
       const phoneRegex =
         /^[0-9]{10}$/;
 
@@ -590,31 +592,31 @@ export default {
 
       if (!this.register.department) {
 
-        this.errors.department =
-          "Department is required";
+      alert("Department is required");
+      return;
 
-      }
+    }
 
-      if (!this.register.designation) {
+    if (!this.register.designation) {
 
-        this.errors.designation =
-          "Designation is required";
+      alert("Designation is required");
+      return;
 
-      }
+    }
 
-      if (!this.register.role) {
+    if (!this.register.role) {
 
-        this.errors.role =
-          "Role is required";
+      alert("Role is required");
+      return;
 
-      }
+    }
 
-      if (!this.register.gender) {
+    if (!this.register.gender) {
 
-        this.errors.gender =
-          "Gender is required";
+      alert("Gender is required");
+      return;
 
-      }
+    }
 
       if (
         Object.keys(this.errors)
