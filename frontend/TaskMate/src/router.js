@@ -42,37 +42,28 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
 
-  const isLoggedIn =
-    localStorage.getItem("isLoggedIn");
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const role = localStorage.getItem("role");
 
-  // Protected Routes
-
-  if (
-    to.meta.requiresAuth &&
-    !isLoggedIn
-  ) {
-
-    next("/");
-
+  if (to.meta.requiresAuth && !isLoggedIn) {
+    return next("/");
   }
 
-  // Prevent Back To Login
-
-  else if (
-    to.path === "/" &&
-    isLoggedIn
-  ) {
-
-    next("/dashboard");
-
+  if (to.path === "/" && isLoggedIn) {
+    return role === "SUPERADMIN"
+      ? next("/dashboard")
+      : next("/taskList");
   }
 
-  // Continue
-
-  else {
-
-    next();
+  if (to.path === "/dashboard" && role !== "SUPERADMIN") {
+    return next("/taskList");
   }
+
+  if (to.path === "/taskList" && role === "SUPERADMIN") {
+    return next("/dashboard");
+  }
+
+  next();
 });
 
 export default router;
