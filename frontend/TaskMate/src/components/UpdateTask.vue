@@ -203,14 +203,14 @@
       </div>
 
       <!-- BUTTON -->
-
+<div class="button-container">
       <button
         class="update-btn"
         @click="updateTask"
       >
         Update Task
       </button>
-
+</div>
     </div>
 
   </div>
@@ -694,7 +694,8 @@ textarea:focus {
 
 .update-btn {
 
-  width: 100%;
+  width: auto;
+  
 
   margin-top: 30px;
 
@@ -719,6 +720,14 @@ textarea:focus {
   cursor: pointer;
 
 }
+
+
+.button-container{
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+
 
 /* MOBILE */
 
