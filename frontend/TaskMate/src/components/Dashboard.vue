@@ -38,6 +38,7 @@
           </div>
 
           <div
+           v-if="role === 'super_admin'"
             class="menu-item"
             @click="goAddProject"
           >
@@ -45,6 +46,7 @@
           </div>
 
           <div
+           v-if="role === 'super_admin'"
             class="menu-item"
             @click="goAddDepartment"
           >
@@ -52,6 +54,7 @@
           </div>
 
           <div
+           v-if="role === 'super_admin'"
             class="menu-item"
             @click="goAddRole"
           >

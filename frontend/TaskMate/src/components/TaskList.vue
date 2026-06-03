@@ -128,7 +128,7 @@ this.$router.push(`/updatetask/${id}`)
     let response;
 
     // SUPERADMIN => sab tasks
-    if (this.role === "SUPERADMIN" || this.role === "DEPARTMENT ADMIN") {
+    if (this.role === "SUPERADMIN" || this.role === "DEPARTMENT ADMIN" || this.role==="MANAGER") {
       
       response = await axios.get(
         "http://localhost:8080/api/assgintask/getTaskList"

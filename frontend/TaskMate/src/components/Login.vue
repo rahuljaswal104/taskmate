@@ -500,7 +500,7 @@ export default {
 
           localStorage.setItem("name",data.data.name);
 
-          if (data.data.role.roleName === "SUPERADMIN") {
+          if (data.data.role.roleName === "SUPERADMIN" || data.data.role.roleName === "DEPARTMENT ADMIN" || data.data.role.roleName === "MANAGER") {
 
             this.$router.push("/dashboard");
 

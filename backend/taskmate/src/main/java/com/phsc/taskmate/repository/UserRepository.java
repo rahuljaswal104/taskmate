@@ -22,7 +22,7 @@ public interface UserRepository extends JpaRepository<UserRegister, Long>{
 		List<RegisterUserDTO> findByUsername(@Param("name") String st);
 	
 	@Query("SELECT new com.phsc.taskmate.dto.RegisterUserDTO(" +
-		       "u.name, u.username, u.password, u.role, u.status) " +
+		       "u.name, u.username, u.password, u.role, u.status, u.department) " +
 		       "FROM UserRegister u WHERE u.username = :name")
 		RegisterUserDTO findByUser(@Param("name") String st);
 

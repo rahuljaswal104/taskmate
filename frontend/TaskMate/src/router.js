@@ -41,29 +41,58 @@ const router = createRouter({
 /* Route Guard */
 
 router.beforeEach((to, from, next) => {
-
   const isLoggedIn = localStorage.getItem("isLoggedIn");
   const role = localStorage.getItem("role");
+
+  const adminRoles = [
+    "SUPERADMIN",
+    "DEPARTMENT ADMIN",
+    "MANAGER"
+  ];
 
   if (to.meta.requiresAuth && !isLoggedIn) {
     return next("/");
   }
 
   if (to.path === "/" && isLoggedIn) {
-    return role === "SUPERADMIN"
-      ? next("/dashboard")
-      : next("/taskList");
+    return adminRoles.includes(role) ? next("/dashboard") : next("/taskList");
   }
 
-  if (to.path === "/dashboard" && role !== "SUPERADMIN") {
+  if (to.path === "/dashboard" && !adminRoles.includes(role)) {
     return next("/taskList");
   }
 
-  if (to.path === "/taskList" && role === "SUPERADMIN") {
+  if (to.path === "/taskList" && adminRoles.includes(role)) {
     return next("/dashboard");
   }
 
   next();
 });
+
+// router.beforeEach((to, from, next) => {
+
+//   const isLoggedIn = localStorage.getItem("isLoggedIn");
+//   const role = localStorage.getItem("role");
+
+//   if (to.meta.requiresAuth && !isLoggedIn) {
+//     return next("/");
+//   }
+
+//   if (to.path === "/" && isLoggedIn) {
+//     return role === "SUPERADMIN" || role === "DEPARTMENT ADMIN" || role === "MANAGER"
+//       ? next("/dashboard")
+//       : next("/taskList");
+//   }
+
+//   if (to.path === "/dashboard" && role !== "SUPERADMIN") {
+//     return next("/taskList");
+//   }
+
+//   if (to.path === "/taskList" && (role === "SUPERADMIN" || role === "DEPARTMENT ADMIN" || role === "MANAGER")) {
+//     return next("/dashboard");
+//   }
+
+//   next();
+// });
 
 export default router;

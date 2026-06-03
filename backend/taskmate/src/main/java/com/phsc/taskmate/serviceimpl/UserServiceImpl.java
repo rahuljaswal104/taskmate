@@ -103,6 +103,7 @@ public class UserServiceImpl implements UserService {
 		
 		 userDto.setName(us.getName());
 		 userDto.setUsername(us.getUsername());
+		 userDto.setDepartment(us.getDepartment());
 		 userDto.setRole(us.getRole());
          userDto.setPassword(null);
 		return new CustomResponse("Login successful", 200, userDto);

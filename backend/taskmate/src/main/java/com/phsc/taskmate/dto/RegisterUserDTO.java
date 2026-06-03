@@ -56,6 +56,20 @@ public class RegisterUserDTO {
 		this.designation = designation;
 		this.department = department;
 	}
+	
+	public RegisterUserDTO(
+			@NotBlank(message = "Name is required") @Pattern(regexp = "^[A-Za-z ]+$", message = "Name can contain only letters and spaces (no digits or special characters)") @Size(min = 3, message = "Name atleast 3 character") String name,
+			@NotBlank(message = "Username (email) is required") @Email(message = "Username must be a valid email") String username,
+			@NotBlank(message = "Password is required") @Size(min = 5, message = "Password must be at least 8 characters long") String password,
+			Role role, String status, Department department) {
+		super();
+		this.name = name;
+		this.username = username;
+		this.password = password;
+		this.role = role;
+		this.status = status;
+		this.department = department;
+	}
 
 	public RegisterUserDTO(
 
