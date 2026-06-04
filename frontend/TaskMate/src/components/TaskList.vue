@@ -2,27 +2,21 @@
   <Navbar v-if="role === 'EMPLOYEE'" />
   <div class="page-container">
 
-    <!-- Back Button -->
-    <div class="top-bar" v-if="role !== 'EMPLOYEE'" >
-      <button  class="back-btn" @click="$router.back()">
-        ← Back
-      </button>
-    </div>
 
-    
+     <div class="header-section">
+
+         <!-- Back Button -->
+      <button v-if="role !== 'EMPLOYEE'"  class="back-btn" @click="$router.back()">
+        ← 
+      </button>
+
+      <h2 class="page-title">
+        Employee Task List
+      </h2>
+    </div>
 
     <!-- Table Card -->
     <div class="table-card">
-
-      <!-- Header -->
-      <div class="card-header">
-        <h2>Task List</h2>
-
-        <div class="total-badge">
-          Total : {{ tasks.length }}
-        </div>
-      </div>
-
       <!-- Table -->
       <div class="table-wrapper">
 
@@ -191,7 +185,7 @@ this.$router.push(`/updatetask/${id}`)
   background: #f4f7fb;
   min-height: 100vh;
   padding: 30px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 /* Top Bar */
@@ -203,16 +197,16 @@ this.$router.push(`/updatetask/${id}`)
 /* Back Button */
 
 .back-btn {
-  background: linear-gradient(90deg, #49c46c, #2fa85a);
-  color: white;
+   width: 42px;
+  height: 42px;
   border: none;
-  padding: 10px 18px;
   border-radius: 12px;
-  font-size: 14px;
-  font-weight: 600;
+  background: #43b77a;
+  color: white;
+  font-size: 22px;
   cursor: pointer;
   transition: 0.3s;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(67,183,122,0.25);
 }
 
 .back-btn:hover {
@@ -395,6 +389,29 @@ this.$router.push(`/updatetask/${id}`)
   transition: 0.3s;
 
   z-index: 10;
+}
+
+.header-section {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 16px;
+}
+
+.back-btn {
+  position: absolute;
+  left: 16px;
+  background: #43b77a;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+
+}
+
+.page-title {
+  margin: 0;
+  text-align: center;
 }
 
 /* Arrow */

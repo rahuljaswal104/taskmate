@@ -278,7 +278,7 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
+  padding: 12px 16px;
 }
 
 /* Back Button */
@@ -306,9 +306,8 @@ button {
 
 .page-title {
 
-  font-size: 34px;
-  font-weight: 700;
-  color: #0f172a;
+  margin: 0;
+  text-align: center;
 }
 
 /* Total */

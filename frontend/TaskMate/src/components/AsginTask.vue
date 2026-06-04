@@ -7,24 +7,16 @@
 
     <!-- HEADER -->
 
-    <div class="page-header">
+  <div class="header-section">
 
-      <div class="header-left">
+         <!-- Back Button -->
+      <button class="back-btn" @click="$router.back()">
+        ← 
+      </button>
 
-        <button
-          class="back-btn"
-          @click="goToDashboard"
-        >
-          ←
-        </button>
-
-        <div class="heading-text">
-          <h1>Assign Task</h1>
-          <p>Create and assign tasks to employees easily</p>
-        </div>
-
-      </div>
-
+      <h2 class="page-title">
+        Assign Task
+      </h2>
     </div>
 
     <!-- MAIN CONTAINER -->
@@ -655,42 +647,32 @@ export default {
 
 /* HEADER */
 
-.page-header {
+.header-section {
+  position: relative;
   display: flex;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 28px;
+  padding: 12px 16px;
 }
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-.heading-text h1 {
-  font-size: 34px;
-  color: #1e293b;
-  margin-bottom: 4px;
-}
-
-.heading-text p {
-  color: #64748b;
-  font-size: 14px;
-}
-
-/* BACK BUTTON */
 
 .back-btn {
-  width: 46px;
-  height: 46px;
+  width: 42px;
+  height: 42px;
   border: none;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #48bb78, #2f9e61);
+  border-radius: 12px;
+  position: absolute;
+  left: 16px;
+  background: #43b77a;
+  cursor: pointer;
   color: white;
   font-size: 22px;
-  cursor: pointer;
   transition: 0.3s;
-  box-shadow: 0 8px 18px rgba(72, 187, 120, 0.25);
+  box-shadow: 0 4px 12px rgba(67,183,122,0.25);
+}
+
+.page-title {
+  margin: 0;
+  text-align: center;
 }
 
 .back-btn:hover {
