@@ -102,6 +102,7 @@ Navbar
       tasks: [],
       role: localStorage.getItem("role"),
       username: localStorage.getItem("username"),
+      departmentid: localStorage.getItem("departmentid"),
     };
   },
 
@@ -116,29 +117,34 @@ gotoUpdateTask(id){
 this.$router.push(`/updatetask/${id}`)
 },
 
-    async fetchTasks() {
+   async fetchTasks() {
   try {
-
     let response;
 
-    // SUPERADMIN => sab tasks
-    if (this.role === "SUPERADMIN" || this.role === "DEPARTMENT ADMIN" || this.role==="MANAGER") {
-      
+    // SUPERADMIN => all tasks
+    if (this.role === "SUPERADMIN") {
+
       response = await axios.get(
         "http://localhost:8080/api/assgintask/getTaskList"
       );
 
-    } 
-    
-    // EMPLOYEE => sirf uske tasks
+    }
+    // DEPARTMENT ADMIN / MANAGER => role + department
+    else if (this.role === "DEPARTMENT ADMIN" || this.role === "MANAGER") {
+
+      response = await axios.get(
+        `http://localhost:8080/api/assgintask/getTaskListByRoleAndDepartment/${this.role}/${this.departmentid}`
+      );
+
+    }
+    // EMPLOYEE => own tasks
     else {
-      
+
       response = await axios.get(
         `http://localhost:8080/api/assgintask/getTaskByEmployee/${this.username}`
       );
 
     }
-
 
     this.tasks = response.data.data;
 

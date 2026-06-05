@@ -19,9 +19,11 @@ import com.phsc.taskmate.customresponse.CustomResponse;
 import com.phsc.taskmate.dto.TaskListDTO;
 import com.phsc.taskmate.dto.UpdateTaskDto;
 import com.phsc.taskmate.entity.AssignTask;
+import com.phsc.taskmate.entity.Department;
 import com.phsc.taskmate.entity.UserRegister;
 import com.phsc.taskmate.enums.TaskStatus;
 import com.phsc.taskmate.repository.AssignTaskRepository;
+import com.phsc.taskmate.repository.DepartmentRepository;
 import com.phsc.taskmate.repository.UserRepository;
 import com.phsc.taskmate.service.AssignTaskService;
 
@@ -33,6 +35,9 @@ public class AssignTaskServiceImpl implements AssignTaskService {
 
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private DepartmentRepository departmentRepository;
 
 //	@Override
 //	public CustomResponse save(AssignTask assignTask) {
@@ -90,17 +95,34 @@ public class AssignTaskServiceImpl implements AssignTaskService {
 		return new CustomResponse("Success ", 200, userList);
 	}
 
+	
+	
 	@Override
-	public CustomResponse getTaskList() {
-
-		List<TaskListDTO> taskList = assignTaskRepo.getTaskListData();
-
-		if (taskList.isEmpty()) {
-			return new CustomResponse("list empty", 400, null);
-		}
-
-		return new CustomResponse("Task List", 200, taskList);
+	public CustomResponse getTaskListByRoleAndDepartment(String role, Long id) {
+		
+			Department department = departmentRepository.findById(id).orElse(null);
+	
+		    if (department == null) {
+		        return new CustomResponse("Department not found", 404, null);
+		    }
+		    
+			
+			List<TaskListDTO> departmentTaskList = assignTaskRepo.getTaskListByRoleAndDepartment(role,id);
+			
+			
+		    
+			if (departmentTaskList.isEmpty()){
+				return new CustomResponse("list empty", 400, null);
+			}
+			
+			
+			return new CustomResponse("Task List", 200, departmentTaskList);
+		
 	}
+	
+	
+	
+	
 
 	@Override
 	public List<TaskListDTO> getTaskByEmployee(String username) {
@@ -231,5 +253,20 @@ public class AssignTaskServiceImpl implements AssignTaskService {
 		
 		return new CustomResponse("Success", 200, map);
 	}
+
+	@Override
+	public CustomResponse getTaskList() {
+			List<TaskListDTO> taskList = assignTaskRepo.getTaskListData();
+			
+
+			if (taskList.isEmpty()){
+				return new CustomResponse("list empty", 400, null);
+			}
+			
+			return new CustomResponse("Task List", 200, taskList);
+			
+		}
+
+
 
 }

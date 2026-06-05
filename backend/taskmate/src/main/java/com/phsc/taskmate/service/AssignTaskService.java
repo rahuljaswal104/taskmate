@@ -15,8 +15,6 @@ public interface AssignTaskService {
 
 	CustomResponse getAllUser();
 
-	CustomResponse getTaskList();
-
 	List<TaskListDTO> getTaskByEmployee(String username);
 
 	CustomResponse getTaskById(Long id);
@@ -24,4 +22,8 @@ public interface AssignTaskService {
 	AssignTask updateTask(Long id, UpdateTaskDto request, MultipartFile file);
 
 	CustomResponse getCountPendingAndCompleteTask();
+
+	CustomResponse getTaskListByRoleAndDepartment(String role, Long id);
+
+	CustomResponse getTaskList();
 }

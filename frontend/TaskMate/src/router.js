@@ -55,16 +55,16 @@ router.beforeEach((to, from, next) => {
   }
 
   if (to.path === "/" && isLoggedIn) {
-    return adminRoles.includes(role) ? next("/dashboard") : next("/taskList");
+    return adminRoles.includes(role) ? next("/dashboard") : next("/tasklist");
   }
 
   if (to.path === "/dashboard" && !adminRoles.includes(role)) {
-    return next("/taskList");
+    return next("/tasklist");
   }
 
-  if (to.path === "/taskList" && adminRoles.includes(role)) {
-    return next("/dashboard");
-  }
+  // if (to.path === "/tasklist" && adminRoles.includes(role)) {
+  //   return next("/dashboard");
+  // }
 
   next();
 });

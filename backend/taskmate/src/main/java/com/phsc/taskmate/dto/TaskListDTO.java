@@ -45,6 +45,26 @@ public class TaskListDTO {
 		this.taskStatus = taskStatus;
 		this.project = project;
 	}
+	
+	public TaskListDTO(
+	        Long id,
+	        String title,
+	        Project project,
+	        String name,
+	        UserRegister assignedBy,
+	        LocalDate assignedDate,
+	        LocalDate targetDate,
+	        TaskStatus taskStatus) {
+
+	    this.id = id;
+	    this.title = title;
+	    this.project = project;
+	    this.name = name;
+	    this.assignedBy = assignedBy;
+	    this.assignedDate = assignedDate;
+	    this.targetDate = targetDate;
+	    this.taskStatus = taskStatus;
+	}
 
 	public String getTitle() {
 		return title;

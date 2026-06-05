@@ -307,7 +307,7 @@ export default {
   methods: {
 
     goTaskList(){
-
+     
     this.$router.push("/tasklist");
 
     },

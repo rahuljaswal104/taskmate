@@ -51,15 +51,6 @@ public class AssignTask {
 
 	@Column(columnDefinition = "TEXT")
 	private String description;
-
-	// Employee Details
-//	private Long employeeId;
-//
-//	private String employeeName;
-//
-//	private String designation;
-//
-//	private String department;
 	
 	
 	@ManyToMany
