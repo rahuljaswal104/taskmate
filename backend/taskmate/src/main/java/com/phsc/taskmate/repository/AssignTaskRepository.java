@@ -29,8 +29,8 @@ public interface AssignTaskRepository extends JpaRepository<AssignTask, Long> {
 
 	 Long countByTaskStatus(TaskStatus taskStatus);
 
-	 @Query("SELECT DISTINCT new com.phsc.taskmate.dto.TaskListDTO(t.id, t.title, t.project, emp.name, t.assignedBy, t.assignedDate, t.targetDate, t.taskStatus) FROM AssignTask t JOIN t.employees emp WHERE emp.role.roleName = :role AND emp.department.id = :departmentId")
-	 List<TaskListDTO> getTaskListByRoleAndDepartment(@Param("role") String role, @Param("departmentId") Long departmentId);
+	 @Query("SELECT DISTINCT new com.phsc.taskmate.dto.TaskListDTO(t.id, t.title, t.project, emp.name, t.assignedBy, t.assignedDate, t.targetDate, t.taskStatus) FROM AssignTask t JOIN t.employees emp WHERE emp.department.id = :departmentId")
+	 List<TaskListDTO> getTaskListByDepartment(@Param("departmentId") Long departmentId);
 
 	
 

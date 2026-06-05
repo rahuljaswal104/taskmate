@@ -23,7 +23,7 @@ public interface AssignTaskService {
 
 	CustomResponse getCountPendingAndCompleteTask();
 
-	CustomResponse getTaskListByRoleAndDepartment(String role, Long id);
+	CustomResponse getTaskListByDepartment(Long id);
 
 	CustomResponse getTaskList();
 }

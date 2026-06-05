@@ -98,18 +98,15 @@ public class AssignTaskServiceImpl implements AssignTaskService {
 	
 	
 	@Override
-	public CustomResponse getTaskListByRoleAndDepartment(String role, Long id) {
+	public CustomResponse getTaskListByDepartment(Long id) {
 		
 			Department department = departmentRepository.findById(id).orElse(null);
 	
 		    if (department == null) {
 		        return new CustomResponse("Department not found", 404, null);
 		    }
-		    
-			
-			List<TaskListDTO> departmentTaskList = assignTaskRepo.getTaskListByRoleAndDepartment(role,id);
-			
-			
+		    	
+			List<TaskListDTO> departmentTaskList = assignTaskRepo.getTaskListByDepartment(id);
 		    
 			if (departmentTaskList.isEmpty()){
 				return new CustomResponse("list empty", 400, null);
