@@ -53,7 +53,7 @@ public class AssignTaskController {
 		return ResponseEntity.ok(response);
 	}
 
-	@GetMapping("/getTaskListByRoleAndDepartment/{departmentid}")
+	@GetMapping("/getTaskListByDepartment/{departmentid}")
 	public ResponseEntity<CustomResponse> getTaskListByDepartment(@PathVariable (name="departmentid") Long  id) {
 		CustomResponse response = assignTaskService.getTaskListByDepartment(id);
 		return ResponseEntity.ok(response);
