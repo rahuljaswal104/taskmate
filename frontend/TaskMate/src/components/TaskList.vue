@@ -133,7 +133,7 @@ this.$router.push(`/updatetask/${id}`)
     else if (this.role === "DEPARTMENT ADMIN" || this.role === "MANAGER") {
 
       response = await axios.get(
-        `http://localhost:8080/api/assgintask/getTaskListByRoleAndDepartment/${this.departmentid}`
+        `http://localhost:8080/api/assgintask/getTaskListByDepartment/${this.departmentid}`
       );
 
     }
