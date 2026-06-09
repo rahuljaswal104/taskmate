@@ -144,6 +144,8 @@ export default {
 
     return {
 
+      userId: localStorage.getItem('userId'),
+
       reports: []
     };
   },
@@ -169,7 +171,7 @@ export default {
       try {
 
         const response = await axios.get(
-          "http://localhost:8080/reports/employee"
+          `http://localhost:8080/reports/employee/${this.userId}`
         );
 
         this.reports = response.data;

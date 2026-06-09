@@ -6,6 +6,6 @@ import com.phsc.taskmate.dto.EmployeeReportDTO;
 
 public interface ReportService {
 
-	List<EmployeeReportDTO> getEmployeeReports();
+	List<EmployeeReportDTO> getEmployeeReports(Long userId);
 
 }
