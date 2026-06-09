@@ -21,12 +21,15 @@ public interface UserRepository extends JpaRepository<UserRegister, Long>{
 		       "FROM UserRegister u WHERE u.username = :name")
 		List<RegisterUserDTO> findByUsername(@Param("name") String st);
 	
-	@Query("SELECT new com.phsc.taskmate.dto.RegisterUserDTO(" +
-		       "u.name, u.username, u.password, u.role, u.status, u.department) " +
-		       "FROM UserRegister u WHERE u.username = :name")
-		RegisterUserDTO findByUser(@Param("name") String st);
+//	@Query("SELECT new com.phsc.taskmate.dto.RegisterUserDTO(" +
+//		       "u.name, u.username, u.password, u.role, u.status, u.department) " +
+//		       "FROM UserRegister u WHERE u.username = :name")
+//		RegisterUserDTO findByUser(@Param("name") String st);
+	
+	@Query("SELECT new com.phsc.taskmate.dto.RegisterUserDTO(u.id, u.name, u.username, u.password, u.role, u.status, u.department) FROM UserRegister u WHERE u.username = :name")
+	RegisterUserDTO findByUser(@Param("name") String name);
 
-	@Query("SELECT new com.phsc.taskmate.entity.UserRegister(u.id, u.name, u.username, u.phone, u.designation, u.department, u.gender) FROM UserRegister u WHERE u.status = 'ACTIVE'")
+	@Query("SELECT new com.phsc.taskmate.entity.UserRegister(u.id, u.name, u.username, u.phone, u.designation, u.department, u.gender, u.role) FROM UserRegister u WHERE u.status = 'ACTIVE'")
 	List<UserRegister> getAllUserByStatus();
 	
 }

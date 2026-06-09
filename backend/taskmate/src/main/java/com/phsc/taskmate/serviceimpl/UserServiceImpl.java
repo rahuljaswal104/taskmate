@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
 		if (!isPasswordMatch) {
 			return new CustomResponse("Incorrect password", 401, null);
 		}
-		
+		 userDto.setId(us.getId());
 		 userDto.setName(us.getName());
 		 userDto.setUsername(us.getUsername());
 		 userDto.setDepartment(us.getDepartment());

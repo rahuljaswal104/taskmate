@@ -49,31 +49,28 @@
 
           <!-- PROJECT -->
 
+
           <div class="form-group">
 
-            <label>Project</label>
+        <label>Project</label>
+        <select v-model="selectedProjectId">
 
-            <select v-model="task.project.id">
+            <option value="" disabled hidden>
+            Select Project
+          </option>
 
-              <option value="">
-                Select Project
-              </option>
+          <option
+            v-for="project in projectList"
+            :key="project.id"
+            :value="project.id"
+          >
+            {{ project.projectName }}
+          </option>
 
-              <option :value="1">
-                HMIS
-              </option>
+        </select>
 
-              <option :value="2">
-                eAushadi
-              </option>
 
-              <option :value="3">
-                TaskMate
-              </option>
-
-            </select>
-
-          </div>
+        </div>
 
           <!-- TASK TYPE -->
 
@@ -164,6 +161,7 @@
 
           <!-- EMPLOYEE -->
 
+
           <div class="form-group">
 
             <label>Employee Name</label>
@@ -173,12 +171,12 @@
               @change="onEmployeeChange"
             >
 
-              <option value="">
+              <option value="" disabled hidden>
                 Select Employee
               </option>
 
               <option
-                v-for="emp in userList"
+                v-for="emp in filteredEmployees"
                 :key="emp.id"
                 :value="emp.id"
               >
@@ -225,21 +223,11 @@
 
             <label>Assigned By</label>
 
-            <select v-model="task.assignedBy.id">
-
-              <option value="">
-                Select Manager
-              </option>
-
-              <option
-                v-for="emp in userList"
-                :key="emp.id"
-                :value="emp.id"
-              >
-                {{ emp.name }}
-              </option>
-
-            </select>
+          <input
+            type="text"
+            :value="name"
+            readonly
+          />
 
           </div>
 
@@ -360,6 +348,13 @@ export default {
 
     return {
 
+      name: localStorage.getItem('name'),
+      role: localStorage.getItem('role'),
+      departmentId: localStorage.getItem('departmentid'),
+      userId: localStorage.getItem('userId'),
+      
+      selectedProjectId:"",
+      projectList:[],
       userList: [],
 
       selectedEmployeeId: "",
@@ -399,9 +394,18 @@ export default {
 
         status: "PENDING",
 
-        remarks: ""
+        remarks: "", 
+        
+        loginId: "",
+         
+        
 
-      }
+      },
+
+      currentUser: {
+      role: '', // superadmin | department_admin | manager
+      department_id: null
+    }
 
     };
 
@@ -411,9 +415,63 @@ export default {
 
     this.getUserList();
 
+    this.getProjects();
+
   },
 
+
+computed: {
+  filteredEmployees() {
+
+    // SUPERADMIN
+    if (this.role === 'SUPERADMIN') {
+      return this.userList.filter(emp =>     
+        emp.id != this.userId );
+    }
+
+    // DEPARTMENT ADMIN
+    if (this.role === 'DEPARTMENT ADMIN') {
+      return this.userList.filter(emp =>
+        emp.department.id == this.departmentId &&     // same department
+        emp.role.roleName !== 'SUPERADMIN' &&         // super admin hide
+        emp.id != this.userId                         // khud ko hide
+      );
+    }
+
+    // MANAGER
+    if (this.role === 'MANAGER') {
+      return this.userList.filter(emp =>
+        emp.department.id == this.departmentId &&  
+        emp.role.roleName !== 'SUPERADMIN' &&             // same department
+        emp.role.roleName !== 'DEPARTMENT ADMIN' &&             // department admin hide
+        emp.id != this.userId                                   // khud ko hide
+      );
+    }
+
+    return [];
+  }
+},
+
   methods: {
+
+     async getProjects() {
+
+      try {
+
+        const res = await axios.get(
+          "http://localhost:8080/api/project/projectList"
+        );
+
+        this.projectList = res.data.data;
+
+      } catch (err) {
+
+        console.log(err);
+
+      }
+
+    },
+
 
     goToDashboard() {
 
@@ -432,6 +490,15 @@ export default {
         );
 
         this.userList = response.data.data;
+       console.log(this.userList);
+     const loginName = this.userList.find(emp => emp.name == this.name);
+
+        if (loginName) {
+
+            this.loginId = loginName.id;
+            this.currentUser = loginName;
+
+        }
 
       } catch (error) {
 
@@ -481,7 +548,7 @@ export default {
 
         }
 
-        if (!this.task.project.id) {
+        if (!this.selectedProjectId) {
 
           alert('Please Select Project');
           return;
@@ -502,7 +569,7 @@ export default {
 
         }
 
-        if (!this.task.assignedBy.id) {
+        if (!this.loginId) {
 
           alert('Please Select Assigned By');
           return;
@@ -516,7 +583,7 @@ export default {
           title: this.task.title,
 
           project: {
-            id: this.task.project.id
+            id: this.selectedProjectId
           },
 
           taskType: this.task.taskType,
@@ -532,7 +599,7 @@ export default {
           ],
 
           assignedBy: {
-            id: this.task.assignedBy.id
+            id:  this.loginId
           },
 
           assignedDate: this.task.assignDate,

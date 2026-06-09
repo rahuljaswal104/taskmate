@@ -9,6 +9,9 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class RegisterUserDTO {
+	
+	
+	private Long id;
 
 	@NotBlank(message = "Name is required")
 	@Pattern(regexp = "^[A-Za-z ]+$", message = "Name can contain only letters and spaces (no digits or special characters)")
@@ -57,12 +60,13 @@ public class RegisterUserDTO {
 		this.department = department;
 	}
 	
-	public RegisterUserDTO(
+	public RegisterUserDTO(Long id,
 			@NotBlank(message = "Name is required") @Pattern(regexp = "^[A-Za-z ]+$", message = "Name can contain only letters and spaces (no digits or special characters)") @Size(min = 3, message = "Name atleast 3 character") String name,
 			@NotBlank(message = "Username (email) is required") @Email(message = "Username must be a valid email") String username,
 			@NotBlank(message = "Password is required") @Size(min = 5, message = "Password must be at least 8 characters long") String password,
 			Role role, String status, Department department) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.username = username;
 		this.password = password;
@@ -97,6 +101,16 @@ public class RegisterUserDTO {
 
 		this.status = status;
 
+	}
+	
+	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -173,9 +187,10 @@ public class RegisterUserDTO {
 
 	@Override
 	public String toString() {
-		return "RegisterUserDTO [name=" + name + ", username=" + username + ", password=" + password + ", role=" + role
-				+ ", status=" + status + ", gender=" + gender + ", phone=" + phone + ", designation=" + designation
-				+ ", department=" + department + "]";
+		return "RegisterUserDTO [id=" + id + ", name=" + name + ", username=" + username + ", password=" + password
+				+ ", role=" + role + ", department=" + department + ", status=" + status + ", gender=" + gender
+				+ ", phone=" + phone + ", designation=" + designation + "]";
 	}
+
 
 }

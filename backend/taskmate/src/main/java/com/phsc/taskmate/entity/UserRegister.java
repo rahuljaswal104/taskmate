@@ -98,7 +98,7 @@ public class UserRegister {
 	}
 
 	public UserRegister(Long id, String name, String username, String phone, String designation, Department department,
-			String gender) {
+			String gender,Role role) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -107,6 +107,7 @@ public class UserRegister {
 		this.designation = designation;
 		this.department = department;
 		this.gender = gender;
+		this.role = role;
 	}
 
 	public Long getId() {

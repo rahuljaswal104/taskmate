@@ -502,6 +502,8 @@ export default {
 
           localStorage.setItem("departmentid", data.data.department.id);
 
+          localStorage.setItem("userId", data.data.id);
+
           if (data.data.role.roleName === "SUPERADMIN" || data.data.role.roleName === "DEPARTMENT ADMIN" || data.data.role.roleName === "MANAGER") {
 
             this.$router.push("/dashboard");
@@ -646,6 +648,19 @@ export default {
         );
 
         this.showPopup = false;
+        
+          this.register = {
+            name: "",
+            username: "",
+            password: "",
+            repassword: "",
+            phone: "",
+            department: null,
+            designation: "",
+            role: null,
+            gender: ""
+          };
+
 
       }
 
