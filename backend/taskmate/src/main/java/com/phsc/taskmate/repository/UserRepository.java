@@ -31,5 +31,8 @@ public interface UserRepository extends JpaRepository<UserRegister, Long>{
 
 	@Query("SELECT new com.phsc.taskmate.entity.UserRegister(u.id, u.name, u.username, u.phone, u.designation, u.department, u.gender, u.role) FROM UserRegister u WHERE u.status = 'ACTIVE'")
 	List<UserRegister> getAllUserByStatus();
+
+	@Query("SELECT COUNT(u) FROM UserRegister u WHERE u.department.id = :id")
+	long getEmployeeCountByDepartment(@Param("id") Long id);
 	
 }

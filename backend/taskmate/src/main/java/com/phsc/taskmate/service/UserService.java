@@ -9,4 +9,6 @@ public interface UserService {
 	
 	public CustomResponse loginUser(RegisterUserDTO user);
 	public CustomResponse employeeCount();
+
+	public CustomResponse getEmployeeCountByDepartment(Long id);
 }

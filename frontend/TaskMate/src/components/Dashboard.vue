@@ -293,7 +293,8 @@ export default {
       completeTaskCount:0,
       totalEmployeeCount:0,
       name: localStorage.getItem('name'),
-      role: localStorage.getItem('role')
+      role: localStorage.getItem('role'),
+      departmentid:localStorage.getItem('departmentid'),
     }
   },
 
@@ -396,22 +397,27 @@ export default {
 
   }
    },
-   async getTotalEmployeeCount() {
-
+  async getTotalEmployeeCount() {
   try {
 
-    const response = await axios.get(
-      "http://localhost:8080/api/employeecount"
-    );
+    let response;
 
-    this.totalEmployeeCount = response.data.data;
+    if (this.role === 'SUPERADMIN') {
+      response = await axios.get('http://localhost:8080/api/employeecount');
 
-  } catch(error) {
+    } else if (this.role === 'MANAGER' || this.role === 'DEPARTMENT ADMIN') {
+      response = await axios.get(`http://localhost:8080/api/employeecountByDepartment/${this.departmentid}`
+      );
+    }
 
+    if (response) {
+      this.totalEmployeeCount = response.data.data;
+    }
+
+  } catch (error) {
     console.log(error);
-
   }
-   }
+}
   },
   
 };

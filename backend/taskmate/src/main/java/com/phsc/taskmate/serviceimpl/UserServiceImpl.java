@@ -117,4 +117,17 @@ public class UserServiceImpl implements UserService {
 		return new CustomResponse("employee count", 200, employeecount);
 	}
 
+	@Override
+	public CustomResponse getEmployeeCountByDepartment(Long id) {
+		
+	    if(id == null) {
+	    	return new CustomResponse("id null", 400, null);
+	    }
+	    
+	    long employeeCountByDepartment = userRepository.getEmployeeCountByDepartment(id);
+		
+	    
+		return new CustomResponse("success", 200, employeeCountByDepartment);
+	}
+
 }
