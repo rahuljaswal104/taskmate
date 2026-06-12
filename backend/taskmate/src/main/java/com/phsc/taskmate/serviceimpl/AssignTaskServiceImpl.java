@@ -234,21 +234,44 @@ public class AssignTaskServiceImpl implements AssignTaskService {
 	}
 
 	@Override
-	public CustomResponse getCountPendingAndCompleteTask() {
+	public CustomResponse getCountPendingAndCompleteTask(Long userid) {
 
-	    Long pendingCount =
-	    		assignTaskRepo.countByTaskStatus(TaskStatus.PENDING);
+	    UserRegister userdata = userRepo.findById(userid)
+	            .orElseThrow(() -> new RuntimeException("User not found"));
 
-	    Long completedCount =
-	    		assignTaskRepo.countByTaskStatus(TaskStatus.COMPLETED);
+	    String role = userdata.getRole().getRoleName();
 
+	    Long pendingCount = 0L;
+	    Long completedCount = 0L;
+
+	    if ("SUPERADMIN".equalsIgnoreCase(role)) {
+
+	        pendingCount =
+	                assignTaskRepo.countByTaskStatus(TaskStatus.PENDING);
+
+	        completedCount =
+	                assignTaskRepo.countByTaskStatus(TaskStatus.COMPLETED);
+	    }
+
+	    else if ("DEPARTMENT ADMIN".equalsIgnoreCase(role) || "MANAGER".equalsIgnoreCase(role)) {
+
+	        Long departmentId = userdata.getDepartment().getId();
+
+	        pendingCount = assignTaskRepo.countByDepartmentAndTaskStatus(departmentId,TaskStatus.PENDING);
+
+	        completedCount = assignTaskRepo.countByDepartmentAndTaskStatus(departmentId,TaskStatus.COMPLETED);
+	    }
+
+//	    ArrayList<Long> al = new ArrayList<Long>();
+//	    al.add(pendingCount);
+//	    al.add(completedCount);
+	    
+	    
 	    Map<String, Long> map = new HashMap<>();
-
 	    map.put("pendingCount", pendingCount);
-
 	    map.put("completedCount", completedCount);
-		
-		return new CustomResponse("Success", 200, map);
+
+	    return new CustomResponse("Success", 200, map);
 	}
 
 	@Override

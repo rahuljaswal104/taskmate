@@ -21,7 +21,7 @@ public interface AssignTaskService {
 
 	AssignTask updateTask(Long id, UpdateTaskDto request, MultipartFile file);
 
-	CustomResponse getCountPendingAndCompleteTask();
+	CustomResponse getCountPendingAndCompleteTask(Long userId);
 
 	CustomResponse getTaskListByDepartment(Long id);
 

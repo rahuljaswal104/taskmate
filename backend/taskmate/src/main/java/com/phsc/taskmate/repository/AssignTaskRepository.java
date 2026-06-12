@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.phsc.taskmate.dto.EmployeeReportDTO;
 import com.phsc.taskmate.dto.TaskListDTO;
@@ -37,6 +38,11 @@ public interface AssignTaskRepository extends JpaRepository<AssignTask, Long> {
 
 	 @Query("SELECT new com.phsc.taskmate.dto.EmployeeReportDTO(u.name, COUNT(t), SUM(CASE WHEN t.taskStatus='COMPLETED' THEN 1 ELSE 0 END), SUM(CASE WHEN t.taskStatus='PENDING' THEN 1 ELSE 0 END), SUM(CASE WHEN t.taskStatus='IN_PROGRESS' THEN 1 ELSE 0 END), ROUND((SUM(CASE WHEN t.taskStatus='COMPLETED' THEN 1 ELSE 0 END) * 100.0 / COUNT(t)), 1)) FROM AssignTask t JOIN t.employees u WHERE u.department.id = :id AND u.role.roleName IN ('MANAGER','EMPLOYEE') GROUP BY u.id, u.name")
 	 List<EmployeeReportDTO> getManagerDepartmentReport(@Param("id") Long id);
+	 
+	 
+	 @Query("SELECT COUNT(DISTINCT t) FROM AssignTask t JOIN t.employees e WHERE e.department.id = :departmentId AND t.taskStatus = :taskStatus")
+	 Long countByDepartmentAndTaskStatus(@Param("departmentId") Long departmentId,
+	                                     @Param("taskStatus") TaskStatus taskStatus);
 
 	
 

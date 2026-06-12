@@ -177,7 +177,7 @@
 
           </div>
 
-          <div class="mini-card">
+          <div class="mini-card" v-if="role === 'SUPERADMIN'">
 
             <h3>{{departmentCount}}</h3>
 
@@ -295,6 +295,7 @@ export default {
       name: localStorage.getItem('name'),
       role: localStorage.getItem('role'),
       departmentid:localStorage.getItem('departmentid'),
+      userId:localStorage.getItem('userId')
     }
   },
 
@@ -385,7 +386,7 @@ export default {
   try {
 
     const response = await axios.get(
-      "http://localhost:8080/api/assgintask/getCountPendingAndCompleteTask"
+      `http://localhost:8080/api/assgintask/getCountPendingAndCompleteTask?userId=${this.userId}`
     );
 
     this.pendingTaskCount = response.data.data.pendingCount;

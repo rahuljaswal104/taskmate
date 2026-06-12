@@ -100,8 +100,8 @@ public class AssignTaskController {
 	}
 	
 	@GetMapping("/getCountPendingAndCompleteTask")
-	public ResponseEntity<CustomResponse> getCountPendingAndCompleteTask(){
-		CustomResponse response = assignTaskService.getCountPendingAndCompleteTask();
+	public ResponseEntity<CustomResponse> getCountPendingAndCompleteTask(@RequestParam Long userId){
+		CustomResponse response = assignTaskService.getCountPendingAndCompleteTask(userId);
 		return ResponseEntity.ok(response);
 	}
 
