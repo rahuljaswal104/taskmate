@@ -44,6 +44,9 @@ public interface AssignTaskRepository extends JpaRepository<AssignTask, Long> {
 	 Long countByDepartmentAndTaskStatus(@Param("departmentId") Long departmentId,
 	                                     @Param("taskStatus") TaskStatus taskStatus);
 
+	 @Query("SELECT a FROM AssignTask a JOIN a.employees e WHERE e.name = :employeeName")
+	 List<AssignTask> findByEmployeeName(@Param("employeeName") String employeeName);
+
 	
 
 }

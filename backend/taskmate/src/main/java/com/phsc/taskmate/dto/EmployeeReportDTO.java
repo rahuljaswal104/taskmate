@@ -13,6 +13,8 @@ public class EmployeeReportDTO {
 	    private Long inProgressTasks;
 
 	    private Double completionPercentage;
+	    
+	    private String performanceStatus;
 
 		public EmployeeReportDTO() {
 			super();
@@ -20,7 +22,6 @@ public class EmployeeReportDTO {
 		}
 		
 		
-
 		public EmployeeReportDTO(String employeeName, Long totalTasks, Long completedTasks, Long pendingTasks,
 				Long inProgressTasks, Double completionPercentage) {
 			super();
@@ -30,6 +31,19 @@ public class EmployeeReportDTO {
 			this.pendingTasks = pendingTasks;
 			this.inProgressTasks = inProgressTasks;
 			this.completionPercentage = completionPercentage;
+		}
+		
+
+		public EmployeeReportDTO(String employeeName, Long totalTasks, Long completedTasks, Long pendingTasks,
+				Long inProgressTasks, Double completionPercentage, String performanceStatus) {
+			super();
+			this.employeeName = employeeName;
+			this.totalTasks = totalTasks;
+			this.completedTasks = completedTasks;
+			this.pendingTasks = pendingTasks;
+			this.inProgressTasks = inProgressTasks;
+			this.completionPercentage = completionPercentage;
+			this.performanceStatus = performanceStatus;
 		}
 
 
@@ -82,6 +96,15 @@ public class EmployeeReportDTO {
 			this.completionPercentage = completionPercentage;
 		}
 
+		public String getPerformanceStatus() {
+			return performanceStatus;
+		}
+
+		public void setPerformanceStatus(String performanceStatus) {
+			this.performanceStatus = performanceStatus;
+		}
+
+		
 
 	    
 }
