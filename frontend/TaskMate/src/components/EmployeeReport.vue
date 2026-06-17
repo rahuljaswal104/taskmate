@@ -2,11 +2,10 @@
   <div>
 
     <!-- MY TASK REPORT -->
-
-    <div class="report-container"
-     v-if="role !== 'SUPERADMIN'"
+    <div
+      class="report-container"
+      v-if="role !== 'SUPERADMIN'"
     >
-
       <div class="header-section">
 
         <button
@@ -31,7 +30,6 @@
         <table>
 
           <thead>
-
             <tr>
               <th>ID</th>
               <th>Employee Name</th>
@@ -42,7 +40,6 @@
               <th>Progress</th>
               <th>Status</th>
             </tr>
-
           </thead>
 
           <tbody>
@@ -51,7 +48,6 @@
               v-for="(report,index) in myReports"
               :key="'my'+index"
             >
-
               <td>{{ index + 1 }}</td>
               <td>{{ report.employeeName }}</td>
               <td>{{ report.totalTasks }}</td>
@@ -63,13 +59,14 @@
 
                 <div class="progress-bar-bg">
 
-                  <div
-                    class="progress-bar-fill"
-                    :class="getProgressClass(report.completionPercentage)"
-                    :style="{ width: report.completionPercentage + '%' }"
-                  >
-                    {{ report.completionPercentage }}%
-                  </div>
+            <div
+              class="progress-bar-fill"
+              :class="getProgressClass(report.performanceStatus)"
+            >
+              {{ report.completionPercentage }}%
+            </div>
+
+          
 
                 </div>
 
@@ -78,24 +75,19 @@
               <td>
 
                 <span
-                  :class="getStatusClass(report.completionPercentage)"
+                  :class="getStatusClass(report.performanceStatus)"
                 >
-                  {{ getStatus(report.completionPercentage) }}
+                  {{ report.performanceStatus }}
                 </span>
 
               </td>
-
+,
             </tr>
 
             <tr v-if="myReports.length === 0">
-
-              <td
-                colspan="8"
-                class="empty-data"
-              >
+              <td colspan="8" class="empty-data">
                 No My Report Found
               </td>
-
             </tr>
 
           </tbody>
@@ -106,20 +98,20 @@
 
     </div>
 
-    <!-- EMPLOYEE TASK REPORT -->
-
+    <!-- EMPLOYEE REPORT -->
     <div class="report-container">
 
       <div class="header-section employee-header">
 
-         <button class="back-btn"
+        <button
+          class="back-btn"
           @click="goToDashboard"
-          v-if="this.role === 'SUPERADMIN'"
-         >
+          v-if="role === 'SUPERADMIN'"
+        >
           ←
         </button>
 
-        <h2 class="employee-page-title ">
+        <h2 class="employee-page-title">
           Employee Task Report
         </h2>
 
@@ -134,7 +126,6 @@
         <table>
 
           <thead>
-
             <tr>
               <th>ID</th>
               <th>Employee Name</th>
@@ -145,7 +136,6 @@
               <th>Progress</th>
               <th>Status</th>
             </tr>
-
           </thead>
 
           <tbody>
@@ -154,7 +144,6 @@
               v-for="(report,index) in reports"
               :key="'emp'+index"
             >
-
               <td>{{ index + 1 }}</td>
               <td>{{ report.employeeName }}</td>
               <td>{{ report.totalTasks }}</td>
@@ -167,12 +156,11 @@
                 <div class="progress-bar-bg">
 
                   <div
-                    class="progress-bar-fill"
-                    :class="getProgressClass(report.completionPercentage)"
-                    :style="{ width: report.completionPercentage + '%' }"
-                  >
-                    {{ report.completionPercentage }}%
-                  </div>
+              class="progress-bar-fill"
+              :class="getProgressClass(report.performanceStatus)"
+            >
+              {{ report.completionPercentage }}%
+            </div>
 
                 </div>
 
@@ -181,9 +169,9 @@
               <td>
 
                 <span
-                  :class="getStatusClass(report.completionPercentage)"
+                  :class="getStatusClass(report.performanceStatus)"
                 >
-                  {{ getStatus(report.completionPercentage) }}
+                  {{ report.performanceStatus }}
                 </span>
 
               </td>
@@ -191,14 +179,9 @@
             </tr>
 
             <tr v-if="reports.length === 0">
-
-              <td
-                colspan="8"
-                class="empty-data"
-              >
+              <td colspan="8" class="empty-data">
                 No Employee Report Found
               </td>
-
             </tr>
 
           </tbody>
@@ -220,7 +203,6 @@ export default {
   name: "EmployeeTaskReport",
 
   data() {
-
     return {
 
       userId: localStorage.getItem("userId"),
@@ -234,17 +216,13 @@ export default {
   },
 
   mounted() {
-
     this.loadReports();
-
   },
 
   methods: {
 
     goToDashboard() {
-
       this.$router.push("/dashboard");
-
     },
 
     async loadReports() {
@@ -255,19 +233,16 @@ export default {
           `http://localhost:8080/reports/employee/${this.userId}`
         );
 
-        const allReports = response.data;
+        const allReports = Array.isArray(response.data) ? response.data : [response.data];
 
-        // My Report
         this.myReports = allReports.filter(
           emp => emp.employeeName === this.name
         );
 
-        // Employee Reports
         this.reports = allReports.filter(
           emp => emp.employeeName !== this.name
         );
 
-        // Super Admin ko sab dikhega
         if (this.role === "SUPERADMIN") {
           this.reports = allReports;
         }
@@ -275,62 +250,51 @@ export default {
       } catch (error) {
 
         console.error(
-          "Error Fetching Employee Reports : ",
+          "Error Fetching Employee Reports:",
           error
         );
 
       }
+
     },
 
-    getProgressClass(percent) {
+    
+  getProgressClass(status) {
+   
+  switch(status) {
 
-      if (percent > 70) {
+    case "EXCELLENT":
+      return "progress-success";
 
-        return "progress-success";
+    case "AVERAGE":
+      return "progress-warning";
 
-      } else if (percent >= 50) {
+    case "POOR":
+      return "progress-danger";
 
-        return "progress-warning";
+    default:
+      return "progress-danger";
+  }
 
-      } else {
+},
+    getStatusClass(status) {
 
-        return "progress-danger";
+      switch (status) {
+      
+        case "EXCELLENT":
+          return "active";
 
-      }
-    },
+        case "AVERAGE":
+          return "warning";
 
-    getStatusClass(percent) {
+        case "POOR":
+          return "inactive";
 
-      if (percent > 70) {
-
-        return "active";
-
-      } else if (percent >= 50) {
-
-        return "warning";
-
-      } else {
-
-        return "inactive";
-
-      }
-    },
-
-    getStatus(percent) {
-
-      if (percent > 70) {
-
-        return "Excellent";
-
-      } else if (percent >= 50) {
-
-        return "Average";
-
-      } else {
-
-        return "Poor";
+        default:
+          return "inactive";
 
       }
+
     }
 
   }
@@ -484,6 +448,7 @@ tbody tr:hover{
 .progress-danger{
   background:#dc2626;
 }
+
 
 /* ================= STATUS ================= */
 

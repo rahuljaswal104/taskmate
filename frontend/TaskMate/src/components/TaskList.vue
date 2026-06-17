@@ -299,7 +299,7 @@ this.$router.push(`/updatetask/${id}`)
 /* Status Badge */
 
 .status-badge {
-  padding: 8px 14px;
+  padding: 15px 10px 20px;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;

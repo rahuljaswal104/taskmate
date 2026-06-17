@@ -1,5 +1,6 @@
 package com.phsc.taskmate.serviceimpl;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -49,60 +50,47 @@ public class ReportServiceImpl implements ReportService {
 
 			List<AssignTask> tasks = assignTaskRepo.findByEmployeeName(dto.getEmployeeName());
 
-			dto.setPerformanceStatus(calculateStatus(tasks));
+			dto.setPerformanceStatus(calculateStatus(tasks,dto.getCompletionPercentage()));
 		}
 
 		return reports;
 	}
-
-	private String calculateStatus(List<AssignTask> tasks) {
-
-		if (tasks == null || tasks.isEmpty()) {
-			return "POOR";
-		}
-
-		boolean averageFound = false;
-		boolean excellentFound = false;
-
-		for (AssignTask task : tasks) {
-
-			// Null Safety
-			if (task == null || task.getTaskStatus() == null || task.getTargetDate() == null
-					|| task.getEndDate() == null) {
-
+	
+	private String calculateStatus(List<AssignTask> tasks,
+            Double completionPercentage) {
+				
+				if (tasks == null || tasks.isEmpty()) {
 				return "POOR";
-			}
-
-			// COMPLETED + targetDate >= endDate
-			if (task.getTaskStatus() == TaskStatus.COMPLETED && (task.getTargetDate().isEqual(task.getEndDate())
-					|| task.getTargetDate().isAfter(task.getEndDate()))) {
-
-				excellentFound = true;
-			}
-
-			// PENDING or IN_PROGRESS + targetDate < endDate
-			if ((task.getTaskStatus() == TaskStatus.PENDING || task.getTaskStatus() == TaskStatus.IN_PROGRESS)
-					&& task.getTargetDate().isBefore(task.getEndDate())) {
-
+				}
+				
+				if (completionPercentage == null) {
 				return "POOR";
-			}
-
-			// IN_PROGRESS + targetDate > endDate
-			if (task.getTaskStatus() == TaskStatus.IN_PROGRESS && task.getTargetDate().isAfter(task.getEndDate())) {
-
-				averageFound = true;
-			}
-		}
-
-		if (excellentFound) {
-			return "EXCELLENT";
-		}
-
-		if (averageFound) {
-			return "AVERAGE";
-		}
-
-		return "POOR";
-	}
+				}
+				
+				long overdueCount = tasks.stream()
+				.filter(task ->
+				(task.getTaskStatus() == TaskStatus.PENDING ||
+				task.getTaskStatus() == TaskStatus.IN_PROGRESS)
+				&& task.getTargetDate() != null
+				&& LocalDate.now().isAfter(task.getTargetDate())
+				)
+				.count();
+				
+				// More than 50% overdue
+				if (overdueCount > tasks.size() / 2) {
+				return "POOR";
+				}
+				
+				// Percentage Based
+				if (completionPercentage >= 70) {
+				return "EXCELLENT";
+				}
+				
+				if (completionPercentage >= 30) {
+				return "AVERAGE";
+				}
+				
+				return "POOR";
+				}
 
 }

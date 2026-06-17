@@ -124,7 +124,8 @@
 
             <label>Status</label>
 
-            <select v-model="task.taskStatus">
+            <select v-model="task.taskStatus" @change="updateEndDate"
+             >
 
               <option value="PENDING">
                 Pending
@@ -144,7 +145,7 @@
 
           <!-- START DATE -->
 
-          <div class="form-group">
+          <!-- <div class="form-group">
 
             <label>Start Date</label>
 
@@ -153,10 +154,10 @@
               v-model="task.startDate"
             />
 
-          </div>
+          </div> -->
 
           <!-- END DATE -->
-
+<!-- 
           <div class="form-group">
 
             <label>End Date</label>
@@ -166,7 +167,7 @@
               v-model="task.endDate"
             />
 
-          </div>
+              </div> -->
 
           <!-- FILE -->
 
@@ -225,19 +226,13 @@ export default {
 
   name: "UpdateTask",
 
-  data() {
-
+ data() {
     return {
-
-     task: null,
-
-    selectedFile: null
-
+      task:null,
+      selectedFile: null
     };
-
   },
   
-
   mounted() {
 
     this.fetchTaskById();
@@ -245,6 +240,18 @@ export default {
   },
 
   methods: {
+ updateEndDate() {
+  if (this.task.taskStatus === "IN_PROGRESS" || this.task.taskStatus === "COMPLETED") {
+
+    this.task.endDate = new Date().toISOString().split("T")[0];
+
+  } else {
+
+    this.task.endDate = null;
+
+  }
+
+},
 
    formatDate(date) {
 
@@ -320,7 +327,7 @@ export default {
 
         taskStatus: this.task.taskStatus,
 
-        startDate: this.task.startDate,
+        startDate: null,
 
         endDate: this.task.endDate,
 

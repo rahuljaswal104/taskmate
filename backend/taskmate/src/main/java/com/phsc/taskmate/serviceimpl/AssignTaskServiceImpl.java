@@ -229,6 +229,8 @@ public class AssignTaskServiceImpl implements AssignTaskService {
 				throw new RuntimeException("File Upload Failed");
 			}
 		}
+		
+		System.out.println(task.getEndDate());
 
 		return assignTaskRepo.save(task);
 	}
