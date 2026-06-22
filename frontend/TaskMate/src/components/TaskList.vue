@@ -244,10 +244,18 @@ this.$router.push(`/updatetask/${id}`)
     // this.allTasks = response.data.data;
 
       const allTasks = response.data.data;
-
-      this.myTasks = allTasks.filter(emp => emp.empId === Number(this.loginUserId));
-
-      this.tasks = allTasks.filter(emp => emp.empId !== Number(this.loginUserId));
+      
+      if(this.role === 'DEPARTMENT ADMIN' || this.role === 'MANAGER'){
+       this.myTasks = allTasks.filter(emp => emp.empId === Number(this.loginUserId));
+      }
+      
+      if(this.role === 'EMPLOYEE'){
+       this.myTasks = response.data.data;
+      }
+      else{
+       this.tasks = allTasks.filter(emp => emp.empId !== Number(this.loginUserId));
+      }
+      
 
         } catch (error) {
 
