@@ -27,7 +27,7 @@ public interface AssignTaskRepository extends JpaRepository<AssignTask, Long> {
 
 	 Long countByTaskStatus(TaskStatus taskStatus);
 
-	 @Query("SELECT DISTINCT new com.phsc.taskmate.dto.TaskListDTO(t.id, t.title, t.project, emp.name, t.assignedBy, t.assignedDate, t.targetDate, t.taskStatus) FROM AssignTask t JOIN t.employees emp WHERE emp.department.id = :departmentId")
+	 @Query("SELECT DISTINCT new com.phsc.taskmate.dto.TaskListDTO(t.id, t.title, t.project, emp.id,emp.name, t.assignedBy, t.assignedDate, t.targetDate, t.taskStatus) FROM AssignTask t JOIN t.employees emp WHERE emp.department.id = :departmentId")
 	 List<TaskListDTO> getTaskListByDepartment(@Param("departmentId") Long departmentId);
 	 
 	 @Query("SELECT new com.phsc.taskmate.dto.EmployeeReportDTO(u.name, COUNT(t), SUM(CASE WHEN t.taskStatus = 'COMPLETED' THEN 1 ELSE 0 END), SUM(CASE WHEN t.taskStatus = 'PENDING' THEN 1 ELSE 0 END), SUM(CASE WHEN t.taskStatus = 'IN_PROGRESS' THEN 1 ELSE 0 END), ROUND((SUM(CASE WHEN t.taskStatus = 'COMPLETED' THEN 1 ELSE 0 END) * 100.0 / COUNT(t)), 1)) FROM AssignTask t JOIN t.employees u GROUP BY u.name")

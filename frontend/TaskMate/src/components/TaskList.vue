@@ -245,16 +245,15 @@ this.$router.push(`/updatetask/${id}`)
 
       const allTasks = response.data.data;
 
-      this.myTasks = allTasks.filter( emp => emp.name === this.name);
-      
-      this.tasks = allTasks.filter(emp => emp.name !== this.name);
+      this.myTasks = allTasks.filter(emp => emp.empId === Number(this.loginUserId));
 
+      this.tasks = allTasks.filter(emp => emp.empId !== Number(this.loginUserId));
 
-  } catch (error) {
+        } catch (error) {
 
-    console.error("Error Fetching Tasks :", error);
+          console.error("Error Fetching Tasks :", error);
 
-  }
+        }
 },
 
     formatDate(date) {

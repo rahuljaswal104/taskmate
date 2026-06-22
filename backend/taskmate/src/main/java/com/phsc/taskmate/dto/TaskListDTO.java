@@ -16,6 +16,7 @@ public class TaskListDTO {
 	private LocalDate targetDate;
 	private TaskStatus taskStatus;
 	private Project project;
+	private Long empId;
 
 	public TaskListDTO() {
 		super();
@@ -50,6 +51,7 @@ public class TaskListDTO {
 	        Long id,
 	        String title,
 	        Project project,
+	        Long empId,
 	        String name,
 	        UserRegister assignedBy,
 	        LocalDate assignedDate,
@@ -59,6 +61,7 @@ public class TaskListDTO {
 	    this.id = id;
 	    this.title = title;
 	    this.project = project;
+	    this.empId = empId;
 	    this.name = name;
 	    this.assignedBy = assignedBy;
 	    this.assignedDate = assignedDate;
@@ -129,5 +132,15 @@ public class TaskListDTO {
 	public void setProject(Project project) {
 		this.project = project;
 	}
+
+	public Long getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(Long empId) {
+		this.empId = empId;
+	}
+	
+	
 
 }
