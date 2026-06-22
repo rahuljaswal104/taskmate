@@ -2,10 +2,7 @@
   <div>
 
     <!-- MY TASK REPORT -->
-    <div
-      class="report-container"
-      v-if="role !== 'SUPERADMIN'"
-    >
+    <div class="report-container" v-if="role !== 'SUPERADMIN'">
       <div class="header-section">
 
         <button

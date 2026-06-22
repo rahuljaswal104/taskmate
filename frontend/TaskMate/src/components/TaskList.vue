@@ -1,12 +1,102 @@
 <template>
   <Navbar v-if="role === 'EMPLOYEE'" />
-  <div class="page-container">
 
+    <div class="page-container" v-if="role !== 'SUPERADMIN'">
 
      <div class="header-section">
 
          <!-- Back Button -->
       <button v-if="role !== 'EMPLOYEE'"  class="back-btn" @click="$router.back()">
+        ← 
+      </button>
+
+      <h2 class="page-title">
+        My Task List
+      </h2>
+    </div>
+
+    <!-- Table Card -->
+    <div class="table-card">
+      <!-- Table -->
+      <div class="table-wrapper">
+
+        <table class="task-table">
+
+          <thead>
+            <tr>
+              <th>Task Title</th>
+              <th>Project</th>
+              <th>Assign To</th>
+              <th>Assign By</th>
+              <th>Assign Date</th>
+              <th>Target Date</th>
+              <th>Status</th>
+              <th v-if="role==='EMPLOYEE'">Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr v-for="task in myTasks" :key="task.id">
+
+              <td>{{ task.title }}</td>
+
+              <td>{{ task.project.projectName }}</td>
+
+              <td>{{ task.name }}</td>
+
+              <td>{{ task.assignedBy.name }}</td>
+
+              <td>{{ formatDate(task.assignedDate) }}</td>
+
+              <td>{{ formatDate(task.targetDate) }}</td>
+
+              <td>
+                <span
+                  class="status-badge"
+                  :class="getStatusClass(task.taskStatus)"
+                >
+                  {{ task.taskStatus }}
+                </span>
+              </td>
+             
+             <td v-if="role==='EMPLOYEE'">
+            <button class="update-btn" @click="gotoUpdateTask(task.id)">
+              <i class="fa-solid fa-pen-to-square"></i>
+
+              <span class="tooltip-text">
+                Update Task
+              </span>
+            </button>
+          </td>
+            </tr>
+
+            <!-- No Data -->
+
+            <tr v-if="myTasks.length === 0">
+              <td colspan="7" class="no-data">
+                No Tasks Found
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+
+   <!--Employee TaskList -->
+
+  <div class="page-container" v-if="role !== 'EMPLOYEE'">
+
+
+     <div class="header-section">
+
+         <!-- Back Button -->
+      <button v-if="role == 'SUPERADMIN'"  class="back-btn" @click="$router.back()" >
         ← 
       </button>
 
@@ -37,7 +127,7 @@
 
           <tbody>
 
-            <tr v-for="(task, index) in tasks" :key="index">
+            <tr v-for="task in tasks" :key="task.id">
 
               <td>{{ task.title }}</td>
 
@@ -103,6 +193,9 @@ Navbar
       role: localStorage.getItem("role"),
       username: localStorage.getItem("username"),
       departmentid: localStorage.getItem("departmentid"),
+      loginUserId:localStorage.getItem("userId"),
+      name: localStorage.getItem("name"),
+      myTasks:[]
     };
   },
 
@@ -120,7 +213,7 @@ this.$router.push(`/updatetask/${id}`)
    async fetchTasks() {
   try {
     let response;
-
+    
     // SUPERADMIN => all tasks
     if (this.role === "SUPERADMIN") {
 
@@ -146,7 +239,14 @@ this.$router.push(`/updatetask/${id}`)
 
     }
 
-    this.tasks = response.data.data;
+    // this.allTasks = response.data.data;
+
+      const allTasks = response.data.data;
+
+      this.myTasks = allTasks.filter( emp => emp.name === this.name);
+      
+      this.tasks = allTasks.filter(emp => emp.name !== this.name);
+
 
   } catch (error) {
 
@@ -188,10 +288,7 @@ this.$router.push(`/updatetask/${id}`)
 /* Page */
 
 .page-container {
-  background: #f4f7fb;
-  min-height: 100vh;
-  padding: 30px;
-  font-family: Arial, sans-serif;
+  margin-bottom: 20px;
 }
 
 /* Top Bar */
