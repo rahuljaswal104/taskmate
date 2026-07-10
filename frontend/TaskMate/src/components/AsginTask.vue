@@ -490,11 +490,27 @@ computed: {
 },
 
 watch: {
+  // selectedEmployeeIds(newIds) {
+
+  //   const employees = this.filteredEmployees.filter(emp =>
+  //     newIds.includes(emp.id)
+  //   );
+
+  //   this.task.designation = employees
+  //     .map(emp => emp.designation)
+  //     .join(", ");
+
+  //   this.task.department.departmentName = employees
+  //     .map(emp => emp.department.departmentName)
+  //     .join(", ");
+  // }
+
   selectedEmployeeIds(newIds) {
 
-    const employees = this.filteredEmployees.filter(emp =>
-      newIds.includes(emp.id)
-    );
+    // Selected order maintain karega
+    const employees = newIds
+      .map(id => this.filteredEmployees.find(emp => emp.id === id))
+      .filter(Boolean);
 
     this.task.designation = employees
       .map(emp => emp.designation)
@@ -502,6 +518,11 @@ watch: {
 
     this.task.department.departmentName = employees
       .map(emp => emp.department.departmentName)
+      .join(", ");
+
+    // Agar future me employee names bhi chahiye
+    this.task.employeeName = employees
+      .map(emp => emp.name)
       .join(", ");
   }
 },
