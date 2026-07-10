@@ -1,7 +1,9 @@
 # Complete Assign Task Vue Component
 
-```vue
+
+
 <template>
+
 
   <div class="assign-task-page">
 
@@ -161,18 +163,20 @@
 
           <!-- EMPLOYEE -->
 
-
-          <div class="form-group">
+<!-- 
+            <div class="form-group">
 
             <label>Employee Name</label>
 
-            <select
+             <select
+
               v-model="selectedEmployeeId"
               @change="onEmployeeChange"
             >
 
-              <option value="" disabled hidden>
+               <option value="" disabled hidden>
                 Select Employee
+
               </option>
 
               <option
@@ -185,7 +189,40 @@
 
             </select>
 
-          </div>
+            </div> -->
+
+            <div class="form-group">
+
+        <label>Employee Name</label>
+
+  <!-- <v-autocomplete
+    v-model="selectedEmployeeIds"
+    :items="filteredEmployees"
+    item-title="name"
+    item-value="id"
+    label="Select Employee"
+    multiple
+    chips
+    clearable
+    variant="outlined"
+    density="comfortable"
+  /> -->
+
+        <v-autocomplete
+        v-model="selectedEmployeeIds"
+        :items="filteredEmployees"
+        placeholder="Select Employee"
+        item-title="name"
+        item-value="id"
+        multiple
+        chips
+        closable-chips
+        density="compact"
+        variant="outlined"
+        class="employee-select"
+      />
+
+     </div>  
 
           <!-- DESIGNATION -->
 
@@ -357,8 +394,8 @@ export default {
       projectList:[],
       userList: [],
 
-      selectedEmployeeId: "",
-
+        // selectedEmployeeId: "",
+      selectedEmployeeIds: [],
       task: {
 
         title: "",
@@ -388,7 +425,7 @@ export default {
           id: ""
         },
 
-        assignDate: "",
+        assignDate: new Date().toISOString().split("T")[0],
 
         targetDate: "",
 
@@ -452,6 +489,23 @@ computed: {
   }
 },
 
+watch: {
+  selectedEmployeeIds(newIds) {
+
+    const employees = this.filteredEmployees.filter(emp =>
+      newIds.includes(emp.id)
+    );
+
+    this.task.designation = employees
+      .map(emp => emp.designation)
+      .join(", ");
+
+    this.task.department.departmentName = employees
+      .map(emp => emp.department.departmentName)
+      .join(", ");
+  }
+},
+
   methods: {
 
      async getProjects() {
@@ -510,28 +564,28 @@ computed: {
 
     // AUTO FILL EMPLOYEE DATA
 
-    onEmployeeChange() {
+    // onEmployeeChange() {
 
-      const selectedEmp = this.userList.find(
-        emp => emp.id == this.selectedEmployeeId
-      );
+    //   const selectedEmp = this.userList.find(
+    //     emp => emp.id == this.selectedEmployeeId
+    //   );
 
-      if (selectedEmp) {
+    //   if (selectedEmp) {
 
-        this.task.employeeId = selectedEmp.id;
+    //     this.task.employeeId = selectedEmp.id;
 
-        this.task.employeeName = selectedEmp.name;
+    //     this.task.employeeName = selectedEmp.name;
 
-        this.task.designation = selectedEmp.designation;
+    //     this.task.designation = selectedEmp.designation;
 
-        this.task.department = selectedEmp.department || {
-          id: '',
-          departmentName: ''
-        };
+    //     this.task.department = selectedEmp.department || {
+    //       id: '',
+    //       departmentName: ''
+    //     };
 
-      }
+    //   }
 
-    },
+    // },
 
     // SAVE TASK
 
@@ -549,10 +603,8 @@ computed: {
         }
 
         if (!this.selectedProjectId) {
-
           alert('Please Select Project');
           return;
-
         }
 
         if (!this.task.taskType) {
@@ -562,15 +614,19 @@ computed: {
 
         }
 
-        if (!this.task.employeeId) {
+        // if (!this.task.employeeId) {
 
-          alert('Please Select Employee');
-          return;
+        //   alert('Please Select Employee');
+        //   return;
 
+        // }
+
+        if (this.selectedEmployeeIds.length === 0) {
+           alert("Please Select Employee");
+            return;
         }
 
         if (!this.loginId) {
-
           alert('Please Select Assigned By');
           return;
 
@@ -592,11 +648,15 @@ computed: {
 
           description: this.task.description,
 
-          employees: [
-            {
-              id: this.task.employeeId
-            }
-          ],
+          // employees: [
+          //   {
+          //     id: this.task.employeeId
+          //   }
+          // ],
+
+          employees: this.selectedEmployeeIds.map(id => ({
+              id: id
+            })),
 
           assignedBy: {
             id:  this.loginId
@@ -616,7 +676,7 @@ computed: {
 
         };
 
-        console.log('Payload:', payload);
+        //console.log('Payload:', payload);
 
         const response = await axios.post(
           'http://localhost:8080/api/assgintask/save',
@@ -628,7 +688,7 @@ computed: {
           }
         );
 
-        console.log('Task Saved:', response.data);
+       // console.log('Task Saved:', response.data);
 
         alert('Task Assigned Successfully');
 
@@ -648,7 +708,8 @@ computed: {
 
     resetForm() {
 
-      this.selectedEmployeeId = '';
+      // this.selectedEmployeeId = '';
+      this.selectedEmployeeIds = [];
 
       this.task = {
 
@@ -703,6 +764,11 @@ computed: {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
+}
+.employee-select :deep(.v-field__input) input{
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 .assign-task-page {
@@ -872,6 +938,7 @@ input[readonly] {
 .reset-btn:hover {
   background: #f8fafc;
 }
+
 
 /* RESPONSIVE */
 
